@@ -1,4 +1,6 @@
-__author__ = 'fbuettner'
+from predator import Predator
+from prey import Prey
+
 
 class Field(object):
     """
@@ -37,8 +39,18 @@ class Field(object):
         return result
 
     def print_field(self):
-
-        # first line
-        res = "-" + "--"*self.width + "\n"
+        predators = [predator.location for predator in self.get_players_of_class(Predator)]
+        preys = [prey.location for prey in self.get_players_of_class(Prey)]
+        res = ""
         for row in range(self.height):
             res += "|"
+            for col in range(self.width):
+                if (col,row) in predators:
+                    res += "X"
+                elif (col,row) in preys:
+                    res += "O"
+                else:
+                    res += " "
+                res += "|"
+            res += "\n"
+        return res

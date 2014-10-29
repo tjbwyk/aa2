@@ -34,5 +34,16 @@ class testField(unittest.TestCase):
         self.environment.add_player(predator2)
         self.assertEqual(self.environment.get_players_of_class(Predator), [predator, predator2])
         self.assertEqual(self.environment.get_players_of_class(Prey), [prey])
+
+    def test_print_field(self):
+        prey = Prey((5,5))
+        predator = Predator((1,1))
+        predator2 = Predator((2,2))
+        self.environment.add_player(prey)
+        self.environment.add_player(predator)
+        self.environment.add_player(predator2)
+        print self.environment.print_field()
+        print self.environment
+
 if __name__ == '__main__':
     unittest.main()
