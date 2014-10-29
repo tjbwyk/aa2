@@ -9,3 +9,6 @@ class Prey(Player):
     """
     def __init__(self, x, y):
         super(Prey, self).__init__(x, y)
+
+    # TODO update policy when predator is next to prey
+
