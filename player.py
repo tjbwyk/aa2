@@ -12,5 +12,5 @@ class Player:
         self.field = field
 
     def move(self,delta_x, delta_y):
-        assert (abs(delta_x) + abs(delta_y) = 1), 'Only non-diagonal steps of 1 are allowed'
+        assert (abs(delta_x) + abs(delta_y) == 1), 'Only non-diagonal steps of 1 are allowed'
         self.x, self.y = self.field.get_new_coordinates(self.x, self.y, delta_x, delta_y)

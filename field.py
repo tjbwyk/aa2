@@ -10,8 +10,8 @@ class Field:
         self.players = []
 
     def get_new_coordinates(self, current_x, current_y, delta_x, delta_y):
-        new_x = (current_x + delta_x) % width
-        new_y = (current_y + delta_y) % height
+        new_x = (current_x + delta_x) % self.width
+        new_y = (current_y + delta_y) % self.height
 
         return new_x, new_y
 
@@ -21,6 +21,6 @@ class Field:
 
     def __str__(self):
         result = ""
-        for player in self.players
+        for player in self.players:
             result += player.name + "(" + player.x + "," + player.y + "), "
         return result
