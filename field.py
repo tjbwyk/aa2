@@ -6,6 +6,7 @@ class Field(object):
     """
     the playground
     """
+
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -45,9 +46,9 @@ class Field(object):
         for row in range(self.height):
             res += "|"
             for col in range(self.width):
-                if (col,row) in predators:
+                if (col, row) in predators:
                     res += "X"
-                elif (col,row) in preys:
+                elif (col, row) in preys:
                     res += "O"
                 else:
                     res += " "
