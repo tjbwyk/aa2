@@ -2,12 +2,12 @@ __author__ = 'fbuettner'
 from policy import Policy
 
 
-class Player:
+class Player(object):
     """
     superclass for predator and prey
     implements common properties like position
     """
-    def __init__(self, x, y, field):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
         self.field = field
