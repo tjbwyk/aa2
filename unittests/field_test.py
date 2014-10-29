@@ -25,6 +25,14 @@ class testField(unittest.TestCase):
         self.assertEqual(prey.field, self.environment)
         self.assertEqual(len(self.environment.players), 2)
 
-
+    def test_get_players_of_class(self):
+        prey = Prey((5,5))
+        predator = Predator((1,1))
+        predator2 = Predator((2,2))
+        self.environment.add_player(prey)
+        self.environment.add_player(predator)
+        self.environment.add_player(predator2)
+        self.assertEqual(self.environment.get_players_of_class(Predator), [predator, predator2])
+        self.assertEqual(self.environment.get_players_of_class(Prey), [prey])
 if __name__ == '__main__':
     unittest.main()

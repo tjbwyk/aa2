@@ -23,6 +23,13 @@ class Field(object):
         player.field = self
         self.players.append(player)
 
+    def get_players_of_class(self, player_class):
+        result = []
+        for player in self.players:
+            if isinstance(player, player_class):
+                result.append(player)
+        return result
+
     def __str__(self):
         result = ""
         for player in self.players:
