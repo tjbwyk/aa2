@@ -23,3 +23,6 @@ class Field:
 
         return new_x, new_y
 
+    def __str__(self):
+        # print ASCII field here
+        return "bla"
