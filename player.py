@@ -1,4 +1,5 @@
 __author__ = 'fbuettner'
+from policy import Policy
 
 
 class Player:
@@ -10,6 +11,11 @@ class Player:
         self.x = x
         self.y = y
         self.field = field
+        # set default policy
+        self.policy = Policy(1, 0, 0, 0, 0)
+
+    def set_policy(self, policy):
+        self.policy = policy
 
     def move(self,delta_x, delta_y):
         assert (abs(delta_x) + abs(delta_y) == 1), 'Only non-diagonal steps of 1 are allowed'
