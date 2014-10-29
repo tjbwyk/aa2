@@ -35,3 +35,10 @@ class Field(object):
         for player in self.players:
             result += player.name + "(" + player.location[0] + "," + player.location[1] + "), "
         return result
+
+    def print_field(self):
+
+        # first line
+        res = "-" + "--"*self.width + "\n"
+        for row in range(self.height):
+            res += "|"
