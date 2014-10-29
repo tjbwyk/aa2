@@ -3,6 +3,7 @@ from field import Field
 from prey import Prey
 from predator import Predator
 
+
 class testField(unittest.TestCase):
     def setUp(self):
         self.environment = Field(11, 11)
