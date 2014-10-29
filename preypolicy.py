@@ -11,7 +11,7 @@ class PreyPolicy(Policy):
         updates the prey policy
         :param field:
         :param agent: owner of the policy
-        :return:
+        :return: all probabilities and according next states
         """
         newStates = []
 
