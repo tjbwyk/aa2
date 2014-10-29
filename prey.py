@@ -7,8 +7,8 @@ class Prey(Player):
     """
     The prey class
     """
-    def __init__(self, x, y):
-        super(Prey, self).__init__(x, y)
+    def __init__(self, location):
+        super(Prey, self).__init__(location)
 
     # TODO update policy when predator is next to prey
 
