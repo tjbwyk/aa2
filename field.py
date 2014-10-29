@@ -7,22 +7,20 @@ class Field:
     def __init__(self, width, height):
         self.width = width
         self.height = height
+        self.players = []
 
     def get_new_coordinates(self, current_x, current_y, delta_x, delta_y):
-        new_x = current_x + delta_x
-        if new_x <= 0:
-            new_x += self.width
-        elif new_x > self.width:
-            new_x -= self.width
-
-        new_y = current_y + delta_y
-        if new_y <= 0:
-            new_y += self.height
-        elif new_y > self.height:
-            new_y -= self.height
+        new_x = (current_x + delta_x) % width
+        new_y = (current_y + delta_y) % height
 
         return new_x, new_y
 
+    def add_player(self, player):
+        player.field = self
+        self.players.append(player)
+
     def __str__(self):
-        # print ASCII field here
-        return "bla"
+        result = ""
+        for player in self.players
+            result += player.name + "(" + player.x + "," + player.y + "), "
+        print result
