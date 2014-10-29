@@ -10,12 +10,12 @@ class Player(object):
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.field = field
+        self.field = None
         # set default policy
         self.policy = Policy(1, 0, 0, 0, 0)
 
     def set_policy(self, policy):
-        self.policy = policy
+        self.policy = policy 
 
     def move(self,delta_x, delta_y):
         assert (abs(delta_x) + abs(delta_y) == 1), 'Only non-diagonal steps of 1 are allowed'
