@@ -2,9 +2,8 @@ class PredatorPolicy(Policy):
   """
     implementaion of the policy of the predator
   """
-  def updatePolicy(location):
+  def updatePolicy(field):
     """
       updates the probabilities of the states
     """
-
     pass
