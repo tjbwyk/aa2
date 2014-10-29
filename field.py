@@ -23,4 +23,4 @@ class Field:
         result = ""
         for player in self.players
             result += player.name + "(" + player.x + "," + player.y + "), "
-        print result
+        return result
