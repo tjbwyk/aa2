@@ -8,3 +8,5 @@ class Predator(Player):
     def __init__(self, location):
         super(Predator, self).__init__(location)
 
+    def __str__(self):
+        return "Predator"
