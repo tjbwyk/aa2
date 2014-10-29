@@ -1,6 +1,6 @@
 __author__ = 'fbuettner'
 
-class Field:
+class Field(object):
     """
     the playground
     """
