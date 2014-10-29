@@ -34,10 +34,8 @@ class Field(object):
         return result
 
     def __str__(self):
-        result = ""
-        for player in self.players:
-            result += player.name + "(" + player.location[0] + "," + player.location[1] + "), "
-        return result
+        result = map(lambda p: str(p)+ "(" + str(p.location[0]) + "," + str(p.location[1]) + ")", self.players)
+        return ", ".join(result)
 
     def print_field(self):
         predators = [predator.location for predator in self.get_players_of_class(Predator)]
