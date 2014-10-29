@@ -9,3 +9,9 @@ class Policy:
         self.prob_east = prob_east
         self.prob_south = prob_south
         self.prob_west = prob_west
+
+    def get_direction(self):
+        """
+        get a direction to move to
+        :return: x and y coordinates of movement
+        """
