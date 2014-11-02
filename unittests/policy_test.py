@@ -1,11 +1,13 @@
 from policy import Policy
 import unittest
+import field
+import predator
+import prey
 from collections import Counter
 
 class testPolicy(unittest.TestCase):
     def setUp(self):
-        self.pol = Policy(0.5, 0.2, 0.1, 0.1, 0.1)
-
+        self.pol = Policy()
 
     def test_get_direction(self):
         directions = []
@@ -15,6 +17,25 @@ class testPolicy(unittest.TestCase):
         print c.keys()
         print c.values()
         self.assertEqual(len(c.values()), 5)
+
+    def testPredatorPolicy(self):
+      field = Field(3,3)
+      predator = Predator((1,1))
+      policy = PredatorPolicy()
+
+      field.add_player(predator)
+      field.print_field()
+
+    def testPreyPolicy1(self):
+      field = Field(3,3)
+      predator = Predator((1,1))
+      policy = PredatorPolicy()
+
+      field.add_player(predator)
+      field.print_field()
+
+      
+
 
 if __name__ == '__main__':
     unittest.main()

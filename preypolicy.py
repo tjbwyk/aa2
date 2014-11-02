@@ -1,34 +1,37 @@
-class PreyPolicy(Policy):
-    """
-    implementation of the policy of the prey
+from policy import Policy
+from predator import Predator
+
+class PreyPolicy(Policy, object):
   """
-    def __init__(self):
-        self.fixedActions = [(0.8, (0, 0))]
-        self.flexActions = [(0, -1), (-1, 0), (0, 1), (1, 0)]
+  implementation of the policy of the prey
+  """
 
-    def updatePolicy(self, field, agent):
-        """
-        updates the prey policy
-        :param field:
-        :param agent: owner of the policy
-        :return: all probabilities and according next states
-        """
-        newStates = []
+  def __init__(self, agent, field):
+    super(PreyPolicy, self).__init__(agent, field)
+    self.fixedActions = [(0.8, (0, 0))]
+    self.flexActions = [(0, -1), (-1, 0), (0, 1), (1, 0)]
 
-        probability = 1
-        for fixed in self.fixedActions:
-            prob, action = fixed
-            probability -= prob
+  def getNextStates(self):
+    """
+    updates the prey policy
+    :param field:
+    :param agent: owner of the policy
+    :return: all probabilities and according next states
+    """
+    flexStates = [self.field.get_new_coordinates(self.agent.location, flexAction) for flexAction in self.flexActions]
 
-        for flex in self.flexActions:
-            newStates.append(field.get_new_coordinates(agent.location, flex))
+    fixedStates = []
+    probability = float(1)
 
-        for agent in field.getPredators():
-            newStates.remove(agent.location)
+    for prob, fixedAction in self.fixedActions:
+      fixedStates.append((prob, self.field.get_new_coordinates(self.agent.location, fixedAction)))
+      probability -= prob
 
-        flexProb = probability / len(newStates)
+    for agent in self.field.get_players_of_class(Predator):
+      if agent.location in flexStates:
+        flexStates.remove(agent.location)
 
-        allStates = [(flexProb, x) for x in newStates]
-        allStates.extend(self.fixedActions)
-
-        return allStates
+    flexProb = probability / len(flexStates)
+    nextStates = [(flexProb, flexState) for flexState in flexStates]
+    nextStates.extend(fixedStates)
+    return nextStates

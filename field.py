@@ -53,3 +53,16 @@ class Field(object):
                 res += "|"
             res += "\n"
         return res
+
+    def isEnded(self):
+      predators = self.get_players_of_class(Predator)
+      preys = self.get_players_of_class(Prey)
+
+      foundAll = True
+      for prey in preys:
+        foundPrey = False
+        for predator in predators:
+          if prey.location == predator.location:
+            foundPrey = True
+        foundAll &= foundPrey
+      return foundAll

@@ -2,22 +2,14 @@ from bisect import bisect
 from logging import warning
 from random import random
 
-
 class Policy:
     """
     The policy describes the probabilities for a player to move in any direction.
     """
 
-    def __init__(self, prob_stay, prob_north, prob_east, prob_south, prob_west):
-        prob_sum = prob_stay + prob_north + prob_east + prob_south + prob_west
-        if prob_sum != 1.0:
-            warning("Sum of probabilities different from 1, will be normalized to 1.")
-        self.prob_stay = prob_stay / prob_sum
-        self.prob_north = prob_north / prob_sum
-        self.prob_east = prob_east / prob_sum
-        self.prob_south = prob_south / prob_sum
-        self.prob_west = prob_west / prob_sum
-        self.directions = [(0, 0), (0, -1), (1, 0), (0, 1), (-1, 0)]
+    def __init__(self, a, f):
+      self.agent = a
+      self.field = f
 
     def get_direction(self):
         """

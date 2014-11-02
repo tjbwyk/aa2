@@ -1,6 +1,5 @@
 from player import Player
 
-
 class Predator(Player):
     """
     The predator class
