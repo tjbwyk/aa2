@@ -1,9 +1,9 @@
 import timeit
 import numpy as np
-from field import Field
-from predator import Predator
+from models.field import Field
+from models.predator import Predator
 from models.prey import Prey
-from predatorpolicy import PredatorPolicy
+from models.policies.predatorpolicy import PredatorPolicy
 from models.policies.preypolicy import PreyPolicy
 
 
