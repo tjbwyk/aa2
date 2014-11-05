@@ -54,7 +54,7 @@ class Field(object):
             res += "\n"
         return res
 
-    def isEnded(self):
+    def is_ended(self):
         predators = self.get_players_of_class(Predator)
         preys = self.get_players_of_class(Prey)
 
