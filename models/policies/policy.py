@@ -1,6 +1,6 @@
 from bisect import bisect
-from logging import warning
 from random import random
+
 
 class Policy:
     """

@@ -1,9 +1,8 @@
-from policy import Policy
 import unittest
-import field
-import predator
-import prey
 from collections import Counter
+
+from models.policies.policy import Policy
+
 
 class testPolicy(unittest.TestCase):
     def setUp(self):
@@ -19,22 +18,20 @@ class testPolicy(unittest.TestCase):
         self.assertEqual(len(c.values()), 5)
 
     def testPredatorPolicy(self):
-      field = Field(3,3)
-      predator = Predator((1,1))
-      policy = PredatorPolicy()
+        field = Field(3, 3)
+        predator = Predator((1, 1))
+        policy = PredatorPolicy()
 
-      field.add_player(predator)
-      field.print_field()
+        field.add_player(predator)
+        field.print_field()
 
     def testPreyPolicy1(self):
-      field = Field(3,3)
-      predator = Predator((1,1))
-      policy = PredatorPolicy()
+        field = Field(3, 3)
+        predator = Predator((1, 1))
+        policy = PredatorPolicy()
 
-      field.add_player(predator)
-      field.print_field()
-
-      
+        field.add_player(predator)
+        field.print_field()
 
 
 if __name__ == '__main__':
