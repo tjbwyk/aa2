@@ -1,7 +1,7 @@
 import unittest
 from collections import Counter
 
-from policy import Policy
+from models.policies.policy import Policy
 
 
 class testPolicy(unittest.TestCase):

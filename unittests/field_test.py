@@ -1,7 +1,7 @@
 import unittest
 
 from field import Field
-from prey import Prey
+from models.prey import Prey
 from predator import Predator
 
 

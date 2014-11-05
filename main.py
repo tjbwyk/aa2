@@ -2,9 +2,9 @@ import timeit
 
 from field import Field
 from predator import Predator
-from prey import Prey
+from models.prey import Prey
 from predatorpolicy import PredatorPolicy
-from preypolicy import PreyPolicy
+from models.policies.preypolicy import PreyPolicy
 
 
 def main():

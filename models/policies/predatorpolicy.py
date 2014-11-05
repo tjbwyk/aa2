@@ -1,4 +1,4 @@
-from policy import Policy
+from models.policies.policy import Policy
 
 
 class PredatorPolicy(Policy, object):
