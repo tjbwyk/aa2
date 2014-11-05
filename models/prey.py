@@ -1,5 +1,5 @@
 __author__ = 'fbuettner'
-from player import Player
+from models.player import Player
 
 
 class Prey(Player):

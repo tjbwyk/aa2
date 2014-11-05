@@ -1,5 +1,5 @@
-from policy import Policy
-from predator import Predator
+from models.policies.policy import Policy
+from models.predator import Predator
 
 
 class PreyPolicy(Policy, object):

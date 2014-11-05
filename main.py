@@ -4,7 +4,7 @@ from field import Field
 from predator import Predator
 from models.prey import Prey
 from predatorpolicy import PredatorPolicy
-from preypolicy import PreyPolicy
+from models.policies.preypolicy import PreyPolicy
 
 
 def main(n_runs=1):

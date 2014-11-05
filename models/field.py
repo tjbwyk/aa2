@@ -1,5 +1,5 @@
-from predator import Predator
-from prey import Prey
+from models.predator import Predator
+from models.prey import Prey
 
 
 class Field(object):
