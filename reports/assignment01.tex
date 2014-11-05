@@ -6,12 +6,21 @@
 \usepackage{graphicx}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage[colorlinks,linkcolor=black,citecolor=black,filecolor=black]{hyperref}
+
+
 \begin{document}
 \title{Autonomous Agents - Assignment 1}
 \author{BasVeeling (10767770) \\ \and Sebastian Droeppelmann (?) \\ \and Konstantinos Lampridis (?) \\ \and Fritjof Buettner (10876782)}
 \maketitle
 \section{Introduction}
+\subsection{Project structure}
+We decided to model the predator/prey problem in Python. We chose an object-oriented structure to make the code reusable and minimize repetitions. In order to assure correct functionality of the algorithms at a fine-grained level, we make use of Python's unit-test framework.
+
+The file \texttt{main.py} in the root directory of the project executes all the tasks required in the assignment and prints the according output to the console. The models for field, players and their respective policies are located in the subdirectory \texttt{models}. Both \texttt{Predator} and \texttt{Prey} class are children of the \texttt{Player} superclass, which provides common attributes such as the location and policy fields. 
+There is a bidirectional connection between the field and the players on it, such that the field maintains a list of active players, who in return hold a reference to the field they are on in order to receive sensory information like the position of other players. 
+Furthermore, the field also provides the function \texttt{is\_ended()} which can be used to check whether the predator has caught the prey. 
+For a more human-readable output, the field implements the function \texttt{print\_field()} which prints an ASCII-graphical representation of the field to the console, with a \textbf{\texttt{X}} denoting the position of the predator(s) and a \textbf{\texttt{O}} denoting the position of the prey(s).
 
 \section{Conclusion}
-
+It's all great.
 \end{document}
