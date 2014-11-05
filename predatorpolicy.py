@@ -18,3 +18,11 @@ class PredatorPolicy(Policy, object):
     """
     fixedStates = [ (prob, self.field.get_new_coordinates(self.agent.location, fixedAction)) for prob, fixedAction in self.fixedActions ]
     return fixedStates
+
+  def getReward(self, action):
+    prey = self.field.get_players_of_class(Prey)
+    newState = self.field.get_new_coordinates(self.agent.location, action)
+    if(prey.location == newState):
+      return 10
+    else:
+      return 0

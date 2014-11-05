@@ -35,3 +35,6 @@ class PreyPolicy(Policy, object):
     nextStates = [(flexProb, flexState) for flexState in flexStates]
     nextStates.extend(fixedStates)
     return nextStates
+
+  def getReward(self, action):
+    return 0

@@ -10,6 +10,7 @@ class Policy:
     def __init__(self, a, f):
       self.agent = a
       self.field = f
+      self.discountfactor = 1.0
 
     def get_direction(self):
         """
@@ -22,3 +23,6 @@ class Policy:
             cdf.append(cdf[-1] + P[i])
         random_ind = bisect(cdf, random())
         return self.directions[random_ind]
+
+    def iterativePolicyEvaluation(self):
+      pass
