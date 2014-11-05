@@ -34,7 +34,7 @@ class Field(object):
         return result
 
     def __str__(self):
-        result = map(lambda p: str(p)+ "(" + str(p.location[0]) + "," + str(p.location[1]) + ")", self.players)
+        result = map(lambda p: str(p) + "(" + str(p.location[0]) + "," + str(p.location[1]) + ")", self.players)
         return ", ".join(result)
 
     def print_field(self):
@@ -55,14 +55,14 @@ class Field(object):
         return res
 
     def isEnded(self):
-      predators = self.get_players_of_class(Predator)
-      preys = self.get_players_of_class(Prey)
+        predators = self.get_players_of_class(Predator)
+        preys = self.get_players_of_class(Prey)
 
-      foundAll = True
-      for prey in preys:
-        foundPrey = False
-        for predator in predators:
-          if prey.location == predator.location:
-            foundPrey = True
-        foundAll &= foundPrey
-      return foundAll
+        foundAll = True
+        for prey in preys:
+            foundPrey = False
+            for predator in predators:
+                if prey.location == predator.location:
+                    foundPrey = True
+            foundAll &= foundPrey
+        return foundAll

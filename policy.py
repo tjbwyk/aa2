@@ -1,6 +1,6 @@
 from bisect import bisect
-from logging import warning
 from random import random
+
 
 class Policy:
     """
@@ -8,8 +8,8 @@ class Policy:
     """
 
     def __init__(self, a, f):
-      self.agent = a
-      self.field = f
+        self.agent = a
+        self.field = f
 
     def get_direction(self):
         """
