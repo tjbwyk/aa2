@@ -1,5 +1,5 @@
 import timeit
-
+import numpy as np
 from field import Field
 from predator import Predator
 from models.prey import Prey
@@ -7,15 +7,22 @@ from predatorpolicy import PredatorPolicy
 from models.policies.preypolicy import PreyPolicy
 
 
-def main():
+def main(n_runs=1):
     # start the first assignment
     # run 100 times and measure time
     runtimes = []
     iterations = []
-    for n in xrange(100):
+    for n in xrange(n_runs):
         start = timeit.default_timer()
-        as011()
-    return None
+        i = as011(verbose=False)
+        time = timeit.default_timer() - start
+        runtimes.append(time)
+        iterations.append(i)
+    runtimes = np.asarray(runtimes)
+    iterations = np.asarray(iterations)
+    print "Mean runtime: " + str(np.mean(runtimes)) + " (standard deviation: " + str(np.std(runtimes)) + ")"
+    print "Mean number of iterations: " + str(np.mean(iterations)) + " (standard deviation: " + str(np.std(iterations)) + ")"
+    return runtimes, iterations
 
 
 def as011(verbose=True):
@@ -28,7 +35,8 @@ def as011(verbose=True):
     environment.add_player(fatcat)
     environment.add_player(chip)
 
-    if verbose: print environment.print_field()
+    if verbose:
+        print environment.print_field()
     i = 0
     while not environment.isEnded():
         fatcat.act()
@@ -36,10 +44,11 @@ def as011(verbose=True):
         # print environment
         i += 1
 
-    print str(i) + " iterations"
-    print environment.print_field()
+    if verbose:
+        print str(i) + " iterations"
+        print environment.print_field()
     return i
 
 
 if __name__ == '__main__':
-    main()
+    main(n_runs=100)
