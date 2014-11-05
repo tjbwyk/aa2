@@ -28,7 +28,8 @@ def as011():
     #print environment
     i += 1
 
-  print i
+  print str(i)  + " iterations"
+  print environment.print_field()
 
 
 if __name__ == '__main__':
