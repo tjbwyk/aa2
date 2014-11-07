@@ -1,13 +1,20 @@
 import unittest
 
-from field import Field
+from models.field import Field
 from models.prey import Prey
-from predator import Predator
+from models.predator import Predator
 
 
 class testField(unittest.TestCase):
     def setUp(self):
         self.environment = Field(11, 11)
+
+    def setup_standard_env(self):
+        prey = Prey((5, 5))
+        predator = Predator((1, 1))
+        self.environment.add_player(prey)
+        self.environment.add_player(predator)
+        return prey,predator
 
     def test_get_new_coordinates(self):
         location = (5, 4)
@@ -18,11 +25,7 @@ class testField(unittest.TestCase):
         self.assertEqual(new_y, 1)
 
     def test_add_player(self):
-        prey = Prey((5, 5))
-        predator = Predator((1, 1))
-        self.environment.add_player(prey)
-        self.environment.add_player(predator)
-
+        prey,predator =  self.setup_standard_env()
         self.assertEqual(prey.field, self.environment)
         self.assertEqual(len(self.environment.players), 2)
 
@@ -46,6 +49,13 @@ class testField(unittest.TestCase):
         print self.environment.print_field()
         print self.environment
 
+    def test_get_state(self):
+        prey,predator =  self.setup_standard_env()
+        self.assertEqual(self.environment.get_state(),(60,12))
+
+    def test_get_players_except(self):
+        prey,predator =  self.setup_standard_env()
+        self.assertEqual(self.environment.get_players_except(predator),[prey])
 
 if __name__ == '__main__':
     unittest.main()

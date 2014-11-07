@@ -1,5 +1,7 @@
 from models.predator import Predator
 from models.prey import Prey
+import itertools
+import numpy as np
 
 
 class Field(object):
@@ -22,6 +24,12 @@ class Field(object):
 
         return new_location
 
+    def flatten_index(self,(x,y)):
+        return np.ravel_multi_index((x,y),(self.width,self.height))
+
+    def unflatten_index(self,index):
+        return np.unravel_index(index,(self.width,self.height))
+
     def add_player(self, player):
         player.field = self
         self.players.append(player)
@@ -32,6 +40,9 @@ class Field(object):
             if isinstance(player, player_class):
                 result.append(player)
         return result
+
+    def get_players_except(self,exception_player):
+        return [player for player in self.players if player is not exception_player]
 
     def __str__(self):
         result = map(lambda p: str(p) + "(" + str(p.location[0]) + "," + str(p.location[1]) + ")", self.players)
@@ -54,7 +65,7 @@ class Field(object):
             res += "\n"
         return res
 
-    def isEnded(self):
+    def is_ended(self):
         predators = self.get_players_of_class(Predator)
         preys = self.get_players_of_class(Prey)
 
@@ -66,3 +77,13 @@ class Field(object):
                     foundPrey = True
             foundAll &= foundPrey
         return foundAll
+
+    def get_state(self):
+        state = ()
+        for player in self.players:
+            state = state + (self.flatten_index(player.location),)
+        return state
+
+    # State representations
+    def state_iterator(self):
+        return itertools.product(range(self.height*self.width),repeat=len(self.players))

@@ -12,7 +12,7 @@ class PreyPolicy(Policy, object):
         self.fixedActions = [(0.8, (0, 0))]
         self.flexActions = [(0, -1), (-1, 0), (0, 1), (1, 0)]
 
-    def getNextStates(self):
+    def getNextPositions(self):
         """
         updates the prey policy
         :param field:
@@ -38,5 +38,5 @@ class PreyPolicy(Policy, object):
         nextStates.extend(fixedStates)
         return nextStates
 
-  def getReward(self, action):
-    return 0
+    def getReward(self, action):
+        return 0

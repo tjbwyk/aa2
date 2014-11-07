@@ -8,14 +8,6 @@ class testPolicy(unittest.TestCase):
     def setUp(self):
         self.pol = Policy()
 
-    def test_get_direction(self):
-        directions = []
-        for i in xrange(100):
-            directions.append(self.pol.get_direction())
-        c = Counter(directions)
-        print c.keys()
-        print c.values()
-        self.assertEqual(len(c.values()), 5)
 
     def testPredatorPolicy(self):
         field = Field(3, 3)

@@ -38,7 +38,7 @@ def as011(verbose=True):
     if verbose:
         print environment.print_field()
     i = 0
-    while not environment.isEnded():
+    while not environment.is_ended():
         fatcat.act()
         chip.act()
         # print environment

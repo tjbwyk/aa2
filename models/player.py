@@ -25,11 +25,11 @@ class Player(object):
             random.seed(seed)
 
         move = random.random()
-        nextStates = self.policy.getNextStates()
-        probability, state = nextStates.pop()
+        nextPositions = self.policy.getNextPositions()
+        probability, state = nextPositions.pop()
 
-        while move > probability and len(nextStates) > 0:
-            prob, state = nextStates.pop()
+        while move > probability and len(nextPositions) > 0:
+            prob, state = nextPositions.pop()
             probability += prob
 
         self.location = state
