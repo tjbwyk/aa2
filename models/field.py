@@ -3,7 +3,6 @@ from models.prey import Prey
 import itertools
 import numpy as np
 
-
 class Field(object):
     """
     the playground
@@ -29,6 +28,13 @@ class Field(object):
 
     def unflatten_index(self,index):
         return np.unravel_index(index,(self.width,self.height))
+    
+    def get_relative_position(self, pos1, pos2):
+	x1, y1 = pos1
+	pos_move = ((x1 - int(np.floor(self.width/2))), (y1 - int(np.floor(self.height/2))))
+	x1, y1 = self.get_new_coordinates(pos1, pos_move)
+	x2, y2 = self.get_new_coordinates(pos2, pos_move)
+	return ((x2-x1), (y2-y1))
 
     def add_player(self, player):
         player.field = self

@@ -57,5 +57,12 @@ class testField(unittest.TestCase):
         prey,predator =  self.setup_standard_env()
         self.assertEqual(self.environment.get_players_except(predator),[prey])
 
+    def test_relative_position(self):
+	self.assertEqual(self.environment.get_relative_position((0,0), (10,10)), (-1,-1))
+	self.assertEqual(self.environment.get_relative_position((9,9), (1,2)), (3,4))
+	self.assertEqual(self.environment.get_relative_position((5,5), (4,6)), (-1,1))
+
+	
+
 if __name__ == '__main__':
     unittest.main()
