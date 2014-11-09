@@ -3,6 +3,7 @@ from models.prey import Prey
 import itertools
 import numpy as np
 
+
 class Field(object):
     """
     the playground
@@ -20,34 +21,29 @@ class Field(object):
             (x + delta_x) % self.width,
             (y + delta_y) % self.height
         )
-
         return new_location
 
-    def flatten_index(self,(x,y)):
-        return np.ravel_multi_index((x,y),(self.width,self.height))
-
-    def unflatten_index(self,index):
-        return np.unravel_index(index,(self.width,self.height))
-    
-    def get_relative_position(self, pos1, pos2):
-	x1, y1 = pos1
-	pos_move = ((x1 - int(np.floor(self.width/2))), (y1 - int(np.floor(self.height/2))))
-	x1, y1 = self.get_new_coordinates(pos1, pos_move)
-	x2, y2 = self.get_new_coordinates(pos2, pos_move)
-	return ((x2-x1), (y2-y1))
+    def get_relative_position(self, location1, location2):
+        x1, y1 = location1
+        move = ((x1 - int(np.floor(self.width/2))), (y1 - int(np.floor(self.height/2))))
+        x1, y1 = self.get_new_coordinates(location1, move)
+        x2, y2 = self.get_new_coordinates(location2, move)
+        return (x2-x1), (y2-y1)
 
     def add_player(self, player):
         player.field = self
         self.players.append(player)
 
-    def get_players_of_class(self, player_class):
-        result = []
-        for player in self.players:
-            if isinstance(player, player_class):
-                result.append(player)
-        return result
+    def get_players_of_class(self, player_class, exception_player=None):
+        return [ player for player in self.players if isinstance(player, player_class) and player is not exception_player]
 
-    def get_players_except(self,exception_player):
+    def get_predators(self, exception_player=None):
+        return self.get_players_of_class(Predator, exception_player)
+
+    def get_preys(self, exception_player=None):
+        return self.get_players_of_class(Prey, exception_player)
+
+    def get_players(self, exception_player=None):
         return [player for player in self.players if player is not exception_player]
 
     def __str__(self):
@@ -72,24 +68,38 @@ class Field(object):
         return res
 
     def is_ended(self):
-        predators = self.get_players_of_class(Predator)
-        preys = self.get_players_of_class(Prey)
+        predators = self.get_predators()
+        preys = self.get_preys()
 
-        foundAll = True
+        found_all = True
         for prey in preys:
-            foundPrey = False
+            found_prey = False
             for predator in predators:
                 if prey.location == predator.location:
-                    foundPrey = True
-            foundAll &= foundPrey
-        return foundAll
+                    found_prey = True
+            found_all &= found_prey
+        return found_all
 
-    def get_state(self):
-        state = ()
-        for player in self.players:
-            state = state + (self.flatten_index(player.location),)
-        return state
+    def get_reward(self, state):
+        preys = self.fi1eld.get_preys()
+        for prey in preys:
+            if prey.location == self.agent.location:
+                return 10
+            else:
+                return 0
 
-    # State representations
-    def state_iterator(self):
-        return itertools.product(range(self.height*self.width),repeat=len(self.players))
+    # def get_state(self):
+    #     state = ()
+    #     for player in self.players:
+    #         state = state + (self.flatten_index(player.location),)
+    #     return state
+    #
+    # # State representations
+    # def state_iterator(self):
+    #     return itertools.product(range(self.height*self.width),repeat=len(self.players))
+
+    # def flatten_index(self,(x,y)):
+    #     return np.ravel_multi_index((x,y),(self.width,self.height))
+    #
+    # def unflatten_index(self,index):
+    #     return np.unravel_index(index,(self.width,self.height))

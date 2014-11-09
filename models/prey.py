@@ -13,5 +13,9 @@ class Prey(Player):
     def __str__(self):
         return "Prey"
 
-        # TODO update policy when predator is next to prey
-
+    def get_next_locations(self):
+        next_locations = [self.field.get_new_coordinates(self.location, action) for action in self.actions]
+        for predator in self.field.get_predators():
+            if predator.location in next_locations:
+                next_locations.remove(predator.location)
+        return next_locations
