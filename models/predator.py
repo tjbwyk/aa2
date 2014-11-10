@@ -14,3 +14,8 @@ class Predator(Player):
 
     def get_next_locations(self):
         return [self.field.get_new_coordinates(self.location, action) for action in self.actions]
+
+    def act(self):
+        act, preyact = self.policy.pick_next_action()
+        self.location = self.field.get_new_coordinates(self.location, act)
+        self.field.update_prey_location(preyact)

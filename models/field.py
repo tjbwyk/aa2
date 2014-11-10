@@ -81,12 +81,14 @@ class Field(object):
         return found_all
 
     def get_reward(self, state):
-        preys = self.fi1eld.get_preys()
-        for prey in preys:
-            if prey.location == self.agent.location:
-                return 10
-            else:
-                return 0
+        if state == (0,0):
+            return 10
+        else:
+            return 0
+
+    def update_prey_location(self, preyact):
+        self.get_preys()[0].location = self.get_new_coordinates(self.get_preys()[0].location, preyact)
+
 
     # def get_state(self):
     #     state = ()

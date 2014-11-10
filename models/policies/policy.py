@@ -43,11 +43,11 @@ class Policy:
             for prob, this_act, act in add_up:
                 p += prob
 
-            trans_prob.append((p, add_up[0][1], ra(0,0) ))
+            trans_prob.append((p, add_up[0][1], (0,0) ))
 
         return trans_prob, list(set(next_states))
 
-    def pick_next_action(self, state, actions, style="probabilistic"):
+    def pick_next_action(self, style="probabilistic"):
         """
         selects a action according to a state
         :param state:
@@ -58,11 +58,11 @@ class Policy:
         if style == "probabilistic":
             move = random.random()
             probability = 0.0
-            prob_map = self.get_probability_mapping(state, actions)
-            while move > probability and len(actions) > 0:
-                prob, action = prob_map.pop()
+            prob_map, states = self.get_next_states()
+            while move > probability and len(prob_map) > 0:
+                prob, action, preyaction = prob_map.pop()
                 probability += prob
-            return action
+            return action, preyaction
         else:
             raise
 
