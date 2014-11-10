@@ -16,21 +16,36 @@ class Policy:
 
     def get_next_states(self):
         """
-        returns a list of all next possible states
+        returns a list of all next possible states and a mapping of all transition probabilities, with the actions of the two agents
         :return: a list of next states
         """
         next_states = []
+        trans_prob = []
+
+        add_up = []
 
         #TODO multiagent style
-        for thisAgentLocation in self.agent.get_next_locations():
-            prey = self.field.get_preys()[0]
-            for agentLocation in prey.get_next_locations():
-                #if not thisAgentLocation == prey.location:
+        prey = self.field.get_preys()[0]
+
+        for this_prob, this_act, thisAgentLocation in self.get_next_locations():
+            for prob, act, agentLocation in prey.policy.get_next_locations():
                 #state.append(prob_this * prob)
-                print thisAgentLocation, agentLocation
+
+                if thisAgentLocation == prey.location:
+                    add_up.append((this_prob*prob, this_act, act))
+                else:
+                    trans_prob.append((this_prob*prob, this_act, act))
+
                 next_states.append((prey.id, self.field.get_relative_position(thisAgentLocation, agentLocation)))
 
-        return list(next_states)
+        if len(add_up) > 0:
+            p = 0.0
+            for prob, this_act, act in add_up:
+                p += prob
+
+            trans_prob.append((p, add_up[0][1], ra(0,0) ))
+
+        return trans_prob, list(set(next_states))
 
     def pick_next_action(self, state, actions, style="probabilistic"):
         """

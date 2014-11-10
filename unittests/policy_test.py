@@ -35,7 +35,13 @@ class testPolicy(unittest.TestCase):
         prey.add_policy(PreyPolicy(agent=prey, field=field))
         field.add_player(prey)
 
-        print predator.policy.get_next_states()
+        trans, states = predator.policy.get_next_states()
+        proba = 0.0
+        for prob, a1, a2 in trans:
+            proba += prob
+
+        print proba
+        print trans, states
 
 if __name__ == '__main__':
     unittest.main()

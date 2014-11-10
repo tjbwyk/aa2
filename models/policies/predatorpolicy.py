@@ -18,5 +18,7 @@ class PredatorPolicy(Policy, object):
             if action == act:
                 return prob
 
-    def get_probability_mapping(self, state, actions):
-        return self.fixed_actions
+    def get_next_locations(self, location=None):
+        if location is None:
+            location = self.agent.location
+        return [(prob, act, self.field.get_new_coordinates(location, act)) for prob, act in self.fixed_actions]
