@@ -10,13 +10,14 @@ def main():
     as012(verbose=False)
 
 
-def calculate_value(state,field,policy,value,discount_factor):
+def calculate_value(state, field, policy, value, discount_factor):
     new_value = 0
     for state in policy.getNextStates():
         print state
 
     exit(1)
     return new_value
+
 
 def as012(verbose=True):
     field = Field(11, 11)
@@ -33,21 +34,19 @@ def as012(verbose=True):
 
     # Initialise value array and temp array:
     # TODO: (now for 2 players only, generalize later)
-    value = np.zeros((field.width*field.height,field.width*field.height))
-
+    value = np.zeros((field.width * field.height, field.width * field.height))
 
     while True:
         delta_value = 0
         for state in state_iterator:
             temp_value = value[state]
 
-            value[state]= calculate_value(state,field,predator.policy,value,discount_factor)
+            value[state] = calculate_value(state, field, predator.policy, value, discount_factor)
 
-            delta_value = max(delta_value,temp_value - value[state])
+            delta_value = max(delta_value, temp_value - value[state])
 
         if delta_value < change_epsilon:
             break
-
 
 
 if __name__ == '__main__':

@@ -29,10 +29,10 @@ class testPolicy(unittest.TestCase):
     def testGetStates(self):
         field = Field(3, 3)
         predator = Predator((1, 0))
-        predator.add_policy(PredatorPolicy(agent=predator, field=field))
+        predator.set_policy(PredatorPolicy(agent=predator, field=field))
         field.add_player(predator)
         prey = Prey((0, 0))
-        prey.add_policy(PreyPolicy(agent=prey, field=field))
+        prey.set_policy(PreyPolicy(agent=prey, field=field))
         field.add_player(prey)
 
         trans, states = predator.policy.get_next_states()

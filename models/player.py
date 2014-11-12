@@ -15,7 +15,7 @@ class Player(object):
         self.policy = policy
         self.id = self.__str__() + id_number
 
-    def add_policy(self, policy):
+    def set_policy(self, policy):
         self.policy = policy
 
     def act(self, seed=None):
