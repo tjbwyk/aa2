@@ -9,17 +9,15 @@ class PreyPolicy(Policy, object):
 
     def __init__(self, agent, field, seed=None):
         super(PreyPolicy, self).__init__(agent, field,
-        fixed_actions = [(0.8, (0, 0))],
-        flex_actions = [(0, -1), (-1, 0), (0, 1), (1, 0)], seed=seed)
+                                         fixed_actions=[(0.8, (0, 0))],
+                                         flex_actions=[(0, -1), (-1, 0), (0, 1), (1, 0)], seed=seed)
 
     def get_next_locations(self, location=None):
         """
         updates the prey policy
-        :param field:
-        :param agent: owner of the policy
+        :param location:
         :return: all probabilities and according next states
         """
-
         if location is None:
             location = self.agent.location
 

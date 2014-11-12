@@ -5,6 +5,7 @@ class Policy:
     """
     The policy describes the probabilities for a player to move in any direction.
     """
+
     def __init__(self, agent, field, fixed_actions=[], flex_actions=[], seed=None):
         self.agent = agent
         self.field = field
@@ -24,17 +25,17 @@ class Policy:
 
         add_up = []
 
-        #TODO multiagent style
+        # TODO multiagent style
         prey = self.field.get_preys()[0]
 
         for this_prob, this_act, thisAgentLocation in self.get_next_locations():
             for prob, act, agentLocation in prey.policy.get_next_locations():
-                #state.append(prob_this * prob)
+                # state.append(prob_this * prob)
 
                 if thisAgentLocation == prey.location:
-                    add_up.append((this_prob*prob, this_act, act))
+                    add_up.append((this_prob * prob, this_act, act))
                 else:
-                    trans_prob.append((this_prob*prob, this_act, act))
+                    trans_prob.append((this_prob * prob, this_act, act))
 
                 next_states.append((prey.id, self.field.get_relative_position(thisAgentLocation, agentLocation)))
 
@@ -43,13 +44,13 @@ class Policy:
             for prob, this_act, act in add_up:
                 p += prob
 
-            trans_prob.append((p, add_up[0][1], (0,0) ))
+            trans_prob.append((p, add_up[0][1], (0, 0)))
 
         return trans_prob, list(set(next_states))
 
     def pick_next_action(self, style="probabilistic"):
         """
-        selects a action according to a state
+        selects an action according to a state
         :param state:
         :param actions:
         :param style:
