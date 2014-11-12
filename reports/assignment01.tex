@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{easy-todo}
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
@@ -15,6 +16,7 @@
 \title{Autonomous Agents - Assignment 1}
 \author{BasVeeling (10767770) \\ \and Sebastian Droeppelmann (?) \\ \and Fritjof Buettner (10876782)}
 \maketitle
+\listoftodos
 \section{Introduction}
 \subsection{Project structure}
 We decided to model the predator/prey problem in Python. We chose an object-oriented structure to make the code reusable and minimize repetitions. In order to assure correct functionality of the algorithms at a fine-grained level, we make use of Python's unit-test framework.
@@ -42,7 +44,12 @@ Mean runtime: 0.01544s (standard deviation: 0.0133)
 Mean number of iterations: 1026.88 (standard deviation: 888.41)
 \end{lstlisting}
 
-\section{Question 5: Value Iteration}
+\subsection{Random Policy}
+\todo{Explain the random policy here as soon as we have nailed it down}
+\section{Question 4: Value Iteration}
+\todo{Write a section about value iteration}
+
+\todo{Test for convergence speed (in number of iterations), for different discount factors: at least 0.1, 0.5, 0.7 and 0.9, and report on the results.}
 \section{Conclusion}
 It's all great.
 \end{document}
