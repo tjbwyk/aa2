@@ -40,10 +40,11 @@ class PredatorPolicy(Policy, object):
     def get_next_states(self, state):
         """
         returns a list of all next possible states and a mapping of all transition probabilities, with the actions of the two agents
+        :param state:
         :return: a list of next states
         """
 
-        # list of possible next statles
+        # list of possible next states
         next_states = []
         # transition probabilities to the next states
         trans_prob = []
@@ -55,23 +56,30 @@ class PredatorPolicy(Policy, object):
         # TODO multiagent style
         prey = self.field.get_preys()[0]
         # loop over all possible next predator locations
-        for this_prob, this_act, this_agent_next_location in self.get_next_locations(pred_loc):
+        for predator_action_prob, predator_action, predator_next_location in self.get_next_locations(pred_loc):
             # loop over all possible next prey locations
-            for prob, act, prey_next_location in prey.policy.get_next_locations(prey_loc):
+            for prey_action_prob, prey_action, prey_next_location in prey.policy.get_next_locations(prey_loc):
                 # if this action moves the predator on the current prey location
-                if this_agent_next_location == prey.location:
+                if predator_next_location == prey.location:
                     # probabilities of all possible prey movements from here
-                    add_up.append((this_prob * prob, this_act, act))
+                    add_up.append((predator_action_prob * prey_action_prob, predator_action, prey_action))
                 else:
                     # add the probability of this next state to the list
-                    trans_prob.append((this_prob * prob, this_act, act))
+                    trans_prob.append((predator_action_prob * prey_action_prob, predator_action, prey_action))
                 # append this next state to the list of possible next states
-                next_states.append((this_agent_next_location, prey_next_location))
+                next_states.append((predator_next_location, prey_next_location))
         # TODO what is this?
         if len(add_up) > 0:
             p = 0.0
-            for prob, this_act, act in add_up:
-                p += prob
+            for prey_action_prob, predator_action, prey_action in add_up:
+                p += prey_action_prob
             trans_prob.append((p, add_up[0][1], (0, 0)))
         # datatype set automatically removes duplicate states
         return trans_prob, list(set(next_states))
+
+    def get_next_state_probabilities(self, action):
+        """
+        calculate the probability to enter state s' from state s, taking action a: p(s'|s,a)
+        :param action:
+        :return:
+        """
