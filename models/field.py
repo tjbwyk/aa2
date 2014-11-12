@@ -93,6 +93,12 @@ class Field(object):
     def update_prey_location(self, preyact):
         self.get_preys()[0].location = self.get_new_coordinates(self.get_preys()[0].location, preyact)
 
+    def get_all_states(self):
+        return set([((x, y), (i,j))
+                for x in range(self.height) for y in range(self.width)
+                for i in range(self.height) for j in range(self.width)
+                if not (x == i and y == j)])
+
 
     # def get_state(self):
     #     state = ()

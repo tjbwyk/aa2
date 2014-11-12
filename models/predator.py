@@ -12,6 +12,9 @@ class Predator(Player):
     def __str__(self):
         return "Predator"
 
+    def get_possible_actions(self):
+        return [(0, 0), (1, 0), (0, 1), (-1, 0), (0, -1)]
+
     def get_next_locations(self):
         """
         Find all possible next locations after executing an available action.
