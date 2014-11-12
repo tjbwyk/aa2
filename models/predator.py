@@ -21,7 +21,7 @@ class Predator(Player):
 
     def act(self):
         """
-        
+
         :return:
         """
         act, preyact = self.policy.pick_next_action()
