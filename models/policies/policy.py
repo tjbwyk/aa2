@@ -25,7 +25,6 @@ class Policy:
 
         add_up = []
 
-        # TODO multiagent style
         prey = self.field.get_preys()[0]
 
         for this_prob, this_act, thisAgentLocation in self.get_next_locations():

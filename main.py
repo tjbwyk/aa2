@@ -43,8 +43,7 @@ def as011(verbose=True):
     i = 0
     while not environment.is_ended():
         fatcat.act()
-        #chip.act()
-        # print environment
+        print environment
         i += 1
 
     if verbose:
