@@ -72,7 +72,7 @@ class Policy:
     def get_next_locations(self, location=None):
         pass
 
-    def get_probability(self, state, action):
+    def get_action_probability(self, state, action):
         pass
 
     def get_probability_mapping(self, state, actions):
