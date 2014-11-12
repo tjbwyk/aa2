@@ -37,24 +37,27 @@ class PredatorPolicy(Policy, object):
         # return the resulting locations for all possible actions of this predator
         return [(prob, act, self.field.get_new_coordinates(location, act)) for prob, act in self.fixed_actions]
 
-    def get_next_states(self):
+    def get_next_states(self, state):
         """
         returns a list of all next possible states and a mapping of all transition probabilities, with the actions of the two agents
         :return: a list of next states
         """
-        # list of possible next states
+
+        # list of possible next statles
         next_states = []
         # transition probabilities to the next states
         trans_prob = []
         # TODO this just adds up to 0.05 ??
         add_up = []
 
+        pred_loc, prey_loc = state
+
         # TODO multiagent style
         prey = self.field.get_preys()[0]
         # loop over all possible next predator locations
-        for this_prob, this_act, this_agent_next_location in self.get_next_locations():
+        for this_prob, this_act, this_agent_next_location in self.get_next_locations(pred_loc):
             # loop over all possible next prey locations
-            for prob, act, prey_next_location in prey.policy.get_next_locations():
+            for prob, act, prey_next_location in prey.policy.get_next_locations(prey_loc):
                 # if this action moves the predator on the current prey location
                 if this_agent_next_location == prey.location:
                     # probabilities of all possible prey movements from here
@@ -63,7 +66,7 @@ class PredatorPolicy(Policy, object):
                     # add the probability of this next state to the list
                     trans_prob.append((this_prob * prob, this_act, act))
                 # append this next state to the list of possible next states
-                next_states.append((prey.id, self.field.get_relative_position(this_agent_next_location, prey_next_location)))
+                next_states.append((this_agent_next_location, prey_next_location))
         # TODO what is this?
         if len(add_up) > 0:
             p = 0.0
