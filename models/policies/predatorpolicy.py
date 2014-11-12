@@ -80,6 +80,15 @@ class PredatorPolicy(Policy, object):
     def get_next_state_probabilities(self, action):
         """
         calculate the probability to enter state s' from state s, taking action a: p(s'|s,a)
-        :param action:
-        :return:
+        this is different from the transition probability returned from get_next_states()
+        as the probability of the predator for going from s to s' is either 0 or 1 and not the
+        action probability.
+        :param action: the action a to take from current state s (s being the location of the agent)
+        :return: the possible next states s' and the probabilities p(s'|s,a)
         """
+        prey = self.field.get_preys()[0]
+        # current state
+        state = self.agent.location, prey.location
+        # for every possible next state s' = next_predator, next_prey: calculate p(s') = p(next_predator)*p(next_prey)
+        # append to lists of next_states, next_state_probabilities
+        # return next_states, next_state_probabilities
