@@ -85,7 +85,8 @@ class Field(object):
         return found_all
 
     def get_reward(self, state):
-        if state == (0, 0):
+        predator_loc, prey_loc = state
+        if predator_loc == prey_loc:
             return 10
         else:
             return 0
