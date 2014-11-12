@@ -14,38 +14,6 @@ class Policy:
         if seed is not None:
             random.seed(seed)
 
-    def get_next_states(self):
-        """
-        returns a list of all next possible states and a mapping of all transition probabilities, with the actions of the two agents
-        :return: a list of next states
-        """
-        next_states = []
-        trans_prob = []
-
-        add_up = []
-
-        prey = self.field.get_preys()[0]
-
-        for this_prob, this_act, thisAgentLocation in self.get_next_locations():
-            for prob, act, agentLocation in prey.policy.get_next_locations():
-                # state.append(prob_this * prob)
-
-                if thisAgentLocation == prey.location:
-                    add_up.append((this_prob * prob, this_act, act))
-                else:
-                    trans_prob.append((this_prob * prob, this_act, act))
-
-                next_states.append((prey.id, self.field.get_relative_position(thisAgentLocation, agentLocation)))
-
-        if len(add_up) > 0:
-            p = 0.0
-            for prob, this_act, act in add_up:
-                p += prob
-
-            trans_prob.append((p, add_up[0][1], (0, 0)))
-
-        return trans_prob, list(set(next_states))
-
     def pick_next_action(self, style="probabilistic"):
         """
         selects an action according to the action probability distribution of the policy
