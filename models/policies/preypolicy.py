@@ -32,10 +32,13 @@ class PreyPolicy(Policy, object):
 
         for agent in self.field.get_predators():
             for act, loc in flex_states:
+                # prey cannot move into predators
                 if agent.location == loc:
                     flex_states.remove((act, loc))
-
+        # equal probability for remaining flex actions
         flex_prob = probability / len(flex_states)
+        # create data structure
         next_states = [(flex_prob, act, flex_state) for act, flex_state in flex_states]
+        # append fixed state/action pairs
         next_states.extend(fixed_states)
         return next_states
