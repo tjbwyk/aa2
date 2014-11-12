@@ -30,6 +30,11 @@ class Field(object):
         x2, y2 = self.get_new_coordinates(location2, move)
         return (x2-x1), (y2-y1)
 
+    def get_distance(self, state):
+        pred_pos, prey_pos = state
+        x,y = self.get_relative_position(pred_pos, prey_pos)
+        return abs(x)+abs(y)
+
     def add_player(self, player):
         player.field = self
         self.players.append(player)

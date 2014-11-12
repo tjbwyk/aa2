@@ -10,7 +10,7 @@ class Policy:
         self.field = field
         self.fixed_actions = fixed_actions
         self.flex_actions = flex_actions
-        # initialize random number generator
+        #initialize random number generator
         if seed is not None:
             random.seed(seed)
 

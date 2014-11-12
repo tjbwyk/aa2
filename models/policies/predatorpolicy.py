@@ -26,16 +26,29 @@ class PredatorPolicy(Policy, object):
             if action == act:
                 return prob
 
-    def get_next_locations(self, location=None):
+    def get_next_locations(self, location):
         """
         get all possible next locations to go to from location
-        :param location: current location. If None, will take agent's current location.
-        :return:
+        :param location: current location.
+        :return: list of all possible locations according to the actions
         """
-        if location is None:
-            location = self.agent.location
         # return the resulting locations for all possible actions of this predator
-        return [(prob, act, self.field.get_new_coordinates(location, act)) for prob, act in self.fixed_actions]
+        return [self.field.get_new_coordinates(location, act) for act in self.get_actions()]
+
+    def get_next_states(self, state):
+        cur_pred_pos, cur_prey_pos = state
+        next_pred_positions =  self.get_next_locations(cur_pred_pos)
+        next_prey_positions =  self.field.get_preys()[0].get_next_locations(cur_prey_pos)
+        #initialize all next possible states except when the predator moves t the prey
+        next_states = [(next_pred_pos, next_prey_pos)
+                       for next_pred_pos in next_pred_positions
+                       for next_prey_pos in next_prey_positions
+                       if cur_prey_pos != next_pred_pos]
+
+        #if predator moves to the prey, the prey always stays where it is
+        if cur_prey_pos in next_pred_positions:
+            next_states.append((cur_prey_pos), (cur_prey_pos))
+
 
     def get_next_states(self, state):
         """
@@ -43,7 +56,7 @@ class PredatorPolicy(Policy, object):
         :return: a list of next states
         """
 
-        # list of possible next statles
+        # list of possible next states
         next_states = []
         # transition probabilities to the next states
         trans_prob = []
@@ -67,6 +80,7 @@ class PredatorPolicy(Policy, object):
                     trans_prob.append((this_prob * prob, this_act, act))
                 # append this next state to the list of possible next states
                 next_states.append((this_agent_next_location, prey_next_location))
+
         # TODO what is this?
         if len(add_up) > 0:
             p = 0.0
