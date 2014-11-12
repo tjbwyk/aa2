@@ -68,6 +68,10 @@ class Field(object):
         return res
 
     def is_ended(self):
+        """
+        checks if all preys have been found by a predator
+        :return: true if game is over
+        """
         predators = self.get_predators()
         preys = self.get_preys()
 
@@ -81,7 +85,7 @@ class Field(object):
         return found_all
 
     def get_reward(self, state):
-        if state == (0,0):
+        if state == (0, 0):
             return 10
         else:
             return 0
