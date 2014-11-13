@@ -3,7 +3,7 @@ from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
 from models.policies.predatorpolicy import PredatorPolicy
-from models.policies.preypolicy import PreyPolicy
+from models.policies.random_prey_policy import RandomPreyPolicy
 
 
 def main():
@@ -24,7 +24,7 @@ def as012(verbose=True):
     predator = Predator((0, 0))
     predator.set_policy(PredatorPolicy(predator, field))
     chip = Prey((5, 5))
-    chip.set_policy(PreyPolicy(chip, field))
+    chip.set_policy(RandomPreyPolicy(chip, field))
     field.add_player(predator)
     field.add_player(chip)
 

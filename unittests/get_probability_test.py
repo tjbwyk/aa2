@@ -5,6 +5,7 @@ from predator import Predator
 from predatorpolicy import PredatorPolicy
 
 class testField(unittest.TestCase):
+
     def setUp(self):
         self.environment = Field(11, 11)
         self.fatcat = Predator((0, 0))

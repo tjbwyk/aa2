@@ -22,9 +22,6 @@ class Player(object):
         """
         return self.actions
 
-    def set_policy(self, policy):
-        self.policy = policy
-
     def act(self, seed=None):
         """
         update the location according to the action in the policy
@@ -34,5 +31,5 @@ class Player(object):
             print "No Policy set for Player, ", self.id
             raise
         else:
-            action = self.policy.pick_next_action(self.current_state, self.actions)
+            action = self.policy.pick_next_action(self.field.get_current_state())
             self.location = self.field.get_new_coordinates(self.location, action)

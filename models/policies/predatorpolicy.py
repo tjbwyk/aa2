@@ -1,6 +1,4 @@
 from models.policies.policy import Policy
-from models.prey import Prey
-import itertools
 
 
 class PredatorPolicy(Policy, object):
