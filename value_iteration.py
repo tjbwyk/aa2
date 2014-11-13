@@ -9,6 +9,7 @@ from models.policies.random_prey_policy import RandomPreyPolicy
 
 def main():
     as014(verbose=True)
+    print "Done."
 
 
 def calculate_value(state, field, policy, value, discount_factor):
@@ -67,7 +68,7 @@ def as014(verbose=True):
             # print values of all states where prey is located at (5,5)
             for state, value in values.iteritems():
                     if state[1] == (5, 5):
-                        print "state: " + str(state) + " value: " + str(value)
+                        print "  state: " + str(state) + " value: " + str(value)
         gamma_iterations.append(iterations)
         print "Gamma = " + str(gamma) + " took " + str(iterations) + " iterations and " + str(timeit.default_timer() - start) + " seconds to converge."
 
