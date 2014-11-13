@@ -25,6 +25,7 @@ class Policy:
             move = random.random()
             # select the action that belongs to random move value
             probability = 0.0
+            actions = self.agent.get_actions()
             prob_map = self.get_probability_mapping(state)
             while move > probability and len(prob_map) > 0:
                 prob, action = prob_map.pop()
