@@ -31,6 +31,9 @@ class Policy:
                 prob, action = prob_map.pop()
                 probability += prob
             return action
+        elif style == "greedy":
+            # TODO
+            pass
         else:
             # given style not recognized
             raise ValueError("invalid value given for parameter style: " + str(style))
