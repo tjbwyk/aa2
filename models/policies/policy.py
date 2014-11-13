@@ -34,22 +34,3 @@ class Policy:
         else:
             # given style not recognized
             raise ValueError("invalid value given for parameter style: " + str(style))
-
-    def get_next_locations_no_probabilities(self):
-        """
-        just strip the probabilities from the next locations list
-        :return:
-        """
-        return [loc for p, loc in self.get_next_locations()]
-
-    def get_next_locations(self, location=None):
-        # TODO why is this empty?
-        pass
-
-    def get_action_probability(self, state, action):
-        # TODO
-        pass
-
-    def get_probability_mapping(self, state, actions):
-        # TODO
-        pass
