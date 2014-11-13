@@ -65,7 +65,10 @@ def as014(verbose=True):
 
         if verbose:
             # print values of all states where prey is located at (5,5)
-            
+            for state, value in values.iteritems():
+                for pred_loc, prey_log in state:
+                    if prey_log == (5, 5):
+                        print "state: " + str(state) + " value: " + str(value)
         gamma_iterations.append(iterations)
         print "Gamma = " + str(gamma) + " took " + str(iterations) + " iterations and " + str(timeit.default_timer() - start) + "seconds to converge."
 
