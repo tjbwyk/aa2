@@ -5,11 +5,10 @@ class Policy:
     """
     The policy describes the probabilities for a player to move in any direction.
     """
-    def __init__(self, agent, field, fixed_actions=[], flex_actions=[], seed=None):
+    def __init__(self, agent, field, seed=None):
         self.agent = agent
         self.field = field
-        self.fixed_actions = fixed_actions
-        self.flex_actions = flex_actions
+
         #initialize random number generator
         if seed is not None:
             random.seed(seed)

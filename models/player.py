@@ -15,14 +15,24 @@ class Player(object):
         self.policy = policy
         self.id = self.__str__() + id_number
 
+    def get_actions(self):
+        """
+        returns the possible actions for the player
+        :return: the possible actions
+        """
+        return self.actions
+
     def set_policy(self, policy):
         self.policy = policy
 
     def act(self, seed=None):
+        """
+        update the location according to the action in the policy
+        :return: nothing
+        """
         if self.policy is None:
             print "No Policy set for Player, ", self.id
             raise
         else:
             action = self.policy.pick_next_action(self.current_state, self.actions)
             self.location = self.field.get_new_coordinates(self.location, action)
-            self.current_state = self.field.get_next_state()

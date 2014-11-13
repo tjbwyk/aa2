@@ -13,13 +13,6 @@ class Prey(Player):
     def __str__(self):
         return "Prey"
 
-    def get_actions(self):
-        """
-        returns the possible moves for the prey
-        :return:
-        """
-        return [(0, 0), (0, 1), (0, -1), (1, 0), (-1, 0)]
-
     def get_next_locations(self, state):
         """
         returns the next possible locations for the prey, given a certain state

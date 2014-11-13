@@ -5,14 +5,11 @@ import itertools
 
 class PredatorPolicy(Policy, object):
     """
-      implementaion of the policy of the predator
+      implementation of the policy of the predator
     """
 
     def __init__(self, agent, field, seed=None):
-        super(PredatorPolicy, self).__init__(agent, field,
-                                             fixed_actions=[(0.8, (0, 0)), (0.05, (0, -1)), (0.05, (-1, 0)),
-                                                            (0.05, (0, 1)), (0.05, (1, 0))],
-                                             flex_actions=[], seed=seed)
+        super(PredatorPolicy, self).__init__(agent, field, seed=seed)
 
     def get_probability(self, state, next_state, action):
         """
@@ -26,7 +23,7 @@ class PredatorPolicy(Policy, object):
         cur_pred_loc, cur_prey_loc = state
         next_pred_loc, next_prey_loc = next_state
 
-        next_prey_locations  = self.field.get_preys()[0].get_next_locations(cur_prey_loc)
+        next_prey_locations  = self.field.get_prey().get_next_locations(cur_prey_loc)
         #if action results in next state for predator, and the prey moves legally,
         #calculate chances otherwise the move is illegal
         if self.field.get_new_coordinates(cur_pred_loc, action) == next_pred_loc and next_prey_loc in next_prey_locations:
@@ -49,17 +46,3 @@ class PredatorPolicy(Policy, object):
         #if the next state can't be reached from this state
         else:
             return 0
-
-    def get_next_states(self, state):
-        cur_pred_pos, cur_prey_pos = state
-        next_pred_positions =  self.get_next_locations(cur_pred_pos)
-        next_prey_positions =  self.field.get_preys()[0].get_next_locations(cur_prey_pos)
-        #initialize all next possible states except when the predator moves t the prey
-        next_states = [(next_pred_pos, next_prey_pos)
-                       for next_pred_pos in next_pred_positions
-                       for next_prey_pos in next_prey_positions
-                       if cur_prey_pos != next_pred_pos]
-
-        #if predator moves to the prey, the prey always stays where it is
-        if cur_prey_pos in next_pred_positions:
-            next_states.append((cur_prey_pos), (cur_prey_pos))
