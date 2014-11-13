@@ -107,6 +107,15 @@ class Field(object):
         else:
             return 0
 
+    def get_all_states_with_terminal(self):
+        """
+        returns all states except for the terminal states: S
+        :return: list of all states except the terminal ones
+        """
+        return set([((x, y), (i,j))
+                for x in range(self.height) for y in range(self.width)
+                for i in range(self.height) for j in range(self.width)])
+
     def get_all_states(self):
         """
         returns all states except for the terminal states: S
@@ -136,8 +145,8 @@ class Field(object):
         :return: a list with all legal next states
         """
         cur_pred_pos, cur_prey_pos = state
-        next_pred_positions =  self.get_predator().get_next_locations(cur_pred_pos)
-        next_prey_positions =  self.get_prey().get_next_locations(cur_prey_pos)
+        next_pred_positions =  self.get_predator().get_next_locations(state)
+        next_prey_positions =  self.get_prey().get_next_locations(state)
         #initialize all next possible states except when the predator moves t the prey
         next_states = [(next_pred_pos, next_prey_pos)
                        for next_pred_pos in next_pred_positions
@@ -148,4 +157,6 @@ class Field(object):
         #and the predator is on top of it, this has to be added since we filtered all movements with
         #this situation earlier
         if cur_prey_pos in next_pred_positions:
-            next_states.append((cur_prey_pos), (cur_prey_pos))
+            next_states.append(((cur_prey_pos), (cur_prey_pos)))
+
+        return next_states

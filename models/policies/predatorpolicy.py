@@ -21,7 +21,7 @@ class PredatorPolicy(Policy, object):
         cur_pred_loc, cur_prey_loc = state
         next_pred_loc, next_prey_loc = next_state
 
-        next_prey_locations  = self.field.get_prey().get_next_locations(cur_prey_loc)
+        next_prey_locations  = self.field.get_prey().get_next_locations(state)
         #if action results in next state for predator, and the prey moves legally,
         #calculate chances otherwise the move is illegal
         if self.field.get_new_coordinates(cur_pred_loc, action) == next_pred_loc and next_prey_loc in next_prey_locations:
