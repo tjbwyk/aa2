@@ -92,9 +92,10 @@ def as014(verbose=True, plot_values=False):
                         print_values[state[0]] = value
             #input("Press enter to continue")
             # convert to pandas DF for pretty print and save to CSV file in reports directory
-            pandas.DataFrame(print_values).to_csv(path_or_buf="reports/valueiteration_gamma"+str(gamma)+".csv", sep=";")
+            out_path = "reports/valueiteration_gamma"+str(gamma).replace(".", "-")
+            pandas.DataFrame(print_values).to_csv(path_or_buf=out_path+".csv", sep=";")
             if plot_values:
-                plot.value_heatmap(print_values, path="reports/valueiteration_gamma"+str(gamma)+".pdf")
+                plot.value_heatmap(print_values, path=out_path+".pdf")
         gamma_iterations.append(iterations)
         print "Gamma = " + str(gamma) + " took " + str(iterations) + " iterations and " + str(timeit.default_timer() - start) + " seconds to converge."
 
