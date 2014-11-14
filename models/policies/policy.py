@@ -9,10 +9,14 @@ class Policy:
         self.agent = agent
         self.field = field
         self.value = {state: 0.0 for state in field.get_all_states_with_terminal()}
-
+        self.argmax_action = {state: (0,0) for state in field.get_all_states()}
         #initialize random number generator
         if seed is not None:
             random.seed(seed)
+
+    def reset_planning(self):
+        self.value = {state: 0.0 for state in self.field.get_all_states_with_terminal()}
+        self.argmax_action = {state: (0,0) for state in self.field.get_all_states()}
 
     def pick_next_action(self, state, style="probabilistic"):
         """

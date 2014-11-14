@@ -138,14 +138,18 @@ class Field(object):
         # return state
         return (self.get_predator().location, self.get_prey().location)
 
-    def get_next_states(self, state):
+    def get_next_states(self, state, pred_action=None):
         """
         returns all next states from the given state that are not illegal
         :param state: the state for which to get the next states
         :return: a list with all legal next states
         """
         cur_pred_pos, cur_prey_pos = state
-        next_pred_positions =  self.get_predator().get_next_locations(state)
+        if pred_action is None:
+            next_pred_positions =  self.get_predator().get_next_locations(state)
+        else:
+            next_pred_positions = [self.get_new_coordinates(cur_pred_pos, pred_action)]
+
         next_prey_positions =  self.get_prey().get_next_locations(state)
         #initialize all next possible states except when the predator moves t the prey
         next_states = [(next_pred_pos, next_prey_pos)
