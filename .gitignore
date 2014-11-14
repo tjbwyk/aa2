@@ -6,3 +6,4 @@ venv
 *.out
 assignment01.pdf
 *.synctex.gz
+*.lod
