@@ -25,9 +25,6 @@ def calculate_value(state, field, policy, value, discount_factor):
     :return: the new value of the current state
     """
     next_states = field.get_next_states(state)
-    val = 0
-
-    selact = policy.agent.get_actions()[0]
     next_values = []
 
     for action in policy.agent.get_actions():
@@ -44,14 +41,7 @@ def calculate_value(state, field, policy, value, discount_factor):
             tmp_prob = policy.get_probability(state, next_state, action)
             tmp_rew = field.get_reward(next_state) + discount_factor * value[next_state]
             next_values.append(tmp_prob * tmp_rew)
-            # #debug stuff
-            # if val < tmp_prob * tmp_rew:
-            #     val = tmp_prob * tmp_rew
-            #     selact = action
-            # if state == ((1,2),(2,2)) and action == (1,0):
-            #     pass
 
-#    print "Best Action for state:", state, " ATM: ", selact, " VAL: ", val
     return max(next_values)
 
 
