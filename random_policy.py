@@ -1,12 +1,15 @@
 __author__ = 'fbuettner'
 import timeit
 import time
+
 import numpy as np
+
 from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
 from models.policies.random_predator_policy import RandomPredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
+
 
 def random_policy_wrapper(n_runs=1):
     # start the first assignment
@@ -15,7 +18,7 @@ def random_policy_wrapper(n_runs=1):
     iterations = []
     for n in xrange(n_runs):
         start = timeit.default_timer()
-        i = as011(verbose=False)
+        i = run_random_policy(verbose=False)
         time = timeit.default_timer() - start
         runtimes.append(time)
         iterations.append(i)
@@ -27,7 +30,7 @@ def random_policy_wrapper(n_runs=1):
     return runtimes, iterations
 
 
-def as011(verbose=True):
+def run_random_policy(verbose=True):
     # create field and characters
     environment = Field(11, 11)
     fatcat = Predator((0, 0))
@@ -52,3 +55,7 @@ def as011(verbose=True):
         print str(i) + " iterations"
         print environment.print_field()
     return i
+
+
+if __name__ == '__main__':
+    random_policy_wrapper(n_runs=100)

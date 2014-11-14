@@ -7,8 +7,8 @@ class Player(object):
     implements common properties like position
     """
 
-    def __init__(self, location=(0, 0), actions = [(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)],
-                 policy = None, field = None, id_number = ""):
+    def __init__(self, location=(0, 0), actions=[(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)],
+                 policy=None, field=None, id_number=""):
         self.location = location
         self.actions = actions
         self.field = field

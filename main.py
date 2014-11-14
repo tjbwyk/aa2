@@ -1,14 +1,17 @@
 from random_policy import random_policy_wrapper
-from iterative_policy_evaluation import as012
-from value_iteration import as014
+from iterative_policy_evaluation import run_iterative_policy_evaluation
+from policy_iteration import run_policy_iteration
+from value_iteration import run_value_iteration
 
 
 def main():
     random_policy_wrapper(n_runs=100)
     # iterative policy evaluation
-    as012()
+    run_iterative_policy_evaluation()
+    # policy iteration
+    run_policy_iteration()
     # value iteration
-    as014(plot_values=True)
+    run_value_iteration(plot_values=True)
 
 
 if __name__ == '__main__':

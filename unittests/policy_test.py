@@ -1,16 +1,10 @@
 import unittest
-from collections import Counter
 
-from models.policies.policy import Policy
-from models.field import Field
-from models.predator import Predator
-from models.policies.predatorpolicy import PredatorPolicy
-from models.prey import Prey
 
 class testPolicy(unittest.TestCase):
     pass
     # def testPredatorPolicy(self):
-    #     field = Field(3, 3)
+    # field = Field(3, 3)
     #     predator = Predator((1, 1))
     #     policy = PredatorPolicy()
     #
@@ -41,6 +35,7 @@ class testPolicy(unittest.TestCase):
     #
     #     print proba
     #     print trans, states
+
 
 if __name__ == '__main__':
     unittest.main()

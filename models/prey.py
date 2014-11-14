@@ -20,8 +20,8 @@ class Prey(Player):
         :return: all probabilities and according next states
         """
         cur_pred_loc, cur_prey_loc = state
-        next_prey_locations  = [ self.field.get_new_coordinates(cur_prey_loc, a) for a in self.get_actions()]
-        #the prey can't move to the predator
+        next_prey_locations = [self.field.get_new_coordinates(cur_prey_loc, a) for a in self.get_actions()]
+        # the prey can't move to the predator
         if cur_pred_loc in next_prey_locations:
             next_prey_locations.remove(cur_pred_loc)
         return next_prey_locations
