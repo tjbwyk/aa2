@@ -40,8 +40,9 @@ We implemented the simulator as described above. The ^random\_policy.py^ ^run\_r
 
 The ^random\_policy\_wrapper^ function calls this simulation 100 times and calculates the average and stdev of the running time, this results in:
 \begin{lstlisting}[language=bash]
-Mean runtime: 0.04178s (standard deviation: 0.01846)
-Mean number of iterations: 281.74 (standard deviation: 220.677)
+Mean runtime: 0.0661906840844 (standard deviation: 0.025406687161)
+Mean number of iterations: 265.39 (standard deviation: 240.77271004)
+6.62 seconds elapsed
 \end{lstlisting}
 
 \subsection{Random Policy}
@@ -52,30 +53,31 @@ The random policy of the predator is implemented in ^random\_predator\_policy.py
 \section{Question 2: Iterative policy evaluation}
 Iterative Policy Evaluation is implemented in ^iterative\_policy\_evaluation.py^. It follows the algorithm described in section 4.1 of Sutton \& Barto.
 We get the following results:\\
-^Number of Iterations:  14\\
-Predator(0,0), Prey(5,5):  0.00592929646611\\
-Predator(2,3), Prey(5,4):  0.21710271406\\
-Predator(2,10), Prey(10,0):  0.217283726157\\
-Predator(10,10), Prey(0,0):  1.48016672878^
+^IPE Iterations:  14\\
+Predator(0,0), Prey(5,5):  0.00593030468374\\
+Predator(2,3), Prey(5,4):  0.217102120336\\
+Predator(2,10), Prey(10,0):  0.217283831033\\
+Predator(10,10), Prey(0,0):  1.48016753972\\
+74.727 seconds elapsed^
 
 \section{Question 3: Policy Iteration}
 Policy Iteration is implemented in ^policy\_iteration.py^. It follows the algorithm described in section 4.3 of Sutton \& Barto.
 We get the following results:\\
-^Gamma = 0.1 took 15 iterations and 230.68 seconds to converge.\\
-Gamma = 0.5 took 12 iterations and 232.26 seconds to converge.\\
-Gamma = 0.7 took 8 iterations and 220.06 seconds to converge.\\
-Gamma = 0.9 took 2 iterations and 370.08 seconds to converge.\\^
+^Gamma = 0.1 took 15 iterations and 166.8 seconds to converge.\\
+Gamma = 0.5 took 10 iterations and 148.94 seconds to converge.\\
+Gamma = 0.7 took 14 iterations and 219.86 seconds to converge.\\
+Gamma = 0.9 took 2 iterations and 266.59 seconds to converge.\\
+876.998 seconds elapsed^
 
 \section{Question 4: Value Iteration}
 Value Iteration is implemented in ^value\_iteration.py^. The main part of the value iteration algorithm is implemented in the ^while go\_on:^ loop. The code is a translation of the algorithm explained in figure 4.5 of the book. Value calculation is done in  ^calculate\_value(\dots)^. This function is slightly cumbersome due to implementation choices made earlier, but properly calculates the value as prescribed in the algorithm. A heatmap of the values can be found in figure~\ref{fig:1}.
 
-We compute the values for discount factors of $0.1, 0.5, 0.7$ and $0.9$. This results in the following output:
-\begin{lstlisting}[language=bash]
-Gamma = 0.1 took 6 iterations and 28.052 seconds to converge.
-Gamma = 0.5 took 7 iterations and 32.23 seconds to converge.
-Gamma = 0.7 took 7 iterations and 32.04 seconds to converge.
-Gamma = 0.9 took 7 iterations and 31.81 seconds to converge.
-\end{lstlisting}
+We compute the values for discount factors of $0.1, 0.5, 0.7$ and $0.9$. This results in the following output:\\
+^Gamma = 0.1 took 6 iterations and 29.19 seconds to converge.\\
+Gamma = 0.5 took 7 iterations and 34.03 seconds to converge.\\
+Gamma = 0.7 took 7 iterations and 33.81 seconds to converge.\\
+Gamma = 0.9 took 7 iterations and 33.88 seconds to converge.\\
+1007.949 seconds elapsed^
 
 \begin{figure}[h!] 
   \centering
