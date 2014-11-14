@@ -3,7 +3,8 @@ from models.predator import Predator
 from models.prey import Prey
 from models.policies.random_predator_policy import RandomPredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
-
+import pprint
+import timeit
 
 def calculate_value(state, field, policy, value, discount_factor):
     new_value = 0
@@ -77,23 +78,25 @@ def run_policy_iteration(verbose=True):
     field = init_environment()
     # calc once, since all states are always the same
     all_states = field.get_all_states()
-    discount_factor = 0.1
-    iterations = 0
-    end_loop = False
-
-    import pprint
-
     pp = pprint.PrettyPrinter(indent=4)
-    while not end_loop:
-        iterations += 1
-        print "Starting iteration: ", iterations
-        value = iterative_policy_evaluation(field, discount_factor, all_states)
-        print "Starting policy improvement"
-        end_loop = policy_improvement(field, value, discount_factor, all_states)
-        pp.pprint(field.get_predator().policy.value[((5, 5), (6, 7))])
 
-    print "Total Iterations: ", iterations
+    discount_factors = [0.1, 0.5, 0.7, 0.9]
+    gamma_iterations = []
 
+    for discount_factor in discount_factors:
+        start = timeit.default_timer()
+        iterations = 0
+        end_loop = False
+        while not end_loop:
+            iterations += 1
+            print "Starting iteration: ", iterations
+            value = iterative_policy_evaluation(field, discount_factor, all_states)
+            print "Starting policy improvement"
+            end_loop = policy_improvement(field, value, discount_factor, all_states)
+            pp.pprint(field.get_predator().policy.value[((5, 5), (6, 7))])
+
+        print "Gamma = " + str(discount_factor) + " took " + str(iterations) + " iterations and " + str(
+            timeit.default_timer() - start) + " seconds to converge."
 
 if __name__ == '__main__':
     run_policy_iteration(verbose=False)
