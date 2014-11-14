@@ -45,10 +45,11 @@ Mean number of iterations: 1026.88 (standard deviation: 888.41)
 \end{lstlisting}
 
 \subsection{Random Policy}
-\todo{Explain the random policy here as soon as we have nailed it down}
-\section{Question 4: Value Iteration}
-\todo{Write a section about value iteration}
+The random policy of the predator is implemented in ^random\_predator\_policy.py^. The function ^get\_probability\_mapping(state)^ returns a mapping of probabilities to mappings, and the super class ^Policy^ uses this to pick a next action in the function ^pick\_next\_action(state, style)^.
 
+
+\section{Question 4: Value Iteration}
+Value Iteration is implemented in ^value\_iteration.py^. The main part of the value iteration algorithm is implemented in the ^while go\_on:^ loop
 \todo{Test for convergence speed (in number of iterations), for different discount factors: at least 0.1, 0.5, 0.7 and 0.9, and report on the results.}
 
 \section{Question 5: Relative Position}
