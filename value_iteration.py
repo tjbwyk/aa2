@@ -97,7 +97,7 @@ def run_value_iteration(verbose=True, plot_values=False):
                 plot.value_heatmap(print_values, path=out_path + ".pdf")
         gamma_iterations.append(iterations)
         print "Gamma = " + str(gamma) + " took " + str(iterations) + " iterations and " + str(
-            round(timeit.default_timer() - start,3)) + " seconds to converge."
+            round(timeit.default_timer() - start, 2)) + " seconds to converge."
 
 
 if __name__ == '__main__':

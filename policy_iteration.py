@@ -88,7 +88,7 @@ def run_policy_iteration(verbose=True, plot_values=False):
             pandas.DataFrame(print_values).to_csv(path_or_buf="reports/policyiteration_gamma"+str(gamma)+".csv", sep=";")
             if plot_values:
                 plot.value_heatmap(print_values, path="reports/policyiteration_gamma"+str(gamma)+".pdf")
-        print "Gamma = " + str(gamma) + " took " + str(iterations) + " iterations and " + str(timeit.default_timer() - start) + " seconds to converge."
+        print "Gamma = " + str(gamma) + " took " + str(iterations) + " iterations and " + str(round(timeit.default_timer() - start, 2)) + " seconds to converge."
 
 if __name__ == '__main__':
     run_policy_iteration(verbose=True, plot_values=True)

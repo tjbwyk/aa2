@@ -30,22 +30,22 @@ We decided to model the predator/prey problem in Python. We chose an object-orie
 
 The file \texttt{main.py} in the root directory of the project executes all the tasks required in the assignment and prints the according output to the console. The models for field, players and their respective policies are located in the subdirectory \texttt{models}. Their relationship is illustrated in figure~\ref{fig:classdiagram}. Both \texttt{Predator} and \texttt{Prey} class are children of the \texttt{Player} superclass, which provides common attributes such as the location and policy fields. 
 
-There is a bidirectional connection between the field and the players on it, such that the field maintains a list of active players, who in return hold a reference to the field they are on in order to receive sensory information like the position of other players. The predator is governed by a PredatorPolicy. The prey is governed by a RandomPreyPolicy, but is not considered an agent.
+There is a bidirectional connection between the field and the players on it, such that the field maintains a list of active players, who in return hold a reference to the field they are on in order to receive sensory information like the position of other players. Every player has their own policy (even the prey, which is not an agent at this point).
 Furthermore, the field also provides the function \texttt{is\_ended()} which can be used to check whether the predator has caught the prey.
 
 For a more human-readable output, the field implements the function \texttt{print\_field()} which prints an ASCII-graphical representation of the field to the console, with a \textbf{\texttt{X}} denoting the position of the predator(s) and a \textbf{\texttt{O}} denoting the position of the prey(s).
 
 \section{Question 1: Environment Simulator}
-We implemented the simulator as described above in ^random\_policy.py^. The ^run\_random\_policy()^ function runs one simulation with a random policy for both the prey and the predator. It initializes a 11x11 field with one predator and one prey. For every time step the predator performance an action based on its policy (^predator.act()^), and this will update the field, until the game is over (^field.is\_ended()^).
+We implemented the simulator as described above. The ^random\_policy.py^ ^run\_random\_policy()^ function runs one simulation with a random policy for both the prey and the predator. It initializes a 11x11 field with one predator and one prey. For every time step the predator performance an action based on its policy (^predator.act()^), and this will update the field, until the game is over (^field.is\_ended()^).
 
-The ^main^ functions calls this simulation 100 times and calculates the average and stdev of the running time, this results in:
+The ^random\_policy\_wrapper^ function calls this simulation 100 times and calculates the average and stdev of the running time, this results in:
 \begin{lstlisting}[language=bash]
 Mean runtime: 0.04178s (standard deviation: 0.01846)
 Mean number of iterations: 281.74 (standard deviation: 220.677)
 \end{lstlisting}
 
 \subsection{Random Policy}
-The random policy of the predator is implemented in ^random\_predator\_policy.py^. The function ^get\_probability\_mapping(state)^ returns a mapping of probabilities to mappings, and the super class ^Policy^ uses this to pick a next action in the function \\^pick\_next\_action(state, style)^.
+The random policy of the predator is implemented in ^random\_predator\_policy.py^. The function ^get\_probability\_mapping(state)^ returns a mapping of probabilities to actions, and the super class ^Policy^ uses this to pick a next action in the function \\^pick\_next\_action(state, style)^.
 
 
 
@@ -61,20 +61,20 @@ Predator(10,10), Prey(0,0):  1.48016672878^
 \section{Question 3: Policy Iteration}
 Policy Iteration is implemented in ^policy\_iteration.py^. It follows the algorithm described in section 4.3 of Sutton \& Barto.
 We get the following results:\\
-^Gamma = 0.1 took 15 iterations and 230.683527946 seconds to converge.\\
-Gamma = 0.5 took 12 iterations and 232.266439199 seconds to converge.\\
-Gamma = 0.7 took 8 iterations and 220.060096025 seconds to converge.\\
-Gamma = 0.9 took 2 iterations and 370.085547924 seconds to converge.\\^
+^Gamma = 0.1 took 15 iterations and 230.68 seconds to converge.\\
+Gamma = 0.5 took 12 iterations and 232.26 seconds to converge.\\
+Gamma = 0.7 took 8 iterations and 220.06 seconds to converge.\\
+Gamma = 0.9 took 2 iterations and 370.08 seconds to converge.\\^
 
 \section{Question 4: Value Iteration}
 Value Iteration is implemented in ^value\_iteration.py^. The main part of the value iteration algorithm is implemented in the ^while go\_on:^ loop. The code is a translation of the algorithm explained in figure 4.5 of the book. Value calculation is done in  ^calculate\_value(\dots)^. This function is slightly cumbersome due to implementation choices made earlier, but properly calculates the value as prescribed in the algorithm. A heatmap of the values can be found in figure~\ref{fig:1}.
 
 We compute the values for discount factors of $0.1, 0.5, 0.7$ and $0.9$. This results in the following output:
 \begin{lstlisting}[language=bash]
-Gamma = 0.1 took 6 iterations and 28.0588741302 seconds to converge.
-Gamma = 0.5 took 7 iterations and 32.2343380451 seconds to converge.
-Gamma = 0.7 took 7 iterations and 32.0498149395 seconds to converge.
-Gamma = 0.9 took 7 iterations and 31.8123779297 seconds to converge.
+Gamma = 0.1 took 6 iterations and 28.052 seconds to converge.
+Gamma = 0.5 took 7 iterations and 32.23 seconds to converge.
+Gamma = 0.7 took 7 iterations and 32.04 seconds to converge.
+Gamma = 0.9 took 7 iterations and 31.81 seconds to converge.
 \end{lstlisting}
 
 \begin{figure}[h!] 
