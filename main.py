@@ -22,7 +22,7 @@ def main():
 
 
 def print_timestamp(start):
-    print str(round(timeit.default_timer() - start, 3)) + " seconds elapsed"
+    print str(round(timeit.default_timer() - start, 3)) + ' seconds elapsed\n'
 
 if __name__ == '__main__':
     main()
