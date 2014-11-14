@@ -11,7 +11,9 @@ from models.policies.random_predator_policy import RandomPredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
 
 
-def random_policy_wrapper(n_runs=1):
+def random_policy_wrapper(n_runs=1, verbose=True):
+    if verbose:
+        print "=== RANDOM POLICY ==="
     # start the first assignment
     # run 100 times and measure time
     runtimes = []
@@ -31,8 +33,6 @@ def random_policy_wrapper(n_runs=1):
 
 
 def run_random_policy(verbose=True):
-    if verbose:
-        print "=== RANDOM POLICY ==="
     # create field and characters
     environment = Field(11, 11)
     fatcat = Predator((0, 0))
@@ -50,7 +50,7 @@ def run_random_policy(verbose=True):
     while not environment.is_ended():
         fatcat.act()
         chip.act()
-        print environment
+        # print environment
         i += 1
 
     if verbose:
