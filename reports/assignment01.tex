@@ -50,7 +50,8 @@ The random policy of the predator is implemented in ^random\_predator\_policy.py
 
 
 \section{Question 2: Iterative policy evaluation}
-We get the following result:\\
+Iterative Policy Evaluation is implemented in ^iterative\_policy\_evaluation.py^. It follows the algorithm described in section 4.1 of Sutton & Barto.
+We get the following results:\\
 ^Number of Iterations:  14\\
 Predator(0,0), Prey(5,5):  0.00592929646611\\
 Predator(2,3), Prey(5,4):  0.21710271406\\
@@ -58,7 +59,12 @@ Predator(2,10), Prey(10,0):  0.217283726157\\
 Predator(10,10), Prey(0,0):  1.48016672878^
 
 \section{Question 3: Policy Iteration}
-
+Policy Iteration is implemented in ^policy\_iteration.py^. It follows the algorithm described in section 4.3 of Sutton & Barto.
+We get the following results:\\
+^Gamma = 0.1 took 15 iterations and 230.683527946 seconds to converge.\\
+Gamma = 0.5 took 12 iterations and 232.266439199 seconds to converge.\\
+Gamma = 0.7 took 8 iterations and 220.060096025 seconds to converge.\\
+Gamma = 0.9 took 2 iterations and 370.085547924 seconds to converge.\\^
 
 \section{Question 4: Value Iteration}
 Value Iteration is implemented in ^value\_iteration.py^. The main part of the value iteration algorithm is implemented in the ^while go\_on:^ loop. The code is a translation of the algorithm explained in figure 4.5 of the book. Value calculation is done in  ^calculate\_value(\dots)^. This function is slightly cumbersome due to implementation choices made earlier, but properly calculates the value as prescribed in the algorithm. A heatmap of the values can be found in figure~\ref{fig:1}.
@@ -104,7 +110,7 @@ We implemented a relative position in our code, but do to time constraints we we
 
 We illustrate how the state would change, given an action of the predator and the stochastic movement of the prey in figure~\ref{fig:state_diagram}. Say the predator is at location 5,5, and the prey at 7,8 in the 11x11 grid. We would then encode the state as (2,3). If the predator then moves dow, and the prey would move up, the new state would be (0,3). 
 
-One thing that needs to be considered when using this state encoding, is the toroidal grid. This means that a state (2,5) goes to (2,-5) when the predator moves left (and the prey stays).
+One thing that needs to be considered when using this state encoding is the toroidal grid. E.g. state (2,5) is followed by state (2,-5) when the predator moves left (and the prey stays).
 
 \begin{figure}[h!]
 	\centering
@@ -113,8 +119,8 @@ One thing that needs to be considered when using this state encoding, is the tor
    \label{fig:state_diagram}
 \end{figure}
 \section{Conclusion}
-We have implemented the first 4 sub-assignments as explained in the assignment description. The relative position assignments was considered, but implementation was later removed due to time constraints. We plan on implementing this before delving into Assignment 2 however.
+We have implemented the first 4 sub-assignments as explained in the assignment description. The relative position assignments was considered, but implementation was later removed due to time constraints. We plan on implementing this before delving into Assignment 2.
 
-\todo{Reflect on differences between policy iteration and value iteration}
-
+The results presented in question 3 and 4 show that Value Iteration is faster than Policy Iteration (PI), both in iterations as well as in execution time. The higher computation time in PI can be attributed to the extra loop over the state space for the policy improvement step in PI. 
+\todo{anything else?}
 \end{document}
