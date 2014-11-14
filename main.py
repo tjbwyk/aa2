@@ -5,13 +5,14 @@ from value_iteration import run_value_iteration
 
 
 def main():
+    # 1.1 random policy
     random_policy_wrapper(n_runs=100)
-    # iterative policy evaluation
+    # 1.2 iterative policy evaluation
     run_iterative_policy_evaluation()
-    # policy iteration
+    # 1.3 policy iteration
     run_policy_iteration()
-    # value iteration
-    run_value_iteration(plot_values=True)
+    # 1.4 value iteration
+    run_value_iteration(plot_values=False)
 
 
 if __name__ == '__main__':
