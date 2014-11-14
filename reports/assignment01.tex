@@ -17,7 +17,7 @@
 \title{Autonomous Agents - Assignment 1}
 \author{BasVeeling (10767770) \and Sebastian Droeppelmann (5783453) \and Fritjof Buettner (10876782)}
 \maketitle
-\listoftodos
+%\listoftodos
 \section{Introduction}
 \subsection{Project structure}
 We decided to model the predator/prey problem in Python. We chose an object-oriented structure to make the code reusable and minimize repetitions. In order to assure correct functionality of the algorithms at a fine-grained level, we make use of Python's unit-test framework.
@@ -106,21 +106,21 @@ Gamma = 0.9 took 7 iterations and 31.81 seconds to converge.
 \end{figure}
 
 \section{Question 5: Relative Position}
-We implemented a relative position in our code, but do to time constraints we were not able to get it working with the functions above. We considered encoding the state space as the Manhattan Distance from the Predator to the Prey. This reduces the size of the state space from $(11*11)**2$ = 14.641 to 10*10 = 100. 
+We implemented a relative position in our code, but due to time constraints we were not able to get it working with the functions above. We considered encoding the state space as the Manhattan Distance from the Predator to the Prey. This reduces the size of the state space from $(11 \times 11)*(11 \times 11) = 14.641$ to $10 \times 10 = 100$. 
 
-We illustrate how the state would change, given an action of the predator and the stochastic movement of the prey in figure~\ref{fig:state_diagram}. Say the predator is at location 5,5, and the prey at 7,8 in the 11x11 grid. We would then encode the state as (2,3). If the predator then moves dow, and the prey would move up, the new state would be (0,3). 
+We illustrate in figure~\ref{fig:state_diagram} how the state would change, given an action of the predator and the stochastic movement of the prey. Say the predator is at location 5,5 and the prey at 7,8 in the 11x11 grid. We would then encode the state as (2,3). If the predator then moves down, and the prey moved up, the new state would be (0,3). 
 
 One thing that needs to be considered when using this state encoding is the toroidal grid. E.g. state (2,5) is followed by state (2,-5) when the predator moves left (and the prey stays).
 
 \begin{figure}[h!]
 	\centering
-    \includegraphics[width=0.8\textwidth]{state_diagram}
+    \includegraphics[width=0.75\textwidth]{state_diagram}
   \caption{State diagram for relative position}
    \label{fig:state_diagram}
 \end{figure}
 \section{Conclusion}
-We have implemented the first 4 sub-assignments as explained in the assignment description. The relative position assignments was considered, but implementation was later removed due to time constraints. We plan on implementing this before delving into Assignment 2.
+We have implemented the first 4 sub-assignments as explained in the assignment description. The relative position assignments was considered, but implementation was later removed in refactoring due to time constraints. We plan on implementing this before delving into Assignment 2.
 
 The results presented in question 3 and 4 show that Value Iteration is faster than Policy Iteration (PI), both in iterations as well as in execution time. The higher computation time in PI can be attributed to the extra loop over the state space for the policy improvement step in PI. 
-\todo{anything else?}
+%\todo{anything else?}
 \end{document}
