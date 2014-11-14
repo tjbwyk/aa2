@@ -54,8 +54,8 @@ class testField(unittest.TestCase):
         self.assertEqual(self.environment.get_reward(((1, 1), (1, 1))), 10)
 
     def test_get_all_states(self):
-        self.assertEqual(len(self.environment.get_all_states()), (self.environment.height * self.environment.width) ^ 2
-                         - (self.environment.height * self.environment.width))
+        self.assertEqual(len(self.environment.get_all_states()), ((self.environment.height * self.environment.width) ** 2
+                         - (self.environment.height * self.environment.width)))
 
     def test_get_state(self):
         prey, predator = self.setup_standard_env()
