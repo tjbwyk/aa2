@@ -1,15 +1,12 @@
-import numpy as np
 from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
 from models.policies.random_predator_policy import RandomPredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
 
-
-def main():
-    as012(verbose=False)
-
-def as012(verbose=True):
+def run_iterative_policy_evaluation(verbose=True):
+    if verbose:
+        print "=== ITERATIVE POLICY EVALUATION ==="
     field = Field(11, 11)
     predator = Predator((0, 0))
     predator.policy = RandomPredatorPolicy(predator, field)
@@ -38,8 +35,8 @@ def iterative_policy_evaluation(field, discount_factor, all_states, change_epsil
     policy = field.get_predator().policy
 
     iterations = 0
-    goOn = True
-    while goOn:
+    go_on = True
+    while go_on:
         delta_value = 0
         iterations += 1
         for state in all_states:
@@ -47,7 +44,7 @@ def iterative_policy_evaluation(field, discount_factor, all_states, change_epsil
             policy.value[state] = calculate_value(state, field, policy, discount_factor)
             delta_value = max(delta_value, abs(temp_value - policy.value[state]))
         if delta_value < change_epsilon:
-            goOn = False
+            go_on = False
     return iterations
 
 def calculate_value(state, field, policy, discount_factor):
@@ -62,6 +59,5 @@ def calculate_value(state, field, policy, discount_factor):
         new_value += prob * tmp_v
     return new_value
 
-
 if __name__ == '__main__':
-    main()
+    run_iterative_policy_evaluation(verbose=False)

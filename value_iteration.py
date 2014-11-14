@@ -1,18 +1,15 @@
 __author__ = 'Fritjof'
 import timeit
+
 import numpy as np
 import pandas
+
 from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
 from models.policies.predatorpolicy import PredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
 from graphics import plot
-
-
-def main():
-    as014(verbose=True, plot_values=True)
-    print "Done."
 
 
 def calculate_value(state, field, policy, value, discount_factor):
@@ -49,7 +46,9 @@ def calculate_value(state, field, policy, value, discount_factor):
     return max(next_values)
 
 
-def as014(verbose=True, plot_values=False):
+def run_value_iteration(verbose=True, plot_values=False):
+    if verbose:
+        print "=== VALUE ITERATION ==="
     field = Field(11, 11)
     predator = Predator((0, 0))
     predator.policy = PredatorPolicy(predator, field)
@@ -61,7 +60,7 @@ def as014(verbose=True, plot_values=False):
     change_epsilon = 0.00001
     # gamma
     discount_factor = [0.1, 0.5, 0.7, 0.9]
-    #discount_factor = [0.9]
+    # discount_factor = [0.9]
     gamma_iterations = []
 
     for gamma in discount_factor:
@@ -87,17 +86,20 @@ def as014(verbose=True, plot_values=False):
             # print values of all states where prey is located at (5,5)
             print_values = np.zeros((field.height, field.width))
             for state, value in values.iteritems():
-                    if state[1] == (5, 5):
-                        #print "  state: " + str(state) + " value: " + str(value)
-                        print_values[state[0]] = value
+                if state[1] == (5, 5):
+                    #print "  state: " + str(state) + " value: " + str(value)
+                    print_values[state[0]] = value
             #input("Press enter to continue")
             # convert to pandas DF for pretty print and save to CSV file in reports directory
-            pandas.DataFrame(print_values).to_csv(path_or_buf="reports/valueiteration_gamma"+str(gamma)+".csv", sep=";")
+            out_path = "reports/valueiteration_gamma" + str(gamma).replace(".", "-")
+            pandas.DataFrame(print_values).to_csv(path_or_buf=out_path + ".csv", sep=";")
             if plot_values:
-                plot.value_heatmap(print_values, path="reports/valueiteration_gamma"+str(gamma)+".pdf")
+                plot.value_heatmap(print_values, path=out_path + ".pdf")
         gamma_iterations.append(iterations)
-        print "Gamma = " + str(gamma) + " took " + str(iterations) + " iterations and " + str(timeit.default_timer() - start) + " seconds to converge."
+        print "Gamma = " + str(gamma) + " took " + str(iterations) + " iterations and " + str(
+            round(timeit.default_timer() - start,3)) + " seconds to converge."
 
 
 if __name__ == '__main__':
-    main()
+    run_value_iteration(verbose=True, plot_values=True)
+    print "Done."

@@ -9,9 +9,6 @@ import numpy as np
 import pandas
 from graphics import plot
 
-def main():
-    as013(verbose=True, plot_values=True)
-
 def init_environment():
     field = Field(11, 11)
     predator = Predator((0, 0))
@@ -58,10 +55,11 @@ def policy_iteration(field, discount_factor, all_states, change_epsilon):
     return iterations
 
 
-
-def as013(verbose=True, plot_values=False):
+def run_policy_iteration(verbose=True, plot_values=False):
+    if verbose:
+        print "=== POLICY ITERATION ==="
     field = init_environment()
-    #calc once, since all states are always the same
+    # calc once, since all states are always the same
     all_states = field.get_all_states()
 
     # convergence threshold
@@ -91,4 +89,4 @@ def as013(verbose=True, plot_values=False):
         print "Gamma = " + str(gamma) + " took " + str(iterations) + " iterations and " + str(timeit.default_timer() - start) + " seconds to converge."
 
 if __name__ == '__main__':
-    main()
+    run_policy_iteration(verbose=False)

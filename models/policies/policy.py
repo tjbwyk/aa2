@@ -5,12 +5,13 @@ class Policy:
     """
     The policy describes the probabilities for a player to move in any direction.
     """
+
     def __init__(self, agent, field, seed=None):
         self.agent = agent
         self.field = field
         self.value = {state: 0.0 for state in field.get_all_states_with_terminal()}
         self.argmax_action = {state: (0,0) for state in field.get_all_states()}
-        #initialize random number generator
+        # initialize random number generator
         if seed is not None:
             random.seed(seed)
 
@@ -57,7 +58,8 @@ class Policy:
             action = self.field.get_relative_position(pred_pos, next_pred_pos)
 
             if action not in self.agent.get_actions():
-                raise ValueError("action not in legal actions of agent from State: ",state, ", NextState: ", next_state, ", action: ", action )
+                raise ValueError("action not in legal actions of agent from State: ", state, ", NextState: ",
+                                 next_state, ", action: ", action)
 
             return action
         else:

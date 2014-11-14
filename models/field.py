@@ -1,6 +1,7 @@
+import numpy as np
+
 from models.predator import Predator
 from models.prey import Prey
-import numpy as np
 
 
 class Field(object):
@@ -28,16 +29,16 @@ class Field(object):
 
     def get_relative_position(self, location1, location2):
         x1, y1 = location1
-        move = ((int(np.floor(self.width/2))-x1), (int(np.floor(self.height/2)) - y1))
+        move = ((int(np.floor(self.width / 2)) - x1), (int(np.floor(self.height / 2)) - y1))
         x1, y1 = self.get_new_coordinates(location1, move)
         x2, y2 = self.get_new_coordinates(location2, move)
-        return (x2-x1), (y2-y1)
+        return (x2 - x1), (y2 - y1)
 
 
     def get_distance(self, state):
         pred_pos, prey_pos = state
-        x,y = self.get_relative_position(pred_pos, prey_pos)
-        return abs(x)+abs(y)
+        x, y = self.get_relative_position(pred_pos, prey_pos)
+        return abs(x) + abs(y)
 
     def add_player(self, player):
         player.field = self
@@ -47,7 +48,8 @@ class Field(object):
         return [player for player in self.players if player is not exception_player]
 
     def get_players_of_class(self, player_class, exception_player=None):
-        return [ player for player in self.players if isinstance(player, player_class) and player is not exception_player]
+        return [player for player in self.players if
+                isinstance(player, player_class) and player is not exception_player]
 
     def get_predators(self, exception_player=None):
         return self.get_players_of_class(Predator, exception_player)
@@ -112,19 +114,19 @@ class Field(object):
         returns all states except for the terminal states: S
         :return: list of all states except the terminal ones
         """
-        return set([((x, y), (i,j))
-                for x in range(self.height) for y in range(self.width)
-                for i in range(self.height) for j in range(self.width)])
+        return set([((x, y), (i, j))
+                    for x in range(self.height) for y in range(self.width)
+                    for i in range(self.height) for j in range(self.width)])
 
     def get_all_states(self):
         """
         returns all states except for the terminal states: S
         :return: list of all states except the terminal ones
         """
-        return set([((x, y), (i,j))
-                for x in range(self.height) for y in range(self.width)
-                for i in range(self.height) for j in range(self.width)
-                if not (x == i and y == j)])
+        return set([((x, y), (i, j))
+                    for x in range(self.height) for y in range(self.width)
+                    for i in range(self.height) for j in range(self.width)
+                    if not (x == i and y == j)])
 
 
     def get_current_state(self):
@@ -134,7 +136,7 @@ class Field(object):
         """
         # state = ()
         # for player in self.players:
-        #     state = state + (player.location,)
+        # state = state + (player.location,)
         # return state
         return (self.get_predator().location, self.get_prey().location)
 
@@ -151,7 +153,7 @@ class Field(object):
             next_pred_positions = [self.get_new_coordinates(cur_pred_pos, pred_action)]
 
         next_prey_positions =  self.get_prey().get_next_locations(state)
-        #initialize all next possible states except when the predator moves t the prey
+        # initialize all next possible states except when the predator moves t the prey
         next_states = [(next_pred_pos, next_prey_pos)
                        for next_pred_pos in next_pred_positions
                        for next_prey_pos in next_prey_positions

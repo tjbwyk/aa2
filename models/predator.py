@@ -18,4 +18,4 @@ class Predator(Player):
         :return: a list of location tuples.
         """
         cur_pred_loc, cur_prey_loc = state
-        return [ self.field.get_new_coordinates(cur_pred_loc, a) for a in self.get_actions()]
+        return [self.field.get_new_coordinates(cur_pred_loc, a) for a in self.get_actions()]
