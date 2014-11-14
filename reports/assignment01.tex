@@ -88,6 +88,18 @@ Gamma = 0.9 took 7 iterations and 31.8123779297 seconds to converge.
   \end{subfigure}
   \caption{Heatmaps of the final values for prey(5,5), illustrating the effect of the discount factor $\lambda$}\label{fig:1}
 \end{figure}
+\section{Question 5: Relative Position}
+We implemented a relative position in our code, but do to time constraints we were not able to get it working with the functions above. We considered encoding the state space as the Manhattan Distance from the Predator to the Prey. This reduces the size of the state space from $(11*11)**2$ = 14.641 to 10*10 = 100. 
+
+We illustrate how the state would change, given an action of the predator and the stochastic movement of the prey in figure~\ref{fig:state_diagram}. Say the predator is at location 5,5, and the prey at 7,8 in the 11x11 grid. We would then encode the state as (2,3). If the predator then moves dow, and the prey would move up, the new state would be (0,3). 
+
+One thing that needs to be considered when using this state encoding, is the toroidal grid. This means that a state (2,5) goes to (2,-5) when the predator moves left (and the prey stays).
+
+\begin{figure}[h!]
+    \includegraphics[width=0.6\textwidth]{state_diagram}
+  \caption{State diagram for relative position}
+   \label{fig:state_diagram}
+\end{figure}
 \section{Conclusion}
 It's all great.
 \end{document}
