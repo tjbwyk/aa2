@@ -66,8 +66,8 @@ def as014(verbose=True):
     # convergence threshold
     change_epsilon = 0.00001
     # gamma
-    #discount_factor = [0.1, 0.5, 0.7, 0.9]
-    discount_factor = [0.9]
+    discount_factor = [0.1, 0.5, 0.7, 0.9]
+    #discount_factor = [0.9]
     gamma_iterations = []
 
     for gamma in discount_factor:
@@ -94,27 +94,11 @@ def as014(verbose=True):
             print_values = np.zeros((field.height, field.width))
             for state, value in values.iteritems():
                     if state[1] == (5, 5):
-                        print "  state: " + str(state) + " value: " + str(value)
-
-            import numpy as np
-            arr = np.zeros((11,11), dtype=np.float)
-            for state, value in values.iteritems():
-                    if state[1] == (5, 5):
-                        x,y  = state[0]
-                        arr[x][y] = value
-                        #print "  state: " + str(state) + " value: " + str(value)
-
-            import mayavi.mlab as ml
-            #pp = pprint.PrettyPrinter(indent=4, )
-            #pp.pprint(arr)
-            ml.surf(arr)
-            input("Press enter to continue")
-
-
                         #print "  state: " + str(state) + " value: " + str(value)
                         print_values[state[0]] = value
+            #input("Press enter to continue")
             # convert to pandas DF for pretty print and save to CSV file in reports directory
-            pandas.DataFrame(print_values).to_csv(path_or_buf="reports/valueiteration_gamma"+str(gamma)+".csv",sep=";")
+            pandas.DataFrame(print_values).to_csv(path_or_buf="reports/valueiteration_gamma"+str(gamma)+".csv", sep=";")
         gamma_iterations.append(iterations)
         print "Gamma = " + str(gamma) + " took " + str(iterations) + " iterations and " + str(timeit.default_timer() - start) + " seconds to converge."
 
