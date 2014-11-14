@@ -2,12 +2,13 @@ __author__ = 'fbuettner'
 import numpy as np
 from matplotlib import pyplot as plt
 
+
 def value_heatmap(values, colorbar=True, path=None):
     """
     Plots a value matrix as heatmap.
     :param values: the value matrix
     :param path: if given, save the plot to pdf at given path.
-    :return:
+    :return: the figure object
     """
     plt.figure()
     plt.xlim(0, values.shape[1])
@@ -17,3 +18,4 @@ def value_heatmap(values, colorbar=True, path=None):
         plt.colorbar()
     if path is not None:
         plt.savefig(path)
+    return heatmap
