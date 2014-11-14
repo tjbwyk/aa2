@@ -31,6 +31,7 @@ class Policy:
                 prob, action = prob_map.pop()
                 probability += prob
             return action
+
         elif style == "greedy":
             val = 0
             selected_states = []
@@ -52,7 +53,7 @@ class Policy:
             action = self.field.get_relative_position(pred_pos, next_pred_pos)
 
             if action not in self.agent.get_actions():
-                raise ValueError("action not in legal actions of agent")
+                raise ValueError("action not in legal actions of agent from State: ",state, ", NextState: ", next_state, ", action: ", action )
 
             return action
         else:

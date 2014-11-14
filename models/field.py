@@ -29,10 +29,11 @@ class Field(object):
 
     def get_relative_position(self, location1, location2):
         x1, y1 = location1
-        move = ((x1 - int(np.floor(self.width/2))), (y1 - int(np.floor(self.height/2))))
+        move = ((int(np.floor(self.width/2))-x1), (int(np.floor(self.height/2)) - y1))
         x1, y1 = self.get_new_coordinates(location1, move)
         x2, y2 = self.get_new_coordinates(location2, move)
         return (x2-x1), (y2-y1)
+
 
     def get_distance(self, state):
         pred_pos, prey_pos = state

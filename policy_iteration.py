@@ -35,9 +35,8 @@ def iterative_policy_evaluation(field, discount_factor, all_states, change_epsil
             delta_value = max(delta_value, abs(temp_value - value[state]))
         if delta_value < change_epsilon:
             goOn = False
-
+    print "IPE Iterations: ", iterations
     return value
-
 
 def init_environment():
     field = Field(11, 11)
@@ -49,8 +48,6 @@ def init_environment():
     field.add_player(chip)
     return field
 
-
-
 def calculate_argmax(state, field, policy, value, discount_factor):
 
     action = policy.pick_next_action(state, style="greedy")
@@ -61,16 +58,15 @@ def calculate_argmax(state, field, policy, value, discount_factor):
         tmp_v += tmp_prob * tmp_rew
     return tmp_v
 
-
 def policy_improvement(field, value, discount_factor, all_states):
     policy = field.get_predator().policy
     policy_stable = True
     for state in all_states:
+        #print "Calculate state: ", state
         b = policy.value[state]
         policy.value[state] = calculate_argmax(state, field, policy, value, discount_factor)
         if b != policy.value[state]:
             policy_stable = False
-
     return policy_stable
 
 def as013(verbose=True):
@@ -81,14 +77,14 @@ def as013(verbose=True):
     iterations = 0
     end_loop = False
 
-
     while not end_loop:
         iterations += 1
+        print "Starting iteration: ", iterations
         value = iterative_policy_evaluation(field, discount_factor, all_states)
+        print "Starting policy improvement"
         end_loop = policy_improvement(field, value, discount_factor, all_states)
 
-    print iterations
-
+    print "Total Iterations: ", iterations
 
 if __name__ == '__main__':
     main()
