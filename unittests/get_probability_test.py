@@ -12,5 +12,5 @@ class testField(unittest.TestCase):
         self.fatcat.policy = PredatorPolicy(self.fatcat, self.environment)
 
     def test_probability(self):
-        probabilities, next_states = self.fatcat.policy.get_next_states((0,0))
+        probabilities = self.fatcat.policy.get_probability(state=((0,0),(0,1)), next_state=((0,0),(0,1)), action=(0,1))
         print probabilities

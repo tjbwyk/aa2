@@ -1,5 +1,7 @@
 __author__ = 'Fritjof'
 import timeit
+import numpy as np
+import pandas
 from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
@@ -66,9 +68,14 @@ def as014(verbose=True):
 
         if verbose:
             # print values of all states where prey is located at (5,5)
+            print_values = np.zeros((field.height, field.width))
             for state, value in values.iteritems():
                     if state[1] == (5, 5):
-                        print "  state: " + str(state) + " value: " + str(value)
+                        #print "  state: " + str(state) + " value: " + str(value)
+                        print_values[state[0]] = value
+            # convert to pandas DF for pretty print
+            pandas.DataFrame(print_values).to_csv(path_or_buf="reports/valueiteration_gamma"+str(gamma)+".csv",sep=";")
+            #np.savetxt("valueiteration_gamma"+str(gamma)+".txt", print_values)
         gamma_iterations.append(iterations)
         print "Gamma = " + str(gamma) + " took " + str(iterations) + " iterations and " + str(timeit.default_timer() - start) + " seconds to converge."
 
