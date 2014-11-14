@@ -27,22 +27,25 @@ def calculate_value(state, field, policy, value, discount_factor):
     """
     next_states = field.get_next_states(state)
     next_values = []
-
+    # Loop over all actions
     for action in policy.agent.get_actions():
-
         tmp_ns = []
         cur_pred_pos, cur_prey_pos = state
-        next_loc =  field.get_new_coordinates(cur_pred_pos, action)
+        # Get the next location resulting from this action
+        next_loc = field.get_new_coordinates(cur_pred_pos, action)
+
+        # Select all next states for which the predator end up in this location
         for ns in next_states:
             if ns[0] == next_loc:
                 tmp_ns.append(ns)
 
+        # Using only the states that we actually end up in for this action, calculate the value of that action
         for next_state in tmp_ns:
             # for next_state in all_states:
             tmp_prob = policy.get_probability(state, next_state, action)
             tmp_rew = field.get_reward(next_state) + discount_factor * value[next_state]
             next_values.append(tmp_prob * tmp_rew)
-
+    # The value of this state is the highest value possible
     return max(next_values)
 
 

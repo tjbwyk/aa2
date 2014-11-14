@@ -49,7 +49,10 @@ The random policy of the predator is implemented in ^random\_predator\_policy.py
 
 
 \section{Question 4: Value Iteration}
-Value Iteration is implemented in ^value\_iteration.py^. The main part of the value iteration algorithm is implemented in the ^while go\_on:^ loop
+Value Iteration is implemented in ^value\_iteration.py^. The main part of the value iteration algorithm is implemented in the ^while go\_on:^ loop. The code is a translation of the algorithm explained in figure 4.5 of the book. Value calculation is done in  ^calculate\_value(\dots)^. This function is slightly cumbersome due to implementation choices made earlier, but properly calculates the value as prescribed in the algorithm.
+
+We compute the values for discount factors of $0.1, 0.5, 0.7$ and $0.9$. This results in the following output:
+
 \todo{Test for convergence speed (in number of iterations), for different discount factors: at least 0.1, 0.5, 0.7 and 0.9, and report on the results.}
 
 \section{Question 5: Relative Position}
