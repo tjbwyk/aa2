@@ -47,6 +47,8 @@ def calculate_value(state, field, policy, value, discount_factor):
 
 
 def run_value_iteration(verbose=True, plot_values=False):
+    if verbose:
+        print "=== VALUE ITERATION ==="
     field = Field(11, 11)
     predator = Predator((0, 0))
     predator.policy = PredatorPolicy(predator, field)

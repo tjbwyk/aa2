@@ -19,6 +19,8 @@ def calculate_value(state, field, policy, value, discount_factor):
 
 
 def run_iterative_policy_evaluation(verbose=True):
+    if verbose:
+        print "=== ITERATIVE POLICY EVALUATION ==="
     field = Field(11, 11)
     predator = Predator((0, 0))
     predator.policy = RandomPredatorPolicy(predator, field)

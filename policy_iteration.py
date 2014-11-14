@@ -72,6 +72,8 @@ def policy_improvement(field, value, discount_factor, all_states):
 
 
 def run_policy_iteration(verbose=True):
+    if verbose:
+        print "=== POLICY ITERATION ==="
     field = init_environment()
     # calc once, since all states are always the same
     all_states = field.get_all_states()

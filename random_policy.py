@@ -31,6 +31,8 @@ def random_policy_wrapper(n_runs=1):
 
 
 def run_random_policy(verbose=True):
+    if verbose:
+        print "=== RANDOM POLICY ==="
     # create field and characters
     environment = Field(11, 11)
     fatcat = Predator((0, 0))
