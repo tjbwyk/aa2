@@ -59,5 +59,6 @@ def calculate_value(state, field, policy, discount_factor):
         new_value += prob * tmp_v
     return new_value
 
+
 if __name__ == '__main__':
     run_iterative_policy_evaluation(verbose=False)
