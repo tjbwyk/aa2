@@ -3,7 +3,7 @@ import timeit
 from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
-from models.policies.random_predator_policy import RandomPredatorPolicy
+from models.policies.predatorpolicy import PredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
 
 
@@ -22,28 +22,50 @@ def calculate_value(state, field, policy, value, discount_factor):
     :param discount_factor: gamma
     :return: the new value of the current state
     """
-    for prob, action in policy.get_probability_mapping(state):
-        next_values = []
-        for next_state in field.get_next_states(state):
+    next_states = field.get_next_states(state)
+    val = 0
+
+    selact = policy.agent.get_actions()[0]
+    next_values = []
+
+    for action in policy.agent.get_actions():
+
+        tmp_ns = []
+        cur_pred_pos, cur_prey_pos = state
+        next_loc =  field.get_new_coordinates(cur_pred_pos, action)
+        for ns in next_states:
+            if ns[0] == next_loc:
+                tmp_ns.append(ns)
+
+        for next_state in tmp_ns:
             # for next_state in all_states:
             tmp_prob = policy.get_probability(state, next_state, action)
             tmp_rew = field.get_reward(next_state) + discount_factor * value[next_state]
             next_values.append(tmp_prob * tmp_rew)
+            # #debug stuff
+            # if val < tmp_prob * tmp_rew:
+            #     val = tmp_prob * tmp_rew
+            #     selact = action
+            # if state == ((1,2),(2,2)) and action == (1,0):
+            #     pass
+
+#    print "Best Action for state:", state, " ATM: ", selact, " VAL: ", val
     return max(next_values)
 
 
 def as014(verbose=True):
     field = Field(11, 11)
     predator = Predator((0, 0))
-    predator.policy = RandomPredatorPolicy(predator, field)
+    predator.policy = PredatorPolicy(predator, field)
     chip = Prey((5, 5))
     chip.policy = RandomPreyPolicy(chip, field)
     field.add_player(predator)
     field.add_player(chip)
     # convergence threshold
-    change_epsilon = 0.001
+    change_epsilon = 0.00001
     # gamma
-    discount_factor = [0.1, 0.5, 0.7, 0.9]
+    #discount_factor = [0.1, 0.5, 0.7, 0.9]
+    discount_factor = [0.9]
     gamma_iterations = []
 
     for gamma in discount_factor:
@@ -54,6 +76,7 @@ def as014(verbose=True):
 
         iterations = 0
         go_on = True
+
         while go_on:
             delta_value = 0
             iterations += 1
@@ -69,6 +92,22 @@ def as014(verbose=True):
             for state, value in values.iteritems():
                     if state[1] == (5, 5):
                         print "  state: " + str(state) + " value: " + str(value)
+
+            import numpy as np
+            arr = np.zeros((11,11), dtype=np.float)
+            for state, value in values.iteritems():
+                    if state[1] == (5, 5):
+                        x,y  = state[0]
+                        arr[x][y] = value
+                        #print "  state: " + str(state) + " value: " + str(value)
+
+            import mayavi.mlab as ml
+            #pp = pprint.PrettyPrinter(indent=4, )
+            #pp.pprint(arr)
+            ml.surf(arr)
+            input("Press enter to continue")
+
+
         gamma_iterations.append(iterations)
         print "Gamma = " + str(gamma) + " took " + str(iterations) + " iterations and " + str(timeit.default_timer() - start) + " seconds to converge."
 

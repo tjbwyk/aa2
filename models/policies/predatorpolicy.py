@@ -9,6 +9,16 @@ class PredatorPolicy(Policy, object):
     def __init__(self, agent, field, seed=None):
         super(PredatorPolicy, self).__init__(agent, field, seed=seed)
 
+    def get_probability_mapping(self, state):
+        """
+        returns the probability mapping according to the state: pi(s,a) for all a
+        in case of the random policy simply the probabilities of the moves
+        [(0.2, (0,0)), (0.2, (-1,0)), (0.2, (1,0)), (0.2, (0,-1)), (0.2, (0, 1))]
+        since all moves are equally probable, simply return 0.2
+        """
+        return [(0.2, (0,0)), (0.2, (-1,0)), (0.2, (1,0)), (0.2, (0,-1)), (0.2, (0, 1))]
+
+
     def get_probability(self, state, next_state, action):
         """
         returns the probability of the state being next_state when undertaking action action: p(s'|s,a)

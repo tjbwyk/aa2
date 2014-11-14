@@ -1,6 +1,5 @@
 from models.predator import Predator
 from models.prey import Prey
-import itertools
 import numpy as np
 
 

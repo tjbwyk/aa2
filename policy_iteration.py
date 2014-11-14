@@ -73,16 +73,20 @@ def as013(verbose=True):
     field = init_environment()
     #calc once, since all states are always the same
     all_states = field.get_all_states()
-    discount_factor = 0.9
+    discount_factor = 0.1
     iterations = 0
     end_loop = False
 
+    import pprint
+    pp = pprint.PrettyPrinter(indent=4)
     while not end_loop:
         iterations += 1
         print "Starting iteration: ", iterations
         value = iterative_policy_evaluation(field, discount_factor, all_states)
         print "Starting policy improvement"
         end_loop = policy_improvement(field, value, discount_factor, all_states)
+        pp.pprint(field.get_predator().policy.value[((5,5), (6,7))])
+
 
     print "Total Iterations: ", iterations
 
