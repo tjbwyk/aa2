@@ -1,5 +1,4 @@
 __author__ = 'fbuettner'
-import random
 
 
 class Player(object):
@@ -8,28 +7,29 @@ class Player(object):
     implements common properties like position
     """
 
-    def __init__(self, location=(0, 0)):
+    def __init__(self, location=(0, 0), actions = [(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)],
+                 policy = None, field = None, id_number = ""):
         self.location = location
-        self.field = None
-
-
-    def set_policy(self, policy):
+        self.actions = actions
+        self.field = field
         self.policy = policy
+        self.id = self.__str__() + id_number
+
+    def get_actions(self):
+        """
+        returns the possible actions for the player
+        :return: the possible actions
+        """
+        return self.actions
 
     def act(self, seed=None):
-        if (self.policy == None):
-            print "No Policy set!"
+        """
+        update the location according to the action in the policy
+        :return: nothing
+        """
+        if self.policy is None:
+            print "No Policy set for Player, ", self.id
             raise
-
-        if seed != None:
-            random.seed(seed)
-
-        move = random.random()
-        nextStates = self.policy.getNextStates()
-        probability, state = nextStates.pop()
-
-        while move > probability and len(nextStates) > 0:
-            prob, state = nextStates.pop()
-            probability += prob
-
-        self.location = state
+        else:
+            action = self.policy.pick_next_action(self.field.get_current_state())
+            self.location = self.field.get_new_coordinates(self.location, action)

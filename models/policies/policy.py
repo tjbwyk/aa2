@@ -1,28 +1,61 @@
-from bisect import bisect
-from random import random
+import random
 
 
 class Policy:
     """
     The policy describes the probabilities for a player to move in any direction.
     """
+    def __init__(self, agent, field, seed=None):
+        self.agent = agent
+        self.field = field
+        self.value = {state: 0.0 for state in field.get_all_states_with_terminal()}
 
-    def __init__(self, a, f):
-      self.agent = a
-      self.field = f
-      self.discountfactor = 1.0
+        #initialize random number generator
+        if seed is not None:
+            random.seed(seed)
 
-    def get_direction(self):
+    def pick_next_action(self, state, style="probabilistic"):
         """
-        get a direction to move to
-        :return: x and y coordinates of movement
+        selects an action according to the action probability distribution of the policy
+        :param state:
+        :param actions:
+        :param style:
+        :return:
         """
-        P = [self.prob_stay, self.prob_north, self.prob_east, self.prob_south, self.prob_west]
-        cdf = [P[0]]
-        for i in xrange(1, len(P)):
-            cdf.append(cdf[-1] + P[i])
-        random_ind = bisect(cdf, random())
-        return self.directions[random_ind]
+        if style == "probabilistic":
+            move = random.random()
+            # select the action that belongs to random move value
+            probability = 0.0
+            prob_map = self.get_probability_mapping(state)
+            while move > probability and len(prob_map) > 0:
+                prob, action = prob_map.pop()
+                probability += prob
+            return action
 
-    def iterativePolicyEvaluation(self):
-      pass
+        elif style == "greedy":
+            val = 0
+            selected_states = []
+            for next_state in self.field.get_next_states(state):
+                if val < self.value[next_state]:
+                    selected_states = [next_state]
+                    val = self.value[next_state]
+                elif val == self.value[next_state]:
+                    selected_states.append(next_state)
+
+            if len(selected_states) == 1:
+                next_state = selected_states[0]
+            elif len(selected_states) > 1:
+                next_state = random.choice(selected_states)
+            else:
+                raise ValueError("no state found")
+            pred_pos, prey_pos = state
+            next_pred_pos, next_prey_pos = next_state
+            action = self.field.get_relative_position(pred_pos, next_pred_pos)
+
+            if action not in self.agent.get_actions():
+                raise ValueError("action not in legal actions of agent from State: ",state, ", NextState: ", next_state, ", action: ", action )
+
+            return action
+        else:
+            # given style not recognized
+            raise ValueError("invalid value given for parameter style: " + str(style))

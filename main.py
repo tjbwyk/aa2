@@ -1,11 +1,11 @@
 import timeit
+import time
 import numpy as np
 from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
-from models.policies.predatorpolicy import PredatorPolicy
-from models.policies.preypolicy import PreyPolicy
-
+from models.policies.random_predator_policy import RandomPredatorPolicy
+from models.policies.random_prey_policy import RandomPreyPolicy
 
 def main(n_runs=1):
     # start the first assignment
@@ -29,19 +29,21 @@ def as011(verbose=True):
     # create field and characters
     environment = Field(11, 11)
     fatcat = Predator((0, 0))
-    fatcat.set_policy(PredatorPolicy(fatcat, environment))
+    fatcat.policy = RandomPredatorPolicy(fatcat, environment)
     chip = Prey((5, 5))
-    chip.set_policy(PreyPolicy(chip, environment))
+    chip.policy = RandomPreyPolicy(chip, environment)
     environment.add_player(fatcat)
     environment.add_player(chip)
 
     if verbose:
         print environment.print_field()
+        time.sleep(1)
+
     i = 0
     while not environment.is_ended():
         fatcat.act()
         chip.act()
-        # print environment
+        print environment
         i += 1
 
     if verbose:
