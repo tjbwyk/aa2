@@ -13,7 +13,6 @@
 \catcode`^=\active
 \def^#1^{\texttt{#1}}
 
-
 \begin{document}
 \title{Autonomous Agents - Assignment 1}
 \author{BasVeeling (10767770) \and Sebastian Droeppelmann (5783453) \and Fritjof Buettner (10876782)}
@@ -47,6 +46,18 @@ Mean number of iterations: 281.74 (standard deviation: 220.677)
 
 \subsection{Random Policy}
 The random policy of the predator is implemented in ^random\_predator\_policy.py^. The function ^get\_probability\_mapping(state)^ returns a mapping of probabilities to mappings, and the super class ^Policy^ uses this to pick a next action in the function \\^pick\_next\_action(state, style)^.
+
+
+
+\section{Question 2: Iterative policy evaluation}
+We get the following result:\\
+^Number of Iterations:  14\\
+Predator(0,0), Prey(5,5):  0.00592929646611\\
+Predator(2,3), Prey(5,4):  0.21710271406\\
+Predator(2,10), Prey(10,0):  0.217283726157\\
+Predator(10,10), Prey(0,0):  1.48016672878^
+
+\section{Question 3: Policy Iteration}
 
 
 \section{Question 4: Value Iteration}
@@ -88,16 +99,6 @@ Gamma = 0.9 took 7 iterations and 31.8123779297 seconds to converge.
   \caption{Heatmaps of the final values for prey(5,5), illustrating the effect of the discount factor $\lambda$}\label{fig:1}
 \end{figure}
 
-\section{Question 2: Iterative policy evaluation}
-We get the following result:\\
-^Number of Iterations:  14\\
-Predator(0,0), Prey(5,5):  0.00592929646611\\
-Predator(2,3), Prey(5,4):  0.21710271406\\
-Predator(2,10), Prey(10,0):  0.217283726157\\
-Predator(10,10), Prey(0,0):  1.48016672878^
-
-\section{Question 3: Policy Iteration}
-
 \section{Question 5: Relative Position}
 We implemented a relative position in our code, but do to time constraints we were not able to get it working with the functions above. We considered encoding the state space as the Manhattan Distance from the Predator to the Prey. This reduces the size of the state space from $(11*11)**2$ = 14.641 to 10*10 = 100. 
 
@@ -112,5 +113,8 @@ One thing that needs to be considered when using this state encoding, is the tor
    \label{fig:state_diagram}
 \end{figure}
 \section{Conclusion}
-It's all great.
+We have implemented the first 4 sub-assignments as explained in the assignment description. The relative position assignments was considered, but implementation was later removed due to time constraints. We plan on implementing this before delving into Assignment 2 however.
+
+\todo{Reflect on differences between policy iteration and value iteration}
+
 \end{document}
