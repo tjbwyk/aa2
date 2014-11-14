@@ -7,10 +7,11 @@ from models.predator import Predator
 from models.prey import Prey
 from models.policies.predatorpolicy import PredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
+from graphics import plot
 
 
 def main():
-    as014(verbose=True)
+    as014(verbose=True, plot_values=True)
     print "Done."
 
 
@@ -45,7 +46,7 @@ def calculate_value(state, field, policy, value, discount_factor):
     return max(next_values)
 
 
-def as014(verbose=True):
+def as014(verbose=True, plot_values=False):
     field = Field(11, 11)
     predator = Predator((0, 0))
     predator.policy = PredatorPolicy(predator, field)
@@ -89,6 +90,8 @@ def as014(verbose=True):
             #input("Press enter to continue")
             # convert to pandas DF for pretty print and save to CSV file in reports directory
             pandas.DataFrame(print_values).to_csv(path_or_buf="reports/valueiteration_gamma"+str(gamma)+".csv", sep=";")
+            if plot_values:
+                plot.value_heatmap(print_values, path="reports/valueiteration_gamma"+str(gamma)+".pdf")
         gamma_iterations.append(iterations)
         print "Gamma = " + str(gamma) + " took " + str(iterations) + " iterations and " + str(timeit.default_timer() - start) + " seconds to converge."
 
