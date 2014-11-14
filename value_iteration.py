@@ -113,9 +113,8 @@ def as014(verbose=True):
 
                         #print "  state: " + str(state) + " value: " + str(value)
                         print_values[state[0]] = value
-            # convert to pandas DF for pretty print
+            # convert to pandas DF for pretty print and save to CSV file in reports directory
             pandas.DataFrame(print_values).to_csv(path_or_buf="reports/valueiteration_gamma"+str(gamma)+".csv",sep=";")
-            #np.savetxt("valueiteration_gamma"+str(gamma)+".txt", print_values)
         gamma_iterations.append(iterations)
         print "Gamma = " + str(gamma) + " took " + str(iterations) + " iterations and " + str(timeit.default_timer() - start) + " seconds to converge."
 
