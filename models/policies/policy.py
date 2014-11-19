@@ -79,7 +79,7 @@ class Policy:
             else:
                 raise ValueError("style max_value requires parameter epsilon.")
             action_value = 0
-            for action in policy.agent.get_actions():
+            for action in self.agent.get_actions():
                 tmp_v = 0
                 for next_state in self.field.get_next_states(state, action):
                     tmp_prob = self.get_probability(state, next_state, action)
