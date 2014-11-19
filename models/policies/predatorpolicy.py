@@ -5,9 +5,9 @@ class PredatorPolicy(Policy, object):
     """
       implementation of the policy of the predator
     """
-
-    def __init__(self, agent, field, seed=None):
-        super(PredatorPolicy, self).__init__(agent, field, seed=seed)
+    #
+    # def __init__(self, agent, field, seed=None, q_value=None):
+    #     super(PredatorPolicy, self).__init__(agent, field, seed=seed,q_value=q_value)
 
     def get_probability_mapping(self, state):
         """

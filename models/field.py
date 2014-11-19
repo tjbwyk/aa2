@@ -18,6 +18,11 @@ class Field(object):
         result = map(lambda p: str(p) + "(" + str(p.location[0]) + "," + str(p.location[1]) + ")", self.players)
         return ", ".join(result)
 
+    def take_action(self, action):
+        self.get_predator().take_action(action)
+        self.get_prey().act()
+
+
     def get_new_coordinates(self, current_location, delta):
         (x, y) = current_location
         (delta_x, delta_y) = delta
@@ -97,12 +102,14 @@ class Field(object):
             found_all &= found_prey
         return found_all
 
-    def get_reward(self, state):
+    def get_reward(self, state = None):
         """
         returns a reward for the current state given
         :param state:
         :return:
         """
+        if state is None:
+            state = self.get_current_state()
         pred_loc, prey_loc = state
         if pred_loc == prey_loc:
             return 10

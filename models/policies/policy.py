@@ -6,9 +6,10 @@ class Policy:
     The policy describes the probabilities for a player to move in any direction.
     """
 
-    def __init__(self, agent, field, seed=None):
+    def __init__(self, agent, field, seed=None, qvalue=None):
         self.agent = agent
         self.field = field
+        self.qvalue = qvalue
         self.value = {state: 0.0 for state in field.get_all_states_with_terminal()}
         self.argmax_action = {state: (0,0) for state in field.get_all_states()}
         # initialize random number generator
@@ -64,7 +65,17 @@ class Policy:
                 raise ValueError("action not in legal actions of agent from State: ", state, ", NextState: ",
                                  next_state, ", action: ", action)
             return action
-        elif style == "egreedy":
+        elif style == "q-greedy":
+            max_qval = -1
+            max_action = (0,0)
+
+            for next_action in self.agent.get_actions():
+                if max_qval < self.qvalue[state,next_action]:
+                    max_action = next_action
+                    max_qval = self.qvalue[state,next_action]
+
+            return max_action
+        elif style == "q-egreedy":
             if "epsilon" in kwargs:
                 epsilon = kwargs.get("epsilon")
             else:
@@ -72,7 +83,7 @@ class Policy:
             if random.random() <= epsilon:
                 return self.pick_next_action(state, style="probabilistic")
             else:
-                return self.pick_next_action(state, style="greedy")
+                return self.pick_next_action(state, style="q-greedy")
         elif style == "max_value":
             if "gamma" in kwargs:
                 gamma = kwargs.get("gamma")

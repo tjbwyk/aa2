@@ -22,6 +22,9 @@ class Player(object):
         """
         return self.actions
 
+    def take_action(self, action):
+        self.location = self.field.get_new_coordinates(self.location,action)
+
     def act(self, seed=None):
         """
         update the location according to the action in the policy
