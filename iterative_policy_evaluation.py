@@ -4,6 +4,7 @@ from models.prey import Prey
 from models.policies.random_predator_policy import RandomPredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
 
+
 def run_iterative_policy_evaluation(verbose=True):
     if verbose:
         print "=== ITERATIVE POLICY EVALUATION ==="
@@ -30,7 +31,8 @@ def run_iterative_policy_evaluation(verbose=True):
     print "Predator(2,10), Prey(10,0): ", value[((2, 10), (10, 0))]
     print "Predator(10,10), Prey(0,0): ", value[((10, 10), (0, 0))]
 
-def iterative_policy_evaluation(field, discount_factor, all_states, change_epsilon = 0.001):
+
+def iterative_policy_evaluation(field, discount_factor, all_states, change_epsilon=0.001):
     # Initialise value array and temp array:
     policy = field.get_predator().policy
 
@@ -46,6 +48,7 @@ def iterative_policy_evaluation(field, discount_factor, all_states, change_epsil
         if delta_value < change_epsilon:
             go_on = False
     return iterations
+
 
 def calculate_value(state, field, policy, discount_factor):
     new_value = 0

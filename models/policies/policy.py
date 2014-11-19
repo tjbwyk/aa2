@@ -29,6 +29,8 @@ class Policy:
             - greedy: select thee action that yields the highest immediate reward
             - egreedy: select greey with probability 1-epsilon, and random with prob. epsilon
               (requires additional parameter epsilon)
+            - max_value: select the action that yields the highest value (immediate reward + gamma*value_of_next_state)
+              requires additional parameter gamma.
         :return:
         """
         if style == "probabilistic":
@@ -49,7 +51,6 @@ class Policy:
                     val = self.value[next_state]
                 elif val == self.value[next_state]:
                     selected_states.append(next_state)
-
             if len(selected_states) == 1:
                 next_state = selected_states[0]
             elif len(selected_states) > 1:
@@ -72,6 +73,22 @@ class Policy:
                 return self.pick_next_action(state, style="probabilistic")
             else:
                 return self.pick_next_action(state, style="greedy")
+        elif style == "max_value":
+            if "gamma" in kwargs:
+                gamma = kwargs.get("gamma")
+            else:
+                raise ValueError("style max_value requires parameter epsilon.")
+            action_value = 0
+            for action in policy.agent.get_actions():
+                tmp_v = 0
+                for next_state in self.field.get_next_states(state, action):
+                    tmp_prob = self.get_probability(state, next_state, action)
+                    tmp_rew = self.field.get_reward(next_state) + gamma * self.value[next_state]
+                    tmp_v += tmp_prob * tmp_rew
+                if tmp_v > action_value:
+                    best_action = action
+                    action_value = tmp_v
+            return best_action
         else:
             # given style not recognized
             raise ValueError("invalid value given for parameter style: " + str(style))
