@@ -19,12 +19,16 @@ class Policy:
         self.value = {state: 0.0 for state in self.field.get_all_states_with_terminal()}
         self.argmax_action = {state: (0,0) for state in self.field.get_all_states()}
 
-    def pick_next_action(self, state, style="probabilistic"):
+    def pick_next_action(self, state, style="probabilistic", **kwargs):
         """
         selects an action according to the action probability distribution of the policy
         :param state:
         :param actions:
         :param style:
+            - probabilistic: select a random action with equal probability
+            - greedy: select thee action that yields the highest immediate reward
+            - egreedy: select greey with probability 1-epsilon, and random with prob. epsilon
+              (requires additional parameter epsilon)
         :return:
         """
         if style == "probabilistic":
@@ -36,7 +40,6 @@ class Policy:
                 prob, action = prob_map.pop()
                 probability += prob
             return action
-
         elif style == "greedy":
             val = 0
             selected_states = []
@@ -56,12 +59,19 @@ class Policy:
             pred_pos, prey_pos = state
             next_pred_pos, next_prey_pos = next_state
             action = self.field.get_relative_position(pred_pos, next_pred_pos)
-
             if action not in self.agent.get_actions():
                 raise ValueError("action not in legal actions of agent from State: ", state, ", NextState: ",
                                  next_state, ", action: ", action)
-
             return action
+        elif style == "egreedy":
+            if "epsilon" in kwargs:
+                epsilon = kwargs.get("epsilon")
+            else:
+                raise ValueError("style egreedy requires parameter epsilon.")
+            if random.random() <= epsilon:
+                return self.pick_next_action(state, style="probabilistic")
+            else:
+                return self.pick_next_action(state, style="greedy")
         else:
             # given style not recognized
             raise ValueError("invalid value given for parameter style: " + str(style))
