@@ -20,7 +20,7 @@ class Player(object):
         returns the possible actions for the player
         :return: the possible actions
         """
-        return self.actions
+        return list(self.actions)
 
     def act(self, seed=None):
         """

@@ -12,7 +12,7 @@ class Predator(Player):
     def __str__(self):
         return "Predator"
 
-    def get_next_locations(self, state):
+    def get_next_locations_complete(self, state):
         """
         Get all possible next locations after executing an available action.
         :return: a list of location tuples.
