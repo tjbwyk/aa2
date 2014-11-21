@@ -1,4 +1,5 @@
 import random
+import numpy as np
 
 
 class Policy:
@@ -32,6 +33,9 @@ class Policy:
               (requires additional parameter epsilon)
             - max_value: select the action that yields the highest value (immediate reward + gamma*value_of_next_state)
               requires additional parameter gamma.
+            - softmax: varies the action probabilities as a graded function of estimated value. The greedy action is
+              still given the highest selection probability, but all the others are ranked and weighted according to
+              their value estimates. See section 2.3 in Sutton&Barto. Requires additional parameter tau.
         :return:
         """
         if style == "probabilistic":
@@ -43,6 +47,7 @@ class Policy:
                 prob, action = prob_map.pop()
                 probability += prob
             return action
+
         elif style == "greedy":
             val = 0
             selected_states = []
@@ -65,16 +70,16 @@ class Policy:
                 raise ValueError("action not in legal actions of agent from State: ", state, ", NextState: ",
                                  next_state, ", action: ", action)
             return action
+
         elif style == "q-greedy":
             max_qval = -1
-            max_action = (0,0)
-
+            max_action = (0, 0)
             for next_action in self.agent.get_actions():
-                if max_qval < self.qvalue[state,next_action]:
+                if max_qval < self.qvalue[state, next_action]:
                     max_action = next_action
-                    max_qval = self.qvalue[state,next_action]
-
+                    max_qval = self.qvalue[state, next_action]
             return max_action
+
         elif style == "q-egreedy":
             if "epsilon" in kwargs:
                 epsilon = kwargs.get("epsilon")
@@ -84,6 +89,7 @@ class Policy:
                 return self.pick_next_action(state, style="probabilistic")
             else:
                 return self.pick_next_action(state, style="q-greedy")
+
         elif style == "max_value":
             if "gamma" in kwargs:
                 gamma = kwargs.get("gamma")
@@ -100,6 +106,23 @@ class Policy:
                     best_action = action
                     action_value = tmp_v
             return best_action
+
+        elif style == "softmax":
+            if "tau" in kwargs:
+                tau = kwargs.get("tau")
+            else:
+                raise ValueError("style max_value requires parameter tau (aka temperature).")
+            sum_of_action_values = sum([np.exp(self.qvalue[state, next_action]/tau)
+                                        for next_action in self.agent.get_actions()])
+            action_probabilities = [(np.exp(self.qvalue[state, next_action]/tau)/sum_of_action_values, next_action)
+                                    for next_action in self.agent.get_actions()]
+            # probabilistic style for these probabilities
+            move = random.random()
+            probability = 0.0
+            while move > probability and len(action_probabilities) > 0:
+                prob, action = action_probabilities.pop()
+                probability += prob
+            return action
         else:
             # given style not recognized
             raise ValueError("invalid value given for parameter style: " + str(style))
