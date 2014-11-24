@@ -20,22 +20,20 @@ def run_iterative_policy_evaluation(verbose=True):
     discount_factor = 0.8
 
     all_states = field.get_all_states()
-
     iterations = iterative_policy_evaluation(field, discount_factor, all_states, change_epsilon)
-
     value = field.get_predator().policy.value
 
     print "IPE Iterations: ", iterations
-    print "Predator(0,0), Prey(5,5): ", value[((0, 0), (5, 5))]
-    print "Predator(2,3), Prey(5,4): ", value[((2, 3), (5, 4))]
-    print "Predator(2,10), Prey(10,0): ", value[((2, 10), (10, 0))]
-    print "Predator(10,10), Prey(0,0): ", value[((10, 10), (0, 0))]
+    print value
+    # print "Predator(0,0), Prey(5,5): ", value[((0, 0), (5, 5))]
+    # print "Predator(2,3), Prey(5,4): ", value[((2, 3), (5, 4))]
+    # print "Predator(2,10), Prey(10,0): ", value[((2, 10), (10, 0))]
+    # print "Predator(10,10), Prey(0,0): ", value[((10, 10), (0, 0))]
 
 
 def iterative_policy_evaluation(field, discount_factor, all_states, change_epsilon=0.001):
     # Initialise value array and temp array:
     policy = field.get_predator().policy
-
     iterations = 0
     go_on = True
     while go_on:
@@ -55,7 +53,6 @@ def calculate_value(state, field, policy, discount_factor):
     for prob, action in policy.get_probability_mapping(state):
         tmp_v = 0
         for next_state in field.get_next_states(state, action):
-            # for next_state in all_states:
             tmp_prob = policy.get_probability(state, next_state, action)
             tmp_rew = field.get_reward(next_state) + discount_factor * policy.value[next_state]
             tmp_v += tmp_prob * tmp_rew

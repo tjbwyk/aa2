@@ -1,7 +1,7 @@
 from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
-from models.policies.predatorpolicy import PredatorPolicy
+from models.policies.random_predator_policy import RandomPredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
 from iterative_policy_evaluation import iterative_policy_evaluation
 import timeit
@@ -13,8 +13,8 @@ from graphics import plot
 def init_environment():
     field = Field(11, 11)
     predator = Predator((0, 0))
-    #    predator.policy = RandomPredatorPolicy(predator, field)
-    predator.policy = PredatorPolicy(predator, field)
+#    predator.policy = RandomPredatorPolicy(predator, field)
+    predator.policy = RandomPredatorPolicy(predator, field)
     chip = Prey((5, 5))
     chip.policy = RandomPreyPolicy(chip, field)
     field.add_player(predator)

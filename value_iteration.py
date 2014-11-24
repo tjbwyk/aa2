@@ -7,7 +7,7 @@ import pandas
 from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
-from models.policies.predatorpolicy import PredatorPolicy
+from models.policies.random_predator_policy import RandomPredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
 from graphics import plot
 
@@ -22,22 +22,13 @@ def calculate_value(state, field, policy, value, discount_factor):
     :param discount_factor: gamma
     :return: the new value of the current state
     """
-    next_states = field.get_next_states(state)
     next_values = []
     # Loop over all actions
     for action in policy.agent.get_actions():
-        tmp_ns = []
-        cur_pred_pos, cur_prey_pos = state
-        # Get the next location resulting from this action
-        next_loc = field.get_new_coordinates(cur_pred_pos, action)
-
-        # Select all next states for which the predator end up in this location
-        for ns in next_states:
-            if ns[0] == next_loc:
-                tmp_ns.append(ns)
+        next_states = field.get_next_states(state, action)
 
         # Using only the states that we actually end up in for this action, calculate the value of that action
-        for next_state in tmp_ns:
+        for next_state in next_states:
             # for next_state in all_states:
             tmp_prob = policy.get_probability(state, next_state, action)
             tmp_rew = field.get_reward(next_state) + discount_factor * value[next_state]
@@ -51,7 +42,7 @@ def run_value_iteration(verbose=True, plot_values=False):
         print "=== VALUE ITERATION ==="
     field = Field(11, 11)
     predator = Predator((0, 0))
-    predator.policy = PredatorPolicy(predator, field)
+    predator.policy = RandomPredatorPolicy(predator, field)
     chip = Prey((5, 5))
     chip.policy = RandomPreyPolicy(chip, field)
     field.add_player(predator)
