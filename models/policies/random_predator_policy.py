@@ -6,8 +6,8 @@ class RandomPredatorPolicy(Policy, object):
       implementation of the policy of the predator
     """
 
-    def __init__(self, agent, field, seed=None):
-        super(RandomPredatorPolicy, self).__init__(agent, field, seed=seed)
+    def __init__(self, agent, field, seed=None, qvalue=None):
+        super(RandomPredatorPolicy, self).__init__(agent, field, seed=seed, qvalue=qvalue)
 
     def get_probability_mapping(self, state):
         """

@@ -2,7 +2,7 @@
 from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
-from models.policies.predatorpolicy import PredatorPolicy
+from models.policies.random_predator_policy import RandomPredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
 import collections
 
@@ -28,7 +28,7 @@ def run_q_learning(learning_rate = 0.1, discount_factor = 0.9, epsilon=0.1, valu
     # Initialize env:
     field = Field(11, 11)
     predator = Predator((0, 0))
-    predator.policy = PredatorPolicy(predator, field)
+    predator.policy = RandomPredatorPolicy(predator, field)
     chip = Prey((5, 5))
     chip.policy = RandomPreyPolicy(chip, field)
     field.add_player(predator)
@@ -38,7 +38,7 @@ def run_q_learning(learning_rate = 0.1, discount_factor = 0.9, epsilon=0.1, valu
     q_value = collections.defaultdict(lambda: value_init)
 
     # Set policy
-    policy = PredatorPolicy(predator,field,qvalue=q_value)
+    policy = RandomPredatorPolicy(predator,field,qvalue=q_value)
 
     episode_runs = []
     for i in range(1,num_episodes):
