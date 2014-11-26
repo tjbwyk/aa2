@@ -1,13 +1,24 @@
 __author__ = 'fbuettner'
 import Tkinter as tk
+import time
+from models.field import Field
+from models.predator import Predator
+from models.prey import Prey
+from models.policies.random_predator_policy import RandomPredatorPolicy
+from models.policies.random_prey_policy import RandomPreyPolicy
+
+#def update
 
 
 class GameFrame(tk.Frame):
-    def __init__(self, master=None):
+    def __init__(self, master=None, field=None):
         tk.Frame.__init__(self, master)
+        self.root = tk.Tk()
+        self.master.title("AA1-GUI")
+        self.field = field
+        self.rows = self.field.height
+        self.columns = self.field.width
         self.xoffset = self.yoffset = 20
-        self.rows = 11
-        self.columns = 11
         self.cellwidth = 50
         self.cellheight = 50
         self.width = (2 * self.xoffset) + (self.rows * self.cellwidth)
@@ -16,9 +27,14 @@ class GameFrame(tk.Frame):
         self.grid()
         self.create_field_grid()
         self.create_icons()
-        self.draw_state(state=((1, 1), (5, 5)), trace=False)
-        self.draw_state(state=((1, 3), (7, 5)), trace=True)
-        self.draw_state(state=((0, 3), (7, 0)), trace=True)
+        self.root.update()
+        self.root.after(25)
+        #self.draw_state(state=((1, 1), (5, 5)), trace=False)
+        #self.draw_state(state=((1, 3), (7, 5)), trace=True)
+        #self.draw_state(state=((0, 3), (7, 0)), trace=True)
+
+    def update(self):
+        self.draw_state(state=self.field.get_current_state_complete(), trace=True)
 
 
     def create_widgets(self):
@@ -50,18 +66,30 @@ class GameFrame(tk.Frame):
             # predator trace
             start = self.get_field_center(predator_location_old[0], predator_location_old[1])
             end = self.get_field_center(predator_location_new[0], predator_location_new[1])
-            self.canvas.create_line(start.get("x"), start.get("y"), end.get("x"), end.get("y"), fill="red")
+            # add +1 to separate from blue line
+            self.canvas.create_line(start.get("x")+1, start.get("y")+1, end.get("x")+1, end.get("y")+1, fill="red")
             # prey trace
             start = self.get_field_center(prey_location_old[0], prey_location_old[1])
             end = self.get_field_center(prey_location_new[0], prey_location_new[1])
-            self.canvas.create_line(start.get("x"), start.get("y"), end.get("x"), end.get("y"), fill="blue")
+            # subtract -1 to separate from red line (1px in between)
+            self.canvas.create_line(start.get("x")-1, start.get("y")-1, end.get("x")-1, end.get("y")-1, fill="blue")
         predator_dx = predator_location_new[0] - predator_location_old[0]
         predator_dy = predator_location_new[1] - predator_location_old[1]
         prey_dx = prey_location_new[0] - prey_location_old[0]
         prey_dy = prey_location_new[1] - prey_location_old[1]
         self.canvas.move(self.c_predator, predator_dx * self.cellwidth, predator_dy * self.cellheight)
         self.canvas.move(self.c_prey, prey_dx * self.cellwidth, prey_dy * self.cellheight)
+        # if both players are in the same cell, bake red background color and redraw images so they are on top
+        if predator_location_new == prey_location_new:
+            x1 = self.xoffset + predator_location_new[0] * self.cellheight
+            x2 = x1 + self.cellheight
+            y1 = self.yoffset + predator_location_new[1] * self.cellwidth
+            y2 = y1 + self.cellwidth
+            self.canvas.create_rectangle(x1, y1, x2, y2, fill="#CC0000")
+            self.canvas.create_image(x1, y1, anchor="nw", image=self.predator_icon)
+            self.canvas.create_image(x1, y1, anchor="nw", image=self.prey_icon)
         self.state = state
+        self.root.update()
         return None
 
     def get_field_center(self, col, row):
@@ -77,6 +105,21 @@ class GameFrame(tk.Frame):
 
 
 if __name__ == "__main__":
-    gui = GameFrame()
-    gui.master.title("AA1-GUI")
+    environment = Field(11, 11)
+    fatcat = Predator((0, 0))
+    fatcat.policy = RandomPredatorPolicy(fatcat, environment)
+    chip = Prey((5, 5))
+    chip.policy = RandomPreyPolicy(chip, environment)
+    environment.add_player(fatcat)
+    environment.add_player(chip)
+    gui = GameFrame(field=environment)
+    gui.draw_state(environment.get_current_state_complete())
+    i = 0
+    while not environment.is_ended():
+        fatcat.act()
+        chip.act()
+        # print environment
+        gui.update()
+        i += 1
+        time.sleep(0.1)
     gui.mainloop()
