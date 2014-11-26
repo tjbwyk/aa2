@@ -4,7 +4,7 @@ from models.predator import Predator
 from models.prey import Prey
 from models.policies.random_predator_policy import RandomPredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
-import collections
+
 
 def max_action_value_for_q(Q_value, state, predator):
     max = 0
@@ -28,31 +28,22 @@ def run_q_learning(learning_rate = 0.1, discount_factor = 0.9, epsilon=0.1, valu
     # Initialize env:
     field = Field(11, 11)
     predator = Predator((0, 0))
-    predator.policy = RandomPredatorPolicy(predator, field)
+    predator.policy = RandomPredatorPolicy(predator, field, value_init=value_init)
     chip = Prey((5, 5))
     chip.policy = RandomPreyPolicy(chip, field)
     field.add_player(predator)
     field.add_player(chip)
 
-    # Initialize Q(s,a) optimistically with a value of value_init
-    q_value = collections.defaultdict(lambda: value_init)
-
-    # Set policy
-    policy = RandomPredatorPolicy(predator,field,qvalue=q_value)
-
     episode_runs = []
-    for i in range(1,num_episodes):
+    for i in range(1, num_episodes):
         predator.location = (0,0)
         chip.location     = (5,5)
         cur_state = field.get_current_state()
         steps = 0
         while not field.is_ended():
-            action = policy.pick_next_action(cur_state, style="q-egreedy",epsilon=epsilon)
-            field.take_action(action)
-            reward = field.get_reward()
+            pred_action, prey_action, reward = field.act(style="q-egreedy", epsilon=epsilon)
             new_state = field.get_current_state()
-
-            q_value[cur_state,action] = compute_q_value(q_value, cur_state, action, reward, new_state, predator, learning_rate, discount_factor)
+            field.get_predator().policy.q_value[cur_state, pred_action] = compute_q_value(field.get_predator().policy.q_value, cur_state, pred_action, reward, new_state, predator, learning_rate, discount_factor)
 
             cur_state = new_state
             steps += 1

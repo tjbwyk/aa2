@@ -22,10 +22,7 @@ class Player(object):
         """
         return list(self.actions)
 
-    def take_action(self, action):
-        self.location = self.field.get_new_coordinates(self.location,action)
-
-    def act(self, seed=None):
+    def act(self, **kwargs):
         """
         update the location according to the action in the policy
         :return: nothing
@@ -34,5 +31,6 @@ class Player(object):
             print "No Policy set for Player, ", self.id
             raise
         else:
-            action = self.policy.pick_next_action(self.field.get_current_state())
+            action = self.policy.pick_next_action(self.field.get_current_state(), **kwargs)
             self.location = self.field.get_new_coordinates(self.location, action)
+            return action

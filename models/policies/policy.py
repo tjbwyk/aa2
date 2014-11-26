@@ -1,4 +1,5 @@
 import random
+import collections
 import numpy as np
 
 
@@ -6,22 +7,32 @@ class Policy:
     """
     The policy describes the probabilities for a player to move in any direction.
     """
+    def __init__(self, agent, field, seed=None, value_init=None):
 
-    def __init__(self, agent, field, seed=None, qvalue=None):
-        self.agent = agent
-        self.field = field
-        self.qvalue = qvalue
-        self.value = {state: 0.0 for state in field.get_all_states_with_terminal()}
-        self.argmax_action = {state: (0,0) for state in field.get_all_states()}
         # initialize random number generator
         if seed is not None:
             random.seed(seed)
 
-    def reset_planning(self):
+        self.agent = agent
+        self.field = field
+        self.reset_planning(value_init)
+
         self.value = {state: 0.0 for state in self.field.get_all_states_with_terminal()}
         self.argmax_action = {state: (0,0) for state in self.field.get_all_states()}
 
-    def pick_next_action(self, state, style="probabilistic", **kwargs):
+        # Initialize Q(s,a) optimistically with a value of value_init
+        self.q_value = collections.defaultdict(lambda: value_init)
+
+
+
+    def reset_planning(self, value_init=None):
+        self.value = {state: 0.0 for state in self.field.get_all_states_with_terminal()}
+        self.argmax_action = {state: (0,0) for state in self.field.get_all_states()}
+
+        # Initialize Q(s,a) optimistically with a value of value_init
+        self.q_value = collections.defaultdict(lambda: value_init)
+
+    def pick_next_action(self, state, **kwargs):
         """
         selects an action according to the action probability distribution of the policy
         :param state:
@@ -29,7 +40,7 @@ class Policy:
         :param style:
             - probabilistic: select a random action with equal probability
             - greedy: select thee action that yields the highest immediate reward
-            - egreedy: select greey with probability 1-epsilon, and random with prob. epsilon
+            - egreedy: select greedy with probability 1-epsilon, and random with prob. epsilon
               (requires additional parameter epsilon)
             - max_value: select the action that yields the highest value (immediate reward + gamma*value_of_next_state)
               requires additional parameter gamma.
@@ -38,6 +49,11 @@ class Policy:
               their value estimates. See section 2.3 in Sutton&Barto. Requires additional parameter tau.
         :return:
         """
+        if "style" in kwargs:
+            style = kwargs.get("style")
+        else:
+            style = "probabilistic"
+
         if style == "probabilistic":
             move = random.random()
             # select the action that belongs to random move value
@@ -75,9 +91,9 @@ class Policy:
             max_qval = -1
             max_action = (0, 0)
             for next_action in self.agent.get_actions():
-                if max_qval < self.qvalue[state, next_action]:
+                if max_qval < self.q_value[state, next_action]:
                     max_action = next_action
-                    max_qval = self.qvalue[state, next_action]
+                    max_qval = self.q_value[state, next_action]
             return max_action
 
         elif style == "q-egreedy":

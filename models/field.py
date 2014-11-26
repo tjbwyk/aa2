@@ -1,8 +1,10 @@
 import numpy as np
+import random
 
 from models.predator import Predator
 from models.prey import Prey
-
+from models.policies.random_predator_policy import RandomPredatorPolicy
+from models.policies.random_prey_policy import RandomPreyPolicy
 
 class Field(object):
     """
@@ -18,10 +20,19 @@ class Field(object):
         result = map(lambda p: str(p) + "(" + str(p.location[0]) + "," + str(p.location[1]) + ")", self.players)
         return ", ".join(result)
 
-    def take_action(self, action):
-        self.get_predator().take_action(action)
-        self.get_prey().act()
+    def act(self, **kwargs):
+        pred_act = self.get_predator().act(**kwargs)
+        prey_act = self.get_prey().act()
+        reward = self.get_reward()
+        return pred_act, prey_act, reward
 
+
+    def init_default_environment(self, pred_loc=(0, 0), prey_loc=(5, 5), value_init=15):
+        field = Field(11, 11)
+        field.add_player(Predator(pred_loc))
+        field.add_player(Prey(prey_loc))
+        self.get_predator().policy = RandomPredatorPolicy(self.get_predator(), field, value_init)
+        self.get_prey().policy = RandomPreyPolicy(self.get_prey(), field, value_init)
 
     def get_new_coordinates(self, current_location, delta):
         (x, y) = current_location
@@ -99,6 +110,13 @@ class Field(object):
                 res += "|"
             res += "\n"
         return res
+
+    def pick_random_start(self):
+        startState = random.choice(self.get_all_states_complete())
+        predPos, preyPos = startState
+        self.get_predator().location = predPos
+        self.get_prey().location = preyPos
+
 
     def is_ended(self):
         """
