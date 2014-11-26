@@ -6,8 +6,7 @@ from models.predator import Predator
 from models.prey import Prey
 from models.policies.random_predator_policy import RandomPredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
-
-#def update
+import pkg_resources
 
 
 class GameFrame(tk.Frame):
@@ -53,8 +52,9 @@ class GameFrame(tk.Frame):
                 self.canvas.create_rectangle(x1, y1, x2, y2)
 
     def create_icons(self):
-        self.predator_icon = tk.PhotoImage(file="images/predator.gif")
-        self.prey_icon = tk.PhotoImage(file="images/prey.gif")
+        self.predator_icon = tk.PhotoImage(file=pkg_resources.resource_filename('gui', 'images/predator.gif'))
+        self.prey_icon = tk.PhotoImage(file=pkg_resources.resource_filename('gui', 'images/prey.gif'))
+        self.prey_dead_icon = tk.PhotoImage(file=pkg_resources.resource_filename('gui', 'images/prey_dead.gif'))
         self.c_predator = self.canvas.create_image(self.xoffset, self.yoffset, anchor="nw", image=self.predator_icon)
         self.c_prey = self.canvas.create_image(self.xoffset, self.yoffset, anchor="nw", image=self.prey_icon)
         return None
@@ -77,17 +77,16 @@ class GameFrame(tk.Frame):
         predator_dy = predator_location_new[1] - predator_location_old[1]
         prey_dx = prey_location_new[0] - prey_location_old[0]
         prey_dy = prey_location_new[1] - prey_location_old[1]
-        self.canvas.move(self.c_predator, predator_dx * self.cellwidth, predator_dy * self.cellheight)
-        self.canvas.move(self.c_prey, prey_dx * self.cellwidth, prey_dy * self.cellheight)
         # if both players are in the same cell, bake red background color and redraw images so they are on top
         if predator_location_new == prey_location_new:
             x1 = self.xoffset + predator_location_new[0] * self.cellheight
             x2 = x1 + self.cellheight
             y1 = self.yoffset + predator_location_new[1] * self.cellwidth
             y2 = y1 + self.cellwidth
-            self.canvas.create_rectangle(x1, y1, x2, y2, fill="#CC0000")
-            self.canvas.create_image(x1, y1, anchor="nw", image=self.predator_icon)
-            self.canvas.create_image(x1, y1, anchor="nw", image=self.prey_icon)
+            self.canvas.create_rectangle(x1, y1, x2, y2, fill="#F0AFBB")
+            self.canvas.create_image(x1, y1, anchor="nw", image=self.prey_dead_icon)
+        self.canvas.move(self.c_predator, predator_dx * self.cellwidth, predator_dy * self.cellheight)
+        self.canvas.move(self.c_prey, prey_dx * self.cellwidth, prey_dy * self.cellheight)
         self.state = state
         self.root.update()
         return None
