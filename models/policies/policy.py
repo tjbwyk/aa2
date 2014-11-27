@@ -146,7 +146,6 @@ class Policy:
                 "\nUsage:" + self.pick_next_action.__doc__)
         return None
 
-
     def return_q_values(self, state):
         acts = self.agent.get_actions()
         return [(self.q_value[state, action], action) for action in acts]
