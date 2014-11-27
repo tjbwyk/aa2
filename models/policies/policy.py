@@ -7,7 +7,7 @@ class Policy:
     """
     The policy describes the probabilities for a player to move in any direction.
     """
-    def __init__(self, agent, field, seed=None, value_init=None):
+    def __init__(self, agent, field, default_probmapping, seed=None, value_init=None):
 
         # initialize random number generator
         if seed is not None:
@@ -22,6 +22,7 @@ class Policy:
 
         # Initialize Q(s,a) optimistically with a value of value_init
         self.q_value = collections.defaultdict(lambda: value_init)
+        self.prob_mapping = collections.defaultdict(lambda: default_probmapping)
 
 
 
@@ -128,9 +129,9 @@ class Policy:
                 tau = kwargs.get("tau")
             else:
                 raise ValueError("style max_value requires parameter tau (aka temperature).")
-            sum_of_action_values = sum([np.exp(self.qvalue[state, next_action]/tau)
+            sum_of_action_values = sum([np.exp(self.q_value[state, next_action]/tau)
                                         for next_action in self.agent.get_actions()])
-            action_probabilities = [(np.exp(self.qvalue[state, next_action]/tau)/sum_of_action_values, next_action)
+            action_probabilities = [(np.exp(self.q_value[state, next_action]/tau)/sum_of_action_values, next_action)
                                     for next_action in self.agent.get_actions()]
             # probabilistic style for these probabilities
             move = random.random()
@@ -142,3 +143,7 @@ class Policy:
         else:
             # given style not recognized
             raise ValueError("invalid value given for parameter style: " + str(style))
+
+    def return_q_values(self, state):
+        acts = self.agent.get_actions()
+        return [(self.q_value[state, action], action) for action in acts]

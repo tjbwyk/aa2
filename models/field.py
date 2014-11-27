@@ -6,6 +6,14 @@ from models.prey import Prey
 from models.policies.random_predator_policy import RandomPredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
 
+def init_default_environment(pred_loc=(0, 0), prey_loc=(5, 5), value_init=15):
+    field = Field(11, 11)
+    field.add_player(Predator(pred_loc))
+    field.add_player(Prey(prey_loc))
+    field.get_predator().policy = RandomPredatorPolicy(field.get_predator(), field, value_init)
+    field.get_prey().policy = RandomPreyPolicy(field.get_prey(), field, value_init)
+    return field
+
 class Field(object):
     """
     the playground
@@ -25,14 +33,6 @@ class Field(object):
         prey_act = self.get_prey().act()
         reward = self.get_reward()
         return pred_act, prey_act, reward
-
-
-    def init_default_environment(self, pred_loc=(0, 0), prey_loc=(5, 5), value_init=15):
-        field = Field(11, 11)
-        field.add_player(Predator(pred_loc))
-        field.add_player(Prey(prey_loc))
-        self.get_predator().policy = RandomPredatorPolicy(self.get_predator(), field, value_init)
-        self.get_prey().policy = RandomPreyPolicy(self.get_prey(), field, value_init)
 
     def get_new_coordinates(self, current_location, delta):
         (x, y) = current_location

@@ -8,8 +8,8 @@ class RandomPreyPolicy(Policy, object):
       implementation of the policy of the predator
     """
 
-    def __init__(self, agent, field, seed=None):
-        super(RandomPreyPolicy, self).__init__(agent, field, seed=seed)
+    def __init__(self, agent, field, seed=None, value_init=None):
+        super(RandomPreyPolicy, self).__init__(agent, field, [], seed=seed, value_init=None)
 
     def get_probability_mapping(self, state):
         """

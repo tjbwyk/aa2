@@ -7,7 +7,9 @@ class RandomPredatorPolicy(Policy, object):
     """
 
     def __init__(self, agent, field, seed=None, value_init=None):
-        super(RandomPredatorPolicy, self).__init__(agent, field, seed=seed, value_init=value_init)
+        super(RandomPredatorPolicy, self).__init__(agent, field,
+                                                   [(0.2, (0, 0)), (0.2, (-1, 0)), (0.2, (1, 0)), (0.2, (0, -1)), (0.2, (0, 1))],
+                                                   seed=seed, value_init=value_init)
 
     def get_probability_mapping(self, state):
         """
@@ -16,8 +18,7 @@ class RandomPredatorPolicy(Policy, object):
         [(0.2, (0,0)), (0.2, (-1,0)), (0.2, (1,0)), (0.2, (0,-1)), (0.2, (0, 1))]
         since all moves are equally probable, simply return 0.2
         """
-        return [(0.2, (0, 0)), (0.2, (-1, 0)), (0.2, (1, 0)), (0.2, (0, -1)), (0.2, (0, 1))]
-
+        return self.default_probmapping[state]
 
 
     def get_probability(self, state, next_state, action):
