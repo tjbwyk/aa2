@@ -32,8 +32,8 @@ class GameFrame(tk.Frame):
         #self.draw_state(state=((1, 3), (7, 5)), trace=True)
         #self.draw_state(state=((0, 3), (7, 0)), trace=True)
 
-    def update(self):
-        self.draw_state(state=self.field.get_current_state_complete(), trace=True)
+    def update(self, trace=True):
+        self.draw_state(state=self.field.get_current_state_complete(), trace=trace)
 
 
     def create_widgets(self):

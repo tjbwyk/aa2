@@ -4,18 +4,44 @@ On Policy Monte-Carlo Control
 """
 import numpy as np
 import models.field
+import time
+from graphics.gui import GameFrame
+
+def run_on_policy_montecarlo(num_episodes=100, discount_factor=0.7, verbose=False, gui=False):
+    """
+    wrapper function to simulate multiple episodes of on-policy MC control.
+    :param num_episodes: how many episodes
+    :param discount_factor: gamma
+    :param verbose: if True: print progress (every 10%) to console
+    :param gui: if True: run on episode with the learned policy in the gui.
+    :return:
+    """
+    environment = models.field.init_default_environment()
+    for i in xrange(num_episodes):
+        on_policy_montecarlo(environment, discount_factor)
+        if verbose and i % (num_episodes / 10) == 0:
+            print i
+    if gui:
+        GUI = GameFrame(field=environment)
+        time.sleep(1)
+        environment.pick_random_start()
+        GUI.update(trace=False)
+        while not environment.is_ended():
+            environment.act()
+            GUI.update()
+            time.sleep(0.1)
 
 
-def on_policy_montecarlo(discount_factor=0.7):
+
+def on_policy_montecarlo(field, discount_factor=0.7):
     """
     Generate one episode of on-policy MC control
-    :param discount_factor:
+    :param discount_factor: gamma
     :return:
     """
     # returns for visited state-action pairs in this episode
     returns_list = []
-    # create default game environment and pick a random start state
-    field = models.field.init_default_environment()
+    # pick a random start state
     field.pick_random_start()
     # play one episode and add visited states to Q-value list
     while not field.is_ended():
@@ -79,6 +105,6 @@ def first_visit(sa_orig_list, discount_factor, policy, reward):
 
 
 if __name__ == '__main__':
-    on_policy_montecarlo()
+    run_on_policy_montecarlo(num_episodes=10, discount_factor=0.9, verbose=True, gui=True)
     print "Done."
 
