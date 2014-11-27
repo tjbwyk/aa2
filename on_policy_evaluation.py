@@ -43,6 +43,9 @@ def fill_policy(sa_list, policy, epsilon):
         update_prob_mapping.append(((1 - epsilon + epsilon / len(q_list)), tmp_act))
         policy.prob_mapping[state] = update_prob_mapping
 
+        update_prob_mapping = [(epsilon/len(q_list), act) for act in policy.agent.get_actions()]
+        update_prob_mapping.append(((1-epsilon+epsilon/len(q_list)), tmp_act))
+        policy.prob_mapping[state] = update_prob_mapping
 
 def first_visit(sa_orig_list, discount_factor, policy, reward):
     i = 0

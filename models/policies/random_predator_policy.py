@@ -18,7 +18,7 @@ class RandomPredatorPolicy(Policy, object):
         [(0.2, (0,0)), (0.2, (-1,0)), (0.2, (1,0)), (0.2, (0,-1)), (0.2, (0, 1))]
         since all moves are equally probable, simply return 0.2
         """
-        return self.default_probmapping[state]
+        return list(self.prob_mapping[state])
 
 
     def get_probability(self, state, next_state, action):

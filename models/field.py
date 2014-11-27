@@ -112,8 +112,8 @@ class Field(object):
         return res
 
     def pick_random_start(self):
-        startState = random.choice(self.get_all_states_complete())
-        predPos, preyPos = startState
+        startState = random.sample(self.get_all_states_complete(), 1)
+        predPos, preyPos = startState[0]
         self.get_predator().location = predPos
         self.get_prey().location = preyPos
 
