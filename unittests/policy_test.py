@@ -1,8 +1,23 @@
 import unittest
+from models.field import Field
+from models.predator import Predator
+from models.prey import Prey
+from models.policies.random_predator_policy import RandomPredatorPolicy
+from models.policies.random_prey_policy import RandomPreyPolicy
+
 
 
 class testPolicy(unittest.TestCase):
-    pass
+    def testPredatorPolicy(self):
+        field = Field(11, 11)
+        predator = Predator((0, 0))
+        predator.policy = RandomPredatorPolicy(predator, field)
+        chip = Prey((5, 5))
+        chip.policy = RandomPreyPolicy(chip, field)
+        field.add_player(predator)
+        field.add_player(chip)
+        predator.policy.pick_next_action(state=((1,1),(5,5)), style="foo")
+
     # def testPredatorPolicy(self):
     # field = Field(3, 3)
     #     predator = Predator((1, 1))
