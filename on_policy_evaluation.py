@@ -8,10 +8,9 @@ import models.field
 
 def on_policy_montecarlo(discount_factor=0.7):
     returns_list = []
-
     field = models.field.init_default_environment()
     field.pick_random_start()
-
+    # play one episode and add visited states to Q-value list
     while not field.is_ended():
         pred_act, prey_act, reward = field.act()
         state = field.get_current_state()
@@ -22,18 +21,25 @@ def on_policy_montecarlo(discount_factor=0.7):
 
 
 def fill_policy(sa_list, policy, epsilon):
+    """
+    after each episode, for each visited state find the optimal action according to maximal Q-values.
+    :param sa_list:
+    :param policy:
+    :param epsilon:
+    :return:
+    """
     states = set(s for s, a in sa_list)
     for state in states:
         q_list = policy.return_q_values(state)
-        tmpact = None
-        tmpy = -np.inf
+        tmp_act = None
+        tmp_y = -np.inf
         for x, y in q_list:
-            if y > tmpy:
-                tmpact = x
-                tmpy = y
-
+            if y > tmp_y:
+                tmp_act = x
+                tmp_y = y
+        # greedy action
         update_prob_mapping = [(epsilon / len(q_list), act) for act in policy.agent.get_actions()]
-        update_prob_mapping.append(((1 - epsilon + epsilon / len(q_list)), tmpact))
+        update_prob_mapping.append(((1 - epsilon + epsilon / len(q_list)), tmp_act))
         policy.default_probmapping[state] = update_prob_mapping
 
 
