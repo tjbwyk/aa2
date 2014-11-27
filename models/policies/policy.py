@@ -48,7 +48,7 @@ class Policy:
             - softmax: varies the action probabilities as a graded function of estimated value. The greedy action is
               still given the highest selection probability, but all the others are ranked and weighted according to
               their value estimates. See section 2.3 in Sutton&Barto. Requires additional parameter tau.
-        :return:
+        :return: action tuple according to policy
         """
         if "style" in kwargs:
             style = kwargs.get("style")
@@ -142,7 +142,9 @@ class Policy:
             return action
         else:
             # given style not recognized
-            raise ValueError("invalid value given for parameter style: " + str(style))
+            raise ValueError("invalid value given for parameter style: " + str(style) +
+                "\nUsage:" + self.pick_next_action.__doc__)
+        return None
 
     def return_q_values(self, state):
         acts = self.agent.get_actions()
