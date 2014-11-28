@@ -87,5 +87,5 @@ def run_q_learning(learning_rate=0.1, discount_factor=0.9, epsilon=0.1, value_in
 
 
 if __name__ == '__main__':
-    run_q_learning(verbose=True, gui=False, plot=True, num_episodes=10000)
+    run_q_learning(verbose=True, gui=True, plot=True, num_episodes=10000)
     print "Done."

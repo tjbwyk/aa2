@@ -8,7 +8,8 @@ class RandomPredatorPolicy(Policy, object):
 
     def __init__(self, agent, field, seed=None, value_init=None):
         super(RandomPredatorPolicy, self).__init__(agent, field,
-                                                   [(0.2, (0, 0)), (0.2, (-1, 0)), (0.2, (1, 0)), (0.2, (0, -1)), (0.2, (0, 1))],
+                                                   [(0.2, (0, 0)), (0.2, (-1, 0)), (0.2, (1, 0)), (0.2, (0, -1)),
+                                                    (0.2, (0, 1))],
                                                    seed=seed, value_init=value_init)
 
     def get_probability_mapping(self, state):
@@ -30,30 +31,30 @@ class RandomPredatorPolicy(Policy, object):
         :return: the probability of state leading to next_state given the action
         """
         return self.get_probability_relative(state, next_state, action)
-        #return self.get_probability_complete(state, next_state, action)
+        # return self.get_probability_complete(state, next_state, action)
 
     def get_probability_relative(self, state, next_state, action):
         possible_next_states = self.field.get_next_states_relative(state, action)
 
         next_pred_state = self.field.get_relative_movement(state, action)
 
-        #create a copy of all possible next states to calculate the new
-        #probabilities in case of a movement
+        # create a copy of all possible next states to calculate the new
+        # probabilities in case of a movement
         pruned_states = list(possible_next_states)
         pruned_states.remove(next_pred_state)
 
         if next_state in possible_next_states:
-            #if the predator stands next to the prey and moves to it it has no chance to escape
+            # if the predator stands next to the prey and moves to it it has no chance to escape
             if self.field.get_distance(state) == 1 and self.field.get_distance(next_state) == 0:
                 return 1
             # TODO remove magic numbers?
-            #chance of the prey standing still
+            # chance of the prey standing still
             elif next_pred_state == next_state:
                 return 0.8
-            #normal move in one direction
+            # normal move in one direction
             else:
                 return 0.2 / len(pruned_states)
-        #if the next state can't be reached from this state
+        # if the next state can't be reached from this state
         else:
             return 0
 
@@ -63,26 +64,26 @@ class RandomPredatorPolicy(Policy, object):
 
         next_prey_locations = self.field.get_prey().get_next_locations(state)
         # if action results in next state for predator, and the prey moves legally,
-        #calculate chances otherwise the move is illegal
+        # calculate chances otherwise the move is illegal
         if self.field.get_new_coordinates(cur_pred_loc,
                                           action) == next_pred_loc and next_prey_loc in next_prey_locations:
-            #if the predator stands next to the prey and moves to it it has no chance to escape
+            # if the predator stands next to the prey and moves to it it has no chance to escape
             if next_pred_loc == cur_prey_loc:
                 if cur_prey_loc == next_prey_loc:
                     return 1
                 else:
                     return 0
             # TODO remove magic numbers?
-            #chance of the prey standing still
+            # chance of the prey standing still
             elif next_prey_loc == cur_prey_loc:
                 return 0.8
-            #if the prey is next to the predator but the predator moves not to the location of the
-            #prey it just has 3 places to go, cause it can't move to the location of the predator
+            # if the prey is next to the predator but the predator moves not to the location of the
+            # prey it just has 3 places to go, cause it can't move to the location of the predator
             elif self.field.get_distance(state) == 1:
                 return 0.2 / 3
-            #normal move in one direction
+            # normal move in one direction
             else:
                 return 0.2 / 4
-        #if the next state can't be reached from this state
+        # if the next state can't be reached from this state
         else:
             return 0
