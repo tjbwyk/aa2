@@ -71,21 +71,18 @@ class Policy:
         elif style == "greedy":
             val = 0
             selected_states = []
-            for next_state in self.field.get_next_states(state):
+            for next_state, action in self.field.get_next_states_relative(state, with_actions=True):
                 if val < self.value[next_state]:
-                    selected_states = [next_state]
+                    selected_states = [(next_state, action)]
                     val = self.value[next_state]
                 elif val == self.value[next_state]:
-                    selected_states.append(next_state)
+                    selected_states.append((next_state, action))
             if len(selected_states) == 1:
-                next_state = selected_states[0]
+                next_state, action = selected_states[0]
             elif len(selected_states) > 1:
-                next_state = random.choice(selected_states)
+                next_state, action = random.choice(selected_states)
             else:
                 raise ValueError("no state found")
-            pred_pos, prey_pos = state
-            next_pred_pos, next_prey_pos = next_state
-            action = self.field.get_relative_position(pred_pos, next_pred_pos)
             if action not in self.agent.get_actions():
                 raise ValueError("action not in legal actions of agent from State: ", state, ", NextState: ",
                                  next_state, ", action: ", action)
@@ -100,7 +97,6 @@ class Policy:
                 return self.pick_next_action(state, style="probabilistic")
             else:
                 return self.pick_next_action(state, style="greedy")
-
 
         elif style == "q-greedy":
             max_qval = -1

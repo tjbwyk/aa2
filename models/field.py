@@ -7,7 +7,7 @@ from models.policies.random_predator_policy import RandomPredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
 
 def init_default_environment(pred_loc=(0, 0), prey_loc=(5, 5), value_init=5):
-    field = Field(3, 3)
+    field = Field(11, 11)
     field.add_player(Predator(pred_loc))
     field.add_player(Prey(prey_loc))
     field.get_predator().policy = RandomPredatorPolicy(field.get_predator(), field, value_init)
@@ -42,6 +42,29 @@ class Field(object):
             (y + delta_y) % self.height
         )
         return new_location
+
+    def get_relative_action(self, new_relative_state):
+        """
+        Compute the necessary action to get from the current relative state to a given new relative state.
+        :param new_relative_state: tuple of ints
+        :return: tuple of ints
+        """
+        def toroidal_delta(x1, x2, size=11):
+            """
+            subfunction returns the toroidal distance between two values in a ring of size
+            """
+            return size % (x1-x2) if x1 != x2 else 0
+        def max_action(a):
+            if a < -1:
+                return -1
+            elif a > 1:
+                return 1
+            else:
+                return a
+        current_state = self.get_current_state_relative()
+        dx = toroidal_delta(new_relative_state[0], current_state[0], self.width)
+        dy = toroidal_delta(new_relative_state[1], current_state[0], self.height)
+        return max_action(dx), max_action(dy)
 
     def get_relative_position(self, location1, location2):
         x1, y1 = location1
@@ -239,26 +262,37 @@ class Field(object):
         return self.get_next_states_relative(state, pred_action)
         #return self.get_next_states_complete(state, pred_action)
 
-    def get_next_states_relative(self, state, pred_action=None):
-
+    def get_next_states_relative(self, state, pred_action=None, with_actions=False):
         if pred_action is None:
-            next_pred_positions = [self.get_relative_movement(state, action) for action in self.get_predator().get_actions()]
+            if with_actions:
+                next_pred_positions = [(self.get_relative_movement(state, action), action) for action in self.get_predator().get_actions()]
+            else:
+                next_pred_positions = [self.get_relative_movement(state, action) for action in self.get_predator().get_actions()]
         else:
-            next_pred_positions = [self.get_relative_movement(state, pred_action)]
+            if with_actions:
+                next_pred_positions = [(self.get_relative_movement(state, pred_action), pred_action)]
+            else:
+                next_pred_positions = [self.get_relative_movement(state, pred_action)]
 
         prey_actions = self.get_prey().get_actions()
-
+        # prey does not move into predator
         if self.get_distance(state) == 1:
             x, y = state
             prey_actions.remove((-1*x, -1*y))
 
-        next_prey_positions = [self.get_relative_movement(next_state, action, player="prey")
-                               for next_state in next_pred_positions
-                               for action in prey_actions
-                               if next_state != (0, 0)]
+        if with_actions:
+            next_prey_positions = [(self.get_relative_movement(next_state, action, player="prey"), pred_action_to_state)
+                                   for (next_state, pred_action_to_state) in next_pred_positions
+                                   for action in prey_actions
+                                   if next_state != (0, 0)]
+        else:
+            next_prey_positions = [self.get_relative_movement(next_state, action, player="prey")
+                                   for next_state in next_pred_positions
+                                   for action in prey_actions
+                                   if next_state != (0, 0)]
 
         if (0, 0) in next_pred_positions:
-            next_prey_positions.append((0,0))
+            next_prey_positions.append((0, 0))
 
         return next_prey_positions
 
