@@ -48,7 +48,7 @@ def compute_q_value(Q_value, cur_state, action, reward, new_state, predator, lea
              )
     return result
 
-def run(learning_rate=0.1, discount_factor=0.9, epsilon=0.1, tau=0.1, value_init=15, num_episodes=1000, verbose=True,policy_style="q-egreedy",
+def run(learning_rate=0.1, discount_factor=0.9, epsilon=0.1, tau=0.1, value_init=15, num_episodes=1000, verbose=True,policy_style="q-greedy",
                    gui=False, plot=False):
     """
     Run multiple Q-Learning episodes

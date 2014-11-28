@@ -10,10 +10,11 @@ import pkg_resources
 
 
 class GameFrame(tk.Frame):
-    def __init__(self, master=None, field=None):
+
+    def __init__(self, master=None, field=None, window_title=None):
         tk.Frame.__init__(self, master)
         self.root = tk.Tk()
-        self.master.title("AA1-GUI")
+        self.master.title(window_title if window_title is not None else "AA1-GUI")
         self.field = field
         self.rows = self.field.height
         self.columns = self.field.width
