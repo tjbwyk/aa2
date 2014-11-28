@@ -28,9 +28,9 @@ def run_on_policy_montecarlo(num_episodes=1000, discount_factor=0.7, verbose=Fal
             print environment.get_predator().policy.return_q_values((-1, 0))
             print [(environment.get_predator().policy.q_value[(0, -1), action], action) for action in
                    environment.get_predator().get_actions()]
-            print [(environment.get_predator().policy.q_value[(0, -1), action], action) for action in
+            print [(environment.get_predator().policy.returns[(0, -1), action], action) for action in
                    environment.get_predator().get_actions()]
-            print [(environment.get_predator().policy.q_value[(0, -1), action], action) for action in
+            print [(environment.get_predator().policy.prob_mapping[(0, -1), action], action) for action in
                    environment.get_predator().get_actions()]
             print "Q", environment.get_predator().policy.q_value
             print "R", environment.get_predator().policy.returns
@@ -48,12 +48,12 @@ def run_on_policy_montecarlo(num_episodes=1000, discount_factor=0.7, verbose=Fal
         environment.pick_random_start()
         GUI.update(trace=False)
         while not environment.is_ended():
-            environment.act(style="greedy")
+            environment.act(style="probabilistic")
             GUI.update()
             time.sleep(0.1)
 
 
-def on_policy_montecarlo(field, nr_episodes, epsilon=0.1):
+def on_policy_montecarlo(field, nr_episodes, epsilon=0.2):
     """
     Generate one episode of on-policy MC control
     :param discount_factor: gamma
@@ -67,8 +67,8 @@ def on_policy_montecarlo(field, nr_episodes, epsilon=0.1):
     i = 0
     while not field.is_ended():
         i += 1
-        pred_act, prey_act, reward = field.act(style="egreedy", epsilon=epsilon)
         state = field.get_current_state()
+        pred_act, prey_act, reward = field.act(style="probabilistic", epsilon=epsilon)
         returns_list.append((state, pred_act))
     # calculate first-visit Q-values
     first_visit(returns_list, field.get_predator().policy, nr_episodes, reward)
@@ -124,14 +124,14 @@ def first_visit(sa_orig_list, policy, nr_episodes, reward):
             returns_final.append(sa)
             state, action = sa
             count, value = policy.returns[state, action]
-            # value += discount**i*reward
-            value += reward
+            value += discount**i*reward
+            #value += reward
             count += 1
             policy.returns[state, action] = (count, value)
             policy.q_value[state, action] = float(value) / nr_episodes
 
 
 if __name__ == '__main__':
-    run_on_policy_montecarlo(num_episodes=5, verbose=True, gui=True)
+    run_on_policy_montecarlo(num_episodes=10000, verbose=True, gui=True)
     print "Done."
 

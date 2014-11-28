@@ -6,6 +6,7 @@ from models.prey import Prey
 from models.policies.random_predator_policy import RandomPredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
 
+
 def init_default_environment(pred_loc=(0, 0), prey_loc=(5, 5), value_init=5):
     field = Field(11, 11)
     field.add_player(Predator(pred_loc))
@@ -13,6 +14,7 @@ def init_default_environment(pred_loc=(0, 0), prey_loc=(5, 5), value_init=5):
     field.get_predator().policy = RandomPredatorPolicy(field.get_predator(), field, value_init)
     field.get_prey().policy = RandomPreyPolicy(field.get_prey(), field, value_init)
     return field
+
 
 class Field(object):
     """

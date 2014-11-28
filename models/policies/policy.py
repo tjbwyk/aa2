@@ -69,7 +69,6 @@ class Policy:
             while move > probability and len(prob_map) > 0:
                 prob, action = prob_map.pop()
                 probability += prob
-            self.prob_mapping
             if 'action' not in locals():
                 print state
             return action
