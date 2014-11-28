@@ -22,6 +22,8 @@ class Policy:
 
         # Initialize Q(s,a) optimistically with a value of value_init
         self.q_value = collections.defaultdict(lambda: value_init)
+        for action in self.agent.get_actions():
+           self.q_value[(0,0),action] = 0
         self.prob_mapping = collections.defaultdict(lambda: default_probmapping)
 
         self.returns = collections.defaultdict(lambda: (0, 0))
@@ -35,7 +37,8 @@ class Policy:
         self.q_value = collections.defaultdict(lambda: value_init)
         self.returns = collections.defaultdict(lambda: (0,0))
 
-
+        for action in self.agent.get_actions():
+           self.q_value[(0,0),action] = 0
     def pick_next_action(self, state, **kwargs):
         """
         selects an action according to the action probability distribution of the policy
@@ -66,6 +69,9 @@ class Policy:
             while move > probability and len(prob_map) > 0:
                 prob, action = prob_map.pop()
                 probability += prob
+            self.prob_mapping
+            if 'action' not in locals():
+                print state
             return action
 
         elif style == "greedy":

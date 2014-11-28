@@ -33,7 +33,11 @@ class Field(object):
         prey_act = self.get_prey().act()
         reward = self.get_reward()
         return pred_act, prey_act, reward
-
+    def act_with_action(self, pred_action):
+        self.get_predator().location = self.get_new_coordinates(self.get_predator().location, pred_action)
+        prey_act = self.get_prey().act()
+        reward = self.get_reward()
+        return pred_action, prey_act, reward
     def get_new_coordinates(self, current_location, delta):
         (x, y) = current_location
         (delta_x, delta_y) = delta
@@ -234,6 +238,19 @@ class Field(object):
                     for x in range(self.height) for y in range(self.width)
                     for i in range(self.height) for j in range(self.width)
                     if not (x == i and y == j)])
+
+    def get_best_actions(self,state):
+        result = []
+        if state[0] > 0:
+            result.append((1,0))
+        elif state[0] < 0:
+            result.append((-1,0))
+
+        if state[1] > 0:
+            result.append((0,1))
+        elif state[1] < 0:
+            result.append((0,-1))
+        return result
 
     def get_current_state(self):
         """

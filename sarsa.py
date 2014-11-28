@@ -29,22 +29,13 @@ def max_action_for_q(Q_value, state, predator):
 
     return max_action,max
 
-def max_action_value_for_q(Q_value, state, predator):
-    max = 0
-    for action in predator.get_actions():
-        tmp = Q_value[state, action]
-        if tmp > max:
-            max = tmp
+def compute_q_value(Q_value, old_state, old_action, new_action, reward, new_state, predator, learning_rate=0.1, discount_factor=0.9):
 
-    return max
-
-
-def compute_q_value(Q_value, cur_state, action, reward, new_state, predator, learning_rate=0.1, discount_factor=0.9):
-    result = Q_value[cur_state, action] + \
+    result = Q_value[old_state, old_action] + \
              learning_rate * (
                  reward +
-                 discount_factor * max_action_value_for_q(Q_value, new_state, predator) -
-                 Q_value[cur_state, action]
+                 discount_factor * Q_value[new_state,new_action] -
+                 Q_value[old_state, old_action]
              )
     return result
 
@@ -78,18 +69,28 @@ def run(learning_rate=0.1, discount_factor=0.9, epsilon=0.1, tau=0.1, value_init
     episode_runs = []
     percentage_correct = []
     for i in range(1, num_episodes):
+        # Initialize S
         predator.location = (0, 0)
         chip.location = (5, 5)
-        cur_state = field.get_current_state()
+        old_state = field.get_current_state()
+        # Choose A from S using policy derived from Q (e.g., e-greedy)
+        old_action = predator.policy.pick_next_action(old_state,style=policy_style, epsilon=epsilon,tau=tau)
         if gui:
             GUI.draw_state(field.get_current_state_complete())
         steps = 0
         while not field.is_ended():
-            pred_action, prey_action, reward = field.act(style=policy_style, epsilon=epsilon,tau=tau)
+            # Take action A, observe R, S'
+            _, prey_action, reward = field.act_with_action(old_action)
             new_state = field.get_current_state()
-            predator.policy.q_value[cur_state, pred_action] = compute_q_value(field.get_predator().policy.q_value, cur_state, pred_action, reward, new_state, predator, learning_rate, discount_factor)
+            # Choose A' from S' using policy derived from Q (e.g., e-greedy)
+            new_action = predator.policy.pick_next_action(new_state,style=policy_style, epsilon=epsilon,tau=tau)
 
-            cur_state = new_state
+            # Q(S, A) <- Q(S, A) + a[R + yQ(S', A') - Q(S, A)]
+            predator.policy.q_value[old_state, old_action] = compute_q_value(field.get_predator().policy.q_value, old_state, old_action, new_action, reward, new_state, predator, learning_rate, discount_factor)
+
+            # S <- S'; A <- A';
+            old_state = new_state
+            old_action = new_action
             if gui:
                 GUI.update()
                 time.sleep(0.02)
@@ -106,7 +107,7 @@ def run(learning_rate=0.1, discount_factor=0.9, epsilon=0.1, tau=0.1, value_init
     if plot:
         #action_values_relative(q_value, relative_state=(-3, 3), path="qlearning_values.pdf")
         title = "Relative actions after " + str(num_episodes) + " episodes of Q-Learning"
-        action_value_quiver_relative(predator.policy.q_value, path="qlearning_arrows.pdf", title=title)
+        action_value_quiver_relative(predator.policy.q_value, path="sarsa_arrows.pdf", title=title)
     return episode_runs, predator.policy.q_value, percentage_correct
 
 
