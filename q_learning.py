@@ -87,8 +87,8 @@ def run(learning_rate=0.1, discount_factor=0.9, epsilon=0.1, tau=0.1, value_init
         while not field.is_ended():
             pred_action, prey_action, reward = field.act(style=policy_style, epsilon=epsilon,tau=tau)
             new_state = field.get_current_state()
+            # update Q-value of old state after getting the new state and reward
             predator.policy.q_value[cur_state, pred_action] = compute_q_value(field.get_predator().policy.q_value, cur_state, pred_action, reward, new_state, predator, learning_rate, discount_factor)
-
             cur_state = new_state
             if gui:
                 GUI.update()
