@@ -45,10 +45,11 @@ class Policy:
         :param state:
         :param actions:
         :param style:
-            - probabilistic: select a random action with equal probability
-            - greedy: select thee action that yields the highest immediate reward
-            - egreedy: select greedy with probability 1-epsilon, and random with prob. epsilon
-              (requires additional parameter epsilon)
+            - probabilistic: select a random action with equal probability. This is the default.
+            - greedy: select thee action that yields the highest immediate reward. Optional parameter epsilon makes an
+              epsilon-greedy selection (random non-greedy action with probability epsilon)
+            - q-greedy: like greedy, but based on Q-Values (state-action values) instead of state-values. Optional
+              parameter epsilon.
             - max_value: select the action that yields the highest value (immediate reward + gamma*value_of_next_state)
               requires additional parameter gamma.
             - softmax: varies the action probabilities as a graded function of estimated value. The greedy action is
@@ -74,53 +75,47 @@ class Policy:
             return action
 
         elif style == "greedy":
-            val = 0
-            selected_states = []
-            for next_state, action in self.field.get_next_states_relative(state, with_actions=True):
-                if val < self.value[next_state]:
-                    selected_states = [(next_state, action)]
-                    val = self.value[next_state]
-                elif val == self.value[next_state]:
-                    selected_states.append((next_state, action))
-            if len(selected_states) == 1:
-                next_state, action = selected_states[0]
-            elif len(selected_states) > 1:
-                next_state, action = random.choice(selected_states)
+            if "epsilon" in kwargs:
+                epsilon = kwargs.get("epsilon")
             else:
-                raise ValueError("no state found")
-            if action not in self.agent.get_actions():
-                raise ValueError("action not in legal actions of agent from State: ", state, ", NextState: ",
-                                 next_state, ", action: ", action)
+                epsilon = 0
+            if random.random() <= epsilon:
+                return self.pick_next_action(state, style="probabilistic")
+            else:
+                val = 0
+                selected_states = []
+                for next_state, action in self.field.get_next_states_relative(state, with_actions=True):
+                    if val < self.value[next_state]:
+                        selected_states = [(next_state, action)]
+                        val = self.value[next_state]
+                    elif val == self.value[next_state]:
+                        selected_states.append((next_state, action))
+                if len(selected_states) == 1:
+                    next_state, action = selected_states[0]
+                elif len(selected_states) > 1:
+                    next_state, action = random.choice(selected_states)
+                else:
+                    raise ValueError("no state found")
+                if action not in self.agent.get_actions():
+                    raise ValueError("action not in legal actions of agent from State: ", state, ", NextState: ",
+                                     next_state, ", action: ", action)
             return action
 
-        elif style == "egreedy":
-            if "epsilon" in kwargs:
-                epsilon = kwargs.get("epsilon")
-            else:
-                raise ValueError("style egreedy requires parameter epsilon.")
-            if random.random() <= epsilon:
-                return self.pick_next_action(state, style="probabilistic")
-            else:
-                return self.pick_next_action(state, style="greedy")
-
         elif style == "q-greedy":
-            max_qval = -1
-            max_action = (0, 0)
-            for next_action in self.agent.get_actions():
-                if max_qval < self.q_value[state, next_action]:
-                    max_action = next_action
-                    max_qval = self.q_value[state, next_action]
-            return max_action
-
-        elif style == "q-egreedy":
             if "epsilon" in kwargs:
                 epsilon = kwargs.get("epsilon")
             else:
-                raise ValueError("style egreedy requires parameter epsilon.")
+                epsilon = 0
             if random.random() <= epsilon:
                 return self.pick_next_action(state, style="probabilistic")
             else:
-                return self.pick_next_action(state, style="q-greedy")
+                max_qval = -1
+                max_action = (0, 0)
+                for next_action in self.agent.get_actions():
+                    if max_qval < self.q_value[state, next_action]:
+                        max_action = next_action
+                        max_qval = self.q_value[state, next_action]
+                return max_action
 
         elif style == "max_value":
             if "gamma" in kwargs:
