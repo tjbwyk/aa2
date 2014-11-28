@@ -18,12 +18,13 @@ class Policy:
         self.reset_planning(value_init)
 
         self.value = {state: 0.0 for state in self.field.get_all_states_with_terminal()}
-        self.argmax_action = {state: (0,0) for state in self.field.get_all_states()}
+        self.argmax_action = {state: (0, 0) for state in self.field.get_all_states()}
 
         # Initialize Q(s,a) optimistically with a value of value_init
         self.q_value = collections.defaultdict(lambda: value_init)
         self.prob_mapping = collections.defaultdict(lambda: default_probmapping)
 
+        self.returns = collections.defaultdict(lambda: (0, 0))
 
 
     def reset_planning(self, value_init=None):
@@ -32,6 +33,8 @@ class Policy:
 
         # Initialize Q(s,a) optimistically with a value of value_init
         self.q_value = collections.defaultdict(lambda: value_init)
+        self.returns = collections.defaultdict(lambda: (0,0))
+
 
     def pick_next_action(self, state, **kwargs):
         """
