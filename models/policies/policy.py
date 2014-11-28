@@ -91,6 +91,17 @@ class Policy:
                                  next_state, ", action: ", action)
             return action
 
+        elif style == "egreedy":
+            if "epsilon" in kwargs:
+                epsilon = kwargs.get("epsilon")
+            else:
+                raise ValueError("style egreedy requires parameter epsilon.")
+            if random.random() <= epsilon:
+                return self.pick_next_action(state, style="probabilistic")
+            else:
+                return self.pick_next_action(state, style="greedy")
+
+
         elif style == "q-greedy":
             max_qval = -1
             max_action = (0, 0)
