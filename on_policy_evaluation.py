@@ -129,5 +129,5 @@ def first_visit(sa_orig_list, policy, nr_episodes, reward):
 
 
 if __name__ == '__main__':
-    run_on_policy_montecarlo(num_episodes=5000, verbose=True, gui=True)
+    run_on_policy_montecarlo(num_episodes=500, verbose=True, gui=True)
     print "Done."
