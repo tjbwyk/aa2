@@ -25,6 +25,7 @@ class Field(object):
         self.width = width
         self.height = height
         self.players = []
+        self.steps = 0
 
     def __str__(self):
         result = map(lambda p: str(p) + "(" + str(p.location[0]) + "," + str(p.location[1]) + ")", self.players)
@@ -34,6 +35,7 @@ class Field(object):
         pred_act = self.get_predator().act(**kwargs)
         prey_act = self.get_prey().act()
         reward = self.get_reward()
+        self.steps += 1
         return pred_act, prey_act, reward
     def act_with_action(self, pred_action):
         self.get_predator().location = self.get_new_coordinates(self.get_predator().location, pred_action)
@@ -145,6 +147,7 @@ class Field(object):
         predPos, preyPos = startState[0]
         self.get_predator().location = predPos
         self.get_prey().location = preyPos
+        self.steps = 0
 
 
     def is_ended(self):

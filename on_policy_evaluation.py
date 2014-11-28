@@ -29,13 +29,14 @@ def run_on_policy_montecarlo(num_episodes=1000, verbose=False, gui=False, plot=T
 
     if gui:
         GUI = GameFrame(field=environment)
-        time.sleep(1)
         environment.pick_random_start()
         GUI.update(trace=False)
+        time.sleep(1)
         while not environment.is_ended():
             environment.act(style="probabilistic")
             GUI.update()
-            time.sleep(0.1)
+            time.sleep(0.3)
+        print "GUI episode finished in", environment.steps, "steps"
 
     if plot:
         #action_values_relative(q_value, relative_state=(-3, 3), path="qlearning_values.pdf")
@@ -128,5 +129,5 @@ def first_visit(sa_orig_list, policy, nr_episodes, reward):
 
 
 if __name__ == '__main__':
-    run_on_policy_montecarlo(num_episodes=10000, verbose=True, gui=True)
+    run_on_policy_montecarlo(num_episodes=5000, verbose=True, gui=True)
     print "Done."
