@@ -53,9 +53,9 @@ class GameFrame(tk.Frame):
                 self.canvas.create_rectangle(x1, y1, x2, y2)
 
     def create_icons(self):
-        self.predator_icon = tk.PhotoImage(file=pkg_resources.resource_filename('gui', 'images/predator.gif'))
-        self.prey_icon = tk.PhotoImage(file=pkg_resources.resource_filename('gui', 'images/prey.gif'))
-        self.prey_dead_icon = tk.PhotoImage(file=pkg_resources.resource_filename('gui', 'images/prey_dead.gif'))
+        self.predator_icon = tk.PhotoImage(file=pkg_resources.resource_filename('graphics.gui', 'images/predator.gif'))
+        self.prey_icon = tk.PhotoImage(file=pkg_resources.resource_filename('graphics.gui', 'images/prey.gif'))
+        self.prey_dead_icon = tk.PhotoImage(file=pkg_resources.resource_filename('graphics.gui', 'images/prey_dead.gif'))
         self.c_predator = self.canvas.create_image(self.xoffset, self.yoffset, anchor="nw", image=self.predator_icon)
         self.c_prey = self.canvas.create_image(self.xoffset, self.yoffset, anchor="nw", image=self.prey_icon)
         return None
