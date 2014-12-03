@@ -7,7 +7,7 @@ class Predator(Player):
     """
 
     def __init__(self, location):
-        super(Predator, self).__init__(location)
+        super(Predator, self).__init__(location, tripping_prob=0.0)
 
     def __str__(self):
         return "Predator"
