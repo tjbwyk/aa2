@@ -1,3 +1,5 @@
+from random import randint
+
 class Player(object):
     """
     superclass for predator and prey
@@ -10,7 +12,13 @@ class Player(object):
         self.actions = actions
         self.policy = policy
         self.tripping_prob = tripping_prob
-        self.id = id
+        self.id = str(id) if id != "" else str(randint(30, 99))
+
+    def __hash__(self):
+        return hash((self.id, self.location))
+
+    def __eq__(self, other):
+        return (self.id, self.location) == (other.name, other.location)
 
     def get_actions(self):
         """
