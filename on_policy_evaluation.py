@@ -9,7 +9,7 @@ from graphics.plot import action_value_quiver_relative
 from graphics.gui import GameFrame
 
 
-def run_on_policy_montecarlo(num_episodes=1000, verbose=False, gui=False, plot=True):
+def run(num_episodes=1000, verbose=False, gui=False, plot=False):
     """
     wrapper function to simulate multiple episodes of on-policy MC control.
     :param num_episodes: how many episodes
@@ -29,20 +29,19 @@ def run_on_policy_montecarlo(num_episodes=1000, verbose=False, gui=False, plot=T
 
     if gui:
         GUI = GameFrame(field=environment)
+        time.sleep(1)
         environment.pick_random_start()
         GUI.update(trace=False)
-        time.sleep(1)
         while not environment.is_ended():
             environment.act(style="probabilistic")
             GUI.update()
-            time.sleep(0.3)
-        print "GUI episode finished in", environment.steps, "steps"
+            time.sleep(0.1)
 
     if plot:
         #action_values_relative(q_value, relative_state=(-3, 3), path="qlearning_values.pdf")
         title = "Relative actions after " + str(num_episodes) + " episodes of on-policy-MC"
         action_value_quiver_relative(environment.get_predator().policy.q_value, path="onpolicymc_arrows.pdf", title=title)
-
+    return nr_steps
 
 def on_policy_montecarlo(field, nr_episodes, epsilon=0.2):
     """
@@ -129,5 +128,5 @@ def first_visit(sa_orig_list, policy, nr_episodes, reward):
 
 
 if __name__ == '__main__':
-    run_on_policy_montecarlo(num_episodes=500, verbose=True, gui=True)
+    run(num_episodes=10000, verbose=True, gui=False)
     print "Done."
