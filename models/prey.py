@@ -1,4 +1,3 @@
-__author__ = 'fbuettner'
 from models.player import Player
 
 
@@ -11,4 +10,4 @@ class Prey(Player):
         super(Prey, self).__init__(location, tripping_prob=0.2)
 
     def __str__(self):
-        return "Prey"
+        return "Prey" + self.id

@@ -10,4 +10,4 @@ class Predator(Player):
         super(Predator, self).__init__(location, tripping_prob=0.0)
 
     def __str__(self):
-        return "Predator"
+        return "Predator" + self.id

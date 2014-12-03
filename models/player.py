@@ -19,13 +19,13 @@ class Player(object):
         """
         return list(self.actions)
 
-    def act(self,state):
+    def act(self, state):
         """
         update the location according to the action in the policy
         :return: nothing
         """
         if self.policy is None:
-            print "No Policy set for Player, ", self.id
+            print "No Policy set for Player, ", self
             raise
         else:
             action = self.policy.pick_next_action(state)
