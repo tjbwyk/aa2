@@ -49,4 +49,4 @@ class Player(object):
         :param reward:
         :return:
         """
-        self.policy.update(old_state, new_state, action, reward)
+        raise NotImplementedError, "Make sure this uses the plearning model"
