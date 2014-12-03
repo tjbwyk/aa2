@@ -138,17 +138,18 @@ class Field(object):
         returns a reward for a specific player in the current state of the field
         :return:
         """
+        # predator rewards
         if isinstance(player, Predator):
-            # predator rewards
-            if self.state.prey_is_caught() and player.location == self.get_prey().location:
-                return 10
-            elif self.state.predators_have_collided():
+            if self.state.predators_have_collided():
                 return -10
+            elif self.state.prey_is_caught():
+                return 10
+        # prey rewards
         elif isinstance(player, Prey):
-            if self.state.prey_is_caught():
-                return -10
-            elif self.state.predators_have_collided():
+            if self.state.predators_have_collided():
                 return 10
+            elif self.state.prey_is_caught():
+                return -10
         # default reward
         return 0
 
