@@ -30,11 +30,11 @@ class Field(object):
         Finally, new state and reward is distributed to all players so they can learn from their action.
         :return:
         """
-        actions = []
+        actions = dict()
         # for every player:
         for agent in self.players:
             # call act() function on player and get desired action in return
-            actions
+            actions[agent] = agent.act(self.state)
         # compute next state based on actions chosen by players
         # tell each player their new location
 
@@ -133,13 +133,24 @@ class Field(object):
         """
         return self.state.is_terminal()
 
-    def get_reward(self, state=None):
+    def get_reward(self, player):
         """
-        returns a reward for the current state given
-        :param state:
+        returns a reward for a specific player in the current state of the field
         :return:
         """
-        raise NotImplementedError
+        if isinstance(player, Predator):
+            # predator rewards
+            if self.state.prey_is_caught() and player.location == self.get_prey().location:
+                return 10
+            elif self.state.predators_have_collided():
+                return -10
+        elif isinstance(player, Prey):
+            if self.state.prey_is_caught():
+                return -10
+            elif self.state.predators_have_collided():
+                return 10
+        # default reward
+        return 0
 
     def get_current_state(self):
         """
