@@ -39,13 +39,14 @@ class Player(object):
             action = self.policy.pick_next_action(state)
             return action
 
-    def update(self, new_state, reward):
+    def update(self, old_state, new_state, action, reward):
         """
-        this function gets the new state and a reward from the field after picking an action.
+        This function gets the new state and a reward from the field after picking an action.
         Then it uses these values to update the player's policy.
+        :param old_state:
         :param new_state:
+        :param action:
         :param reward:
         :return:
         """
-        # TODO implement this
-        raise NotImplementedError
+        self.policy.update(old_state, new_state, action, reward)

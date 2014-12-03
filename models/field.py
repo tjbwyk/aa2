@@ -31,6 +31,7 @@ class Field(object):
         Finally, new state and reward is distributed to all players so they can learn from their action.
         :return:
         """
+        old_state = self.state
         actions = dict()
         # for every player:
         for player in self.players:
@@ -44,7 +45,7 @@ class Field(object):
         # tell each player their new location and reward
         for player in self.players:
             reward = self.get_reward(player)
-            player.update(new_state=self.state, reward=reward)
+            player.update(old_state=old_state, new_state=self.state, action=actions[player], reward=reward)
         self.steps += 1
         return
 
