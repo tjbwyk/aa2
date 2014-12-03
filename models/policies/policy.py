@@ -7,21 +7,10 @@ class Policy:
     """
     The policy describes the probabilities for a player to move in any direction.
     """
-
     def __init__(self, agent, field, value_init=None):
         self.agent = agent
         self.field = field
-        self.reset_planning(value_init)
-
-    def reset_planning(self, value_init=None):
-        self.value = {state: 0.0 for state in self.field.get_all_states_with_terminal()}
-
-        # Initialize Q(s,a) optimistically with a value of value_init
-        self.q_value = collections.defaultdict(lambda: value_init)
-
-        for action in self.agent.get_actions():
-            self.q_value[(0, 0), action] = 0
-
+        self.value_dict = collections.defaultdict(lambda: value_init)
 
     def pick_next_action(self, state):
         """
@@ -42,3 +31,6 @@ class Policy:
         :return: action tuple according to policy
         """
         pass
+
+    def pick_random_action(self):
+        return random.choice(self.agent.get_actions())
