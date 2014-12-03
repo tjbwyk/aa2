@@ -1,10 +1,7 @@
 import numpy as np
 import random
-
-from models.player import Player
 from models.predator import Predator
 from models.prey import Prey
-from models.state import State
 
 
 class Field(object):
@@ -14,6 +11,7 @@ class Field(object):
     - Maintaining a list of agents
     - coordination of the steps in an episode
     """
+
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -53,14 +51,16 @@ class Field(object):
         """
         # tripping?
         if random.random() < player.tripping_prob:
+            # player trips, stays on same location
             new_state = player.location
         else:
+            # player moves to new location according to action
             new_state = self.get_new_coordinates(player.location, action)
         return new_state
 
     def get_new_coordinates(self, current_location, delta):
         """
-        Returns the new location given the current location and a movement delta
+        Returns the new location given the current location and a movement delta (= action)
         :param current_location: the current location on the field
         :param delta: the movement delta
         :return:the new location on the field

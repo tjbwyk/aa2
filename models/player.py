@@ -5,7 +5,7 @@ class Player(object):
     """
 
     def __init__(self, location=(0, 0), actions=[(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)],
-                 policy=None, id="", tripping_prob = .0):
+                 policy=None, id="", tripping_prob = 0.0):
         self.location = location
         self.actions = actions
         self.policy = policy
