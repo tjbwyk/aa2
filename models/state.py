@@ -64,9 +64,12 @@ class State(object):
         """
         x_lim = int(np.floor(field.width / 2))
         y_lim = int(np.floor(field.height / 2))
+        # Make a combination of all possible distances between two agents
         all_distances = itertools.product(range(-1 * x_lim, x_lim + 1), range(-1 * y_lim, y_lim + 1))
+
         predator_count = len(field.get_predators())
 
+        # Make a combination of all_distances for every predator, and convert to a list of State objects
         result = []
         for state_rep in itertools.product(all_distances, repeat=predator_count):
             result.append(State(list(state_rep)))
