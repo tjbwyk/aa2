@@ -1,6 +1,3 @@
-__author__ = 'fbuettner'
-
-
 class Player(object):
     """
     superclass for predator and prey
@@ -8,12 +5,12 @@ class Player(object):
     """
 
     def __init__(self, location=(0, 0), actions=[(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)],
-                 policy=None, field=None, id_number=""):
+                 policy=None, id="", tripping_prob = .0):
         self.location = location
         self.actions = actions
-        self.field = field
         self.policy = policy
-        self.id = self.__str__() + id_number
+        self.tripping_prob = tripping_prob
+        self.id = id
 
     def get_actions(self):
         """
@@ -22,7 +19,7 @@ class Player(object):
         """
         return list(self.actions)
 
-    def act(self, **kwargs):
+    def act(self,state):
         """
         update the location according to the action in the policy
         :return: nothing
@@ -31,6 +28,5 @@ class Player(object):
             print "No Policy set for Player, ", self.id
             raise
         else:
-            action = self.policy.pick_next_action(self.field.get_current_state(), **kwargs)
-            self.location = self.field.get_new_coordinates(self.location, action)
+            action = self.policy.pick_next_action(state)
             return action

@@ -12,7 +12,10 @@ def init_default_environment(pred_loc=(0, 0), prey_loc=(5, 5), value_init=30):
 
 class Field(object):
     """
-    the playground
+    Models the environment:
+    Responsibilities:
+    - Maintaining a list of agents
+    -
     """
 
     def __init__(self, width, height):
