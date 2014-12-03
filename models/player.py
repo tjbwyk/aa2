@@ -38,3 +38,14 @@ class Player(object):
         else:
             action = self.policy.pick_next_action(state)
             return action
+
+    def update(self, new_state, reward):
+        """
+        this function gets the new state and a reward from the field after picking an action.
+        Then it uses these values to update the player's policy.
+        :param new_state:
+        :param reward:
+        :return:
+        """
+        # TODO implement this
+        raise NotImplementedError

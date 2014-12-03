@@ -2,6 +2,7 @@ import numpy as np
 import random
 from models.predator import Predator
 from models.prey import Prey
+from models.state import State
 
 
 class Field(object):
@@ -32,12 +33,18 @@ class Field(object):
         """
         actions = dict()
         # for every player:
-        for agent in self.players:
+        for player in self.players:
             # call act() function on player and get desired action in return
-            actions[agent] = agent.act(self.state)
+            actions[player] = player.act(self.state)
         # compute next state based on actions chosen by players
-        # tell each player their new location
-
+        for player in self.players:
+            player.location = self.transition(player, actions.get(player))
+        # update field state
+        self.state = State.state_from_field(self)
+        # tell each player their new location and reward
+        for player in self.players:
+            reward = self.get_reward(player)
+            player.update(new_state=self.state, reward=reward)
         self.steps += 1
         return
 
@@ -92,6 +99,7 @@ class Field(object):
         :param player: the player to add
         """
         self.players.append(player)
+        self.state = State.state_from_field(self)
 
     def get_players(self, exception_player=None):
         """
