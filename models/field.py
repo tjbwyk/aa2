@@ -1,13 +1,6 @@
 import numpy as np
-
 from models.predator import Predator
 from models.prey import Prey
-
-
-def init_default_environment(pred_loc=(0, 0), prey_loc=(5, 5), value_init=30):
-    field = Field(11, 11)
-    raise NotImplementedError
-    return field
 
 
 class Field(object):
@@ -17,7 +10,6 @@ class Field(object):
     - Maintaining a list of agents
     -
     """
-
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -32,6 +24,12 @@ class Field(object):
         raise NotImplementedError
 
     def get_new_coordinates(self, current_location, delta):
+        """
+        Returns the new location given the current location and a movement delta
+        :param current_location: the current location on the field
+        :param delta: the movement delta
+        :return:the new location on the field
+        """
         (x, y) = current_location
         (delta_x, delta_y) = delta
         new_location = (
@@ -40,8 +38,13 @@ class Field(object):
         )
         return new_location
 
-
     def get_relative_position(self, location1, location2):
+        """
+        returns the relative position of location1 according to location2
+        :param location1: the first location
+        :param location2: the second location
+        :return: relative position
+        """
         x1, y1 = location1
         move = ((int(np.floor(self.width / 2)) - x1), (int(np.floor(self.height / 2)) - y1))
         x1, y1 = self.get_new_coordinates(location1, move)
@@ -49,30 +52,51 @@ class Field(object):
         return (x2 - x1), (y2 - y1)
 
     def add_player(self, player):
-        player.field = self
+        """
+        adds a player to the field
+        :param player: the player to add
+        """
         self.players.append(player)
 
     def get_players(self, exception_player=None):
+        """
+        returns all players except for the exception player
+        :param exception_player: the player not to include in the list
+        :return: a list with players
+        """
         return [player for player in self.players if player is not exception_player]
 
     def get_players_of_class(self, player_class, exception_player=None):
+        """
+        return all players of a certain class except for the exception player
+        :param player_class: the class of which the players should be from
+        :param exception_player: the player not to include
+        :return: a list with players
+        """
         return [player for player in self.players if
                 isinstance(player, player_class) and player is not exception_player]
 
     def get_predators(self, exception_player=None):
+        """
+        returns all players of classtype predator except for the exception player
+        :param exception_player: the player not to include
+        :return: a list of predators
+        """
         return self.get_players_of_class(Predator, exception_player)
 
-    def get_preys(self, exception_player=None):
-        return self.get_players_of_class(Prey, exception_player)
+    def get_prey(self):
+        """
+        returns the player of classtype prey
+        :return: the prey
+        """
+        return self.get_players_of_class(Prey)[0]
 
     def is_ended(self):
         """
-        checks if all preys have been found by a predator
-        :return: true if game is over
+        returns if the episode is ended
+        :return: true if terminal state is reached
         """
-        # 1) Predators collide
-        # 2) Predator catches pray
-        raise NotImplementedError, "Not sure if this is the right way to go"
+        return self.state.is_terminal()
 
     def get_reward(self, state=None):
         """
@@ -82,21 +106,9 @@ class Field(object):
         """
         raise NotImplementedError
 
-
-    def get_all_states(self):
-        raise NotImplementedError
-
-    def get_all_states_without_terminal(self):
-        raise NotImplementedError
-
     def get_current_state(self):
-        raise NotImplementedError
-
-    def get_next_states(self, state, pred_action=None):
         """
-        returns all next states from the given state that are not illegal
-        :param state: the state for which to get the next states
-        :return: a list with all legal next states
+        returns the current state representation of the field
+        :return: the current state
         """
-        # TODO: Please note that the requirement that the prey never moves into the predator from the previous assignments no longer exists.
-        raise NotImplementedError
+        return self.state
