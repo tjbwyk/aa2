@@ -1,6 +1,5 @@
 __author__ = 'fbuettner'
 
-import random
 
 class Player(object):
     """
@@ -35,8 +34,3 @@ class Player(object):
             action = self.policy.pick_next_action(self.field.get_current_state(), **kwargs)
             self.location = self.field.get_new_coordinates(self.location, action)
             return action
-
-    def act_randomly(self):
-        action = random.choice(self.get_actions())
-        self.location = self.field.get_new_coordinates(self.location, action)
-        return action

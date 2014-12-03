@@ -1,16 +1,17 @@
 __author__ = 'fbuettner'
 import Tkinter as tk
 import time
+
+import pkg_resources
+
 from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
 from models.policies.random_predator_policy import RandomPredatorPolicy
 from models.policies.random_prey_policy import RandomPreyPolicy
-import pkg_resources
 
 
 class GameFrame(tk.Frame):
-
     def __init__(self, master=None, field=None, window_title=None):
         tk.Frame.__init__(self, master)
         self.root = tk.Tk()
@@ -29,8 +30,8 @@ class GameFrame(tk.Frame):
         self.create_icons()
         self.root.update()
         self.root.after(25)
-        #self.draw_state(state=((1, 1), (5, 5)), trace=False)
-        #self.draw_state(state=((1, 3), (7, 5)), trace=True)
+        # self.draw_state(state=((1, 1), (5, 5)), trace=False)
+        # self.draw_state(state=((1, 3), (7, 5)), trace=True)
         #self.draw_state(state=((0, 3), (7, 0)), trace=True)
 
     def update(self, trace=True):
@@ -55,7 +56,8 @@ class GameFrame(tk.Frame):
     def create_icons(self):
         self.predator_icon = tk.PhotoImage(file=pkg_resources.resource_filename('graphics.gui', 'images/predator.gif'))
         self.prey_icon = tk.PhotoImage(file=pkg_resources.resource_filename('graphics.gui', 'images/prey.gif'))
-        self.prey_dead_icon = tk.PhotoImage(file=pkg_resources.resource_filename('graphics.gui', 'images/prey_dead.gif'))
+        self.prey_dead_icon = tk.PhotoImage(
+            file=pkg_resources.resource_filename('graphics.gui', 'images/prey_dead.gif'))
         self.c_predator = self.canvas.create_image(self.xoffset, self.yoffset, anchor="nw", image=self.predator_icon)
         self.c_prey = self.canvas.create_image(self.xoffset, self.yoffset, anchor="nw", image=self.prey_icon)
         return None
@@ -68,12 +70,14 @@ class GameFrame(tk.Frame):
             start = self.get_field_center(predator_location_old[0], predator_location_old[1])
             end = self.get_field_center(predator_location_new[0], predator_location_new[1])
             # add +1 to separate from blue line
-            self.canvas.create_line(start.get("x")+1, start.get("y")+1, end.get("x")+1, end.get("y")+1, fill="red")
+            self.canvas.create_line(start.get("x") + 1, start.get("y") + 1, end.get("x") + 1, end.get("y") + 1,
+                                    fill="red")
             # prey trace
             start = self.get_field_center(prey_location_old[0], prey_location_old[1])
             end = self.get_field_center(prey_location_new[0], prey_location_new[1])
             # subtract -1 to separate from red line (1px in between)
-            self.canvas.create_line(start.get("x")-1, start.get("y")-1, end.get("x")-1, end.get("y")-1, fill="blue")
+            self.canvas.create_line(start.get("x") - 1, start.get("y") - 1, end.get("x") - 1, end.get("y") - 1,
+                                    fill="blue")
         predator_dx = predator_location_new[0] - predator_location_old[0]
         predator_dy = predator_location_new[1] - predator_location_old[1]
         prey_dx = prey_location_new[0] - prey_location_old[0]

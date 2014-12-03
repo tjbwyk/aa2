@@ -1,5 +1,6 @@
 import random
 import collections
+
 import numpy as np
 
 
@@ -7,6 +8,7 @@ class Policy:
     """
     The policy describes the probabilities for a player to move in any direction.
     """
+
     def __init__(self, agent, field, default_probmapping, seed=None, value_init=None):
 
         # initialize random number generator
@@ -17,28 +19,16 @@ class Policy:
         self.field = field
         self.reset_planning(value_init)
 
+    def reset_planning(self, value_init=None):
         self.value = {state: 0.0 for state in self.field.get_all_states_with_terminal()}
         self.argmax_action = {state: (0, 0) for state in self.field.get_all_states()}
 
         # Initialize Q(s,a) optimistically with a value of value_init
         self.q_value = collections.defaultdict(lambda: value_init)
-        for action in self.agent.get_actions():
-           self.q_value[(0,0),action] = 0
-        self.prob_mapping = collections.defaultdict(lambda: default_probmapping)
-
-        self.returns = collections.defaultdict(lambda: (0, 0))
-
-
-    def reset_planning(self, value_init=None):
-        self.value = {state: 0.0 for state in self.field.get_all_states_with_terminal()}
-        self.argmax_action = {state: (0,0) for state in self.field.get_all_states()}
-
-        # Initialize Q(s,a) optimistically with a value of value_init
-        self.q_value = collections.defaultdict(lambda: value_init)
-        self.returns = collections.defaultdict(lambda: (0,0))
 
         for action in self.agent.get_actions():
-           self.q_value[(0,0),action] = 0
+            self.q_value[(0, 0), action] = 0
+
     def pick_next_action(self, state, **kwargs):
         """
         selects an action according to the action probability distribution of the policy
@@ -139,9 +129,9 @@ class Policy:
                 tau = kwargs.get("tau")
             else:
                 raise ValueError("style max_value requires parameter tau (aka temperature).")
-            sum_of_action_values = sum([np.exp(self.q_value[state, next_action]/tau)
+            sum_of_action_values = sum([np.exp(self.q_value[state, next_action] / tau)
                                         for next_action in self.agent.get_actions()])
-            action_probabilities = [(np.exp(self.q_value[state, next_action]/tau)/sum_of_action_values, next_action)
+            action_probabilities = [(np.exp(self.q_value[state, next_action] / tau) / sum_of_action_values, next_action)
                                     for next_action in self.agent.get_actions()]
             # probabilistic style for these probabilities
             move = random.random()
@@ -153,9 +143,5 @@ class Policy:
         else:
             # given style not recognized
             raise ValueError("invalid value given for parameter style: " + str(style) +
-                "\nUsage:" + self.pick_next_action.__doc__)
+                             "\nUsage:" + self.pick_next_action.__doc__)
         return None
-
-    def return_q_values(self, state):
-        acts = self.agent.get_actions()
-        return [(self.q_value[state, action], action) for action in acts]
