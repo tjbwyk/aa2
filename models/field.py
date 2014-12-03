@@ -1,4 +1,5 @@
 import numpy as np
+import random
 from models.predator import Predator
 from models.prey import Prey
 
@@ -8,24 +9,58 @@ class Field(object):
     Models the environment:
     Responsibilities:
     - Maintaining a list of agents
-    -
+    - coordination of the steps in an episode
     """
+
     def __init__(self, width, height):
         self.width = width
         self.height = height
         self.players = []
+        self.state = None
         self.steps = 0
 
     def __str__(self):
         result = map(lambda p: str(p) + "(" + str(p.location[0]) + "," + str(p.location[1]) + ")", self.players)
         return ", ".join(result)
 
-    def act(self, **kwargs):
-        raise NotImplementedError
+    def run_step(self):
+        """
+        Runs a step of the current episode by telling all agents to pick their respective next action based on the
+        state of the field. Then, it computes the locations of all players in the next state and possible rewards.
+        Finally, new state and reward is distributed to all players so they can learn from their action.
+        :return:
+        """
+        actions = []
+        # for every player:
+        for agent in self.players:
+            # call act() function on player and get desired action in return
+            actions
+        # compute next state based on actions chosen by players
+        # tell each player their new location
+
+        self.steps += 1
+        return
+
+    def transition(self, player, action):
+        """
+        This function determines what state the desired action of an agent leads to. For example, if the agent has a
+        tripping_probability > 0, it may end up in the same state it came from.
+        :param player: the player who wants to take the action
+        :param action: the desired action
+        :return: the new state of the agent
+        """
+        # tripping?
+        if random.random() < player.tripping_prob:
+            # player trips, stays on same location
+            new_state = player.location
+        else:
+            # player moves to new location according to action
+            new_state = self.get_new_coordinates(player.location, action)
+        return new_state
 
     def get_new_coordinates(self, current_location, delta):
         """
-        Returns the new location given the current location and a movement delta
+        Returns the new location given the current location and a movement delta (= action)
         :param current_location: the current location on the field
         :param delta: the movement delta
         :return:the new location on the field
