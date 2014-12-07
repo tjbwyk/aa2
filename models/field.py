@@ -144,7 +144,10 @@ class Field(object):
 
     def get_reward(self, player):
         """
-        returns a reward for a specific player in the current state of the field
+        returns a reward for a specific player in the current state of the field.
+        If two or more predators run into each other, they get a reward of -10 and the prey escaped and gets a
+        reward of +10. If one predator catches the prey, all predators get a reward of +10 and the prey
+        gets a reward of -10. Predator failure prevails over catching the prey.
         :return:
         """
         # predator rewards
