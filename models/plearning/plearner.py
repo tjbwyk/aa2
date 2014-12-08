@@ -9,4 +9,4 @@ class Plearner(object):
         pass
 
     def pick_next_action(self, state):
-        self.policy.pick_next_action(state)
+        return self.policy.pick_next_action(state)

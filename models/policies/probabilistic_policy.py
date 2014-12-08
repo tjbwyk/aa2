@@ -25,4 +25,4 @@ class ProbabilisticPolicy(Policy):
         returns the probability mapping for the possible actions of the agent
         :return: a list of possible actions with the probability
         """
-        return [(1/len(self.agent.get_actions()), action) for action in self.agent.get_actions()]
+        return [(1.0/len(self.agent.get_actions()), action) for action in self.agent.get_actions()]

@@ -45,7 +45,7 @@ class Field(object):
         # tell each player their new location and reward
         for player in self.players:
             reward = self.get_reward(player)
-            player.update(old_state=old_state, new_state=self.state, action=actions[player], reward=reward)
+            player.update(old_state=old_state, new_state=self.state, action=actions.get(player), reward=reward)
         self.steps += 1
         return
 
