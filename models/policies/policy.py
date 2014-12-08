@@ -3,14 +3,14 @@ import collections
 import numpy as np
 
 
-class Policy:
+class Policy(object):
     """
     The policy describes the probabilities for a player to move in any direction.
     """
-    def __init__(self, agent, field, value_init=None):
+    def __init__(self, agent, field, value_init):
         self.agent = agent
         self.field = field
-        self.value_dict = collections.defaultdict(lambda: value_init)
+        self.value = collections.defaultdict(lambda: value_init)
 
     def pick_next_action(self, state):
         """

@@ -8,7 +8,7 @@ class ProbabilisticPolicy(Policy):
     """
 
     def __init__(self, agent, field, value_init=None):
-        super(Policy, self).__init__(agent, field, value_init)
+        super(ProbabilisticPolicy, self).__init__(agent, field, value_init)
 
     def pick_next_action(self, _state):
         move = random.random()

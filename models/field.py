@@ -100,6 +100,14 @@ class Field(object):
         :param player: the player to add
         """
         self.players.append(player)
+        #TODO this breaks when adding the first predator before the first prey since state_from_field calls get_prey
+        #self.state = State.state_from_field(self)
+
+    def update_state(self):
+        """
+        workaround until above todo is fixed
+        :return:
+        """
         self.state = State.state_from_field(self)
 
     def get_players(self, exception_player=None):

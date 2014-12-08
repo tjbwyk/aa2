@@ -9,7 +9,7 @@ class GreedyPolicy(Policy):
     """
 
     def __init__(self, agent, field, value_init=None, epsilon=.0, gamma=.0, q_value_select=False):
-        super(Policy, self).__init__(agent, field, value_init)
+        super(GreedyPolicy, self).__init__(agent, field, value_init)
         self.epsilon = epsilon
         self.gamma = gamma
         self.q_value_select = q_value_select
@@ -80,6 +80,6 @@ class GreedyPolicy(Policy):
 
         if best_action not in self.agent.get_actions():
             raise ValueError("action not in legal actions of agent from State: ", state, ", NextState: ",
-                         next_state, ", action: ", next_action)
+                         best_state, ", action: ", best_action)
 
         return best_action
