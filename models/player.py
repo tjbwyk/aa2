@@ -7,10 +7,10 @@ class Player(object):
     """
 
     def __init__(self, location=(0, 0), actions=[(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)],
-                 policy=None, id="", tripping_prob = 0.0):
+                 plearner=None, id="", tripping_prob = 0.0):
         self.location = location
         self.actions = actions
-        self.policy = policy
+        self.plearner = plearner
         self.tripping_prob = tripping_prob
         self.id = str(id) if id != "" else str(randint(30, 99))
 
@@ -32,11 +32,11 @@ class Player(object):
         update the location according to the action in the policy
         :return: nothing
         """
-        if self.policy is None:
-            print "No Policy set for Player, ", self
+        if self.plearner is None:
+            print "No Plearner set for Agent, ", self
             raise
         else:
-            action = self.policy.pick_next_action(state)
+            action = self.plearner.pick_next_action(state)
             return action
 
     def update(self, old_state, new_state, action, reward):
@@ -49,4 +49,4 @@ class Player(object):
         :param reward:
         :return:
         """
-        raise NotImplementedError, "Make sure this uses the plearning model"
+        self.plearner.update(old_state, new_state, action, reward)

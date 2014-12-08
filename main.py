@@ -1,7 +1,7 @@
 from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
-from models.policies.probabilistic_policy import *
+from models.plearning.probabilistic_plearner import ProbabilisticPlearner
 
 
 def run():
@@ -17,15 +17,15 @@ def run():
     predator1 = Predator((10, 10))
     predator2 = Predator((10, 0))
     predator3 = Predator((0, 10))
-    predator1.policy = ProbabilisticPolicy(predator1, field)
-    predator2.policy = ProbabilisticPolicy(predator2, field)
-    predator3.policy = ProbabilisticPolicy(predator3, field)
+    predator1.plearner = ProbabilisticPlearner.create_plearner(predator1, field)
+    predator2.plearner = ProbabilisticPlearner.create_plearner(predator2, field)
+    predator3.plearner = ProbabilisticPlearner.create_plearner(predator3, field)
     field.add_player(predator1)
     field.add_player(predator2)
     field.add_player(predator3)
     #initialize the prey
     chip = Prey((5, 5))
-    chip.policy = ProbabilisticPolicy(chip, field)
+    chip.plearner = ProbabilisticPlearner.create_plearner(chip, field)
     field.add_player(chip)
 
     #this has to be called manually in the beginning until todo has been fixed
