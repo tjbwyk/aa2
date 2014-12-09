@@ -13,6 +13,9 @@ class State(object):
     def __init__(self, relative_distances=()):
         self.relative_distances = relative_distances
 
+    def __str__(self):
+        return "State(" + self.relative_distances.__str__() + ")"
+
     @classmethod
     def state_from_field(cls, field):
         """
