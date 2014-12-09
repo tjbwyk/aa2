@@ -9,7 +9,7 @@ class ProbabilisticPlearner(Plearner):
 
     @classmethod
     def create_plearner(cls, field, agent):
-        return ProbabilisticPlearner(ProbabilisticPolicy(field, agent))
+        return ProbabilisticPlearner(ProbabilisticPolicy(field=field, agent=agent))
 
     def update(self, old_state, new_state, action, reward):
         #do nothing here since the policy does not change at all

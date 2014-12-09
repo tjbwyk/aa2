@@ -18,7 +18,7 @@ class Player(object):
         return hash((self.id, self.location))
 
     def __eq__(self, other):
-        return (self.id, self.location) == (other.name, other.location)
+        return (self.id, self.location) == (other.id, other.location)
 
     def get_actions(self):
         """

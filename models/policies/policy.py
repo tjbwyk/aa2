@@ -7,7 +7,7 @@ class Policy(object):
     """
     The policy describes the probabilities for a player to move in any direction.
     """
-    def __init__(self, agent, field, value_init):
+    def __init__(self, field, agent, value_init):
         self.agent = agent
         self.field = field
         self.value = collections.defaultdict(lambda: value_init)

@@ -7,8 +7,8 @@ class ProbabilisticPolicy(Policy):
     The probabilistic policy
     """
 
-    def __init__(self, agent, field, value_init=None):
-        super(ProbabilisticPolicy, self).__init__(agent, field, value_init)
+    def __init__(self, field, agent, value_init=None):
+        super(ProbabilisticPolicy, self).__init__(field=field, agent=agent, value_init=value_init)
 
     def pick_next_action(self, _state):
         move = random.random()

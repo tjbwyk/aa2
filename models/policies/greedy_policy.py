@@ -8,8 +8,8 @@ class GreedyPolicy(Policy):
     The greedy policy
     """
 
-    def __init__(self, agent, field, value_init=None, epsilon=.0, gamma=.0, q_value_select=False):
-        super(GreedyPolicy, self).__init__(agent, field, value_init)
+    def __init__(self, field, agent, value_init=None, epsilon=.0, gamma=.0, q_value_select=False):
+        super(GreedyPolicy, self).__init__(field=field, agent=agent, value_init=value_init)
         self.epsilon = epsilon
         self.gamma = gamma
         self.q_value_select = q_value_select
@@ -46,7 +46,7 @@ class GreedyPolicy(Policy):
                         selected_states = [(state, next_action)]
                         max_val = self.value[state, next_action]
                     elif max_val == self.value[state, next_action]:
-                        selected_states.append((next_state, next_action))
+                        selected_states.append((state, next_action))
 
                 else:
                     if self.gamma > 0:
