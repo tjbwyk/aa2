@@ -16,6 +16,9 @@ class State(object):
     def __str__(self):
         return "State(" + self.relative_distances.__str__() + ")"
 
+    def __hash__(self):
+        return hash(tuple(self.relative_distances))
+
     @classmethod
     def state_from_field(cls, field):
         """
