@@ -50,6 +50,8 @@ def run(gui=False):
 
     field.add_player(chip)
 
+    field.init_players()
+
     # set GUI
     if gui:
         GUI = GameFrame(field=field)

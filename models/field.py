@@ -19,6 +19,18 @@ class Field(object):
         self.players = []
         self.state = None
         self.steps = 0
+        self.initialized = False
+
+    def init_players(self):
+        """
+        After adding all the players to the field, this function will call the init_player function on all the players.
+        :return:
+        """
+        for player in self.players:
+            player.init_player()
+
+        self.state = State.state_from_field(self)
+        self.initialized = True
 
     def __str__(self):
         result = map(lambda p: str(p) + "(" + str(p.location[0]) + "," + str(p.location[1]) + ")", self.players)
@@ -31,6 +43,8 @@ class Field(object):
         Finally, new state and reward is distributed to all players so they can learn from their action.
         :return:
         """
+        assert(self.initialized is True)
+
         old_state = self.state
         actions = dict()
         # for every player:
@@ -103,10 +117,6 @@ class Field(object):
         :param player: the player to add
         """
         self.players.append(player)
-
-        # We need a prey to update our state
-        if self.has_prey():
-            self.state = State.state_from_field(self)
 
     def update_state(self):
         """
