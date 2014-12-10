@@ -12,6 +12,14 @@ class Plearner(object):
         policy.agent = agent
         policy.field = field
 
+    def init_plearner(self, **kwargs):
+        """
+        propagation of player.init_player
+        :param kwargs:
+        :return:
+        """
+        pass
+
     def update(self, old_state, new_state, actions, rewards):
         pass
 

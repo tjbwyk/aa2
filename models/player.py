@@ -14,6 +14,15 @@ class Player(object):
         self.tripping_prob = tripping_prob
         self.id = str(id) if id != "" else str(randint(30, 99))
 
+    def init_player(self, **kwargs):
+        """
+        call this when the field is ready. May be needed for plearners that initialize values
+        over the complete state space (which is not available until all players have been added)
+        :param kwargs: depends on the plearner type
+        :return:
+        """
+        self.plearner.init_plearner(kwargs)
+
     def __hash__(self):
         return hash((self.id, self.location))
 

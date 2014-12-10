@@ -14,13 +14,15 @@ class QPlearner(Plearner):
     @classmethod
     def create_greedy_plearner(cls, field, agent, value_init=15, epsilon=0.1, gamma=0.0, learning_rate=0.1, discount_factor=0.7, q_value_select=True):
         """
-        generator method to easily create a greedy learner
+
         :param field:
         :param agent:
         :param value_init:
-        :param tau:
+        :param epsilon:
+        :param gamma:
         :param learning_rate:
         :param discount_factor:
+        :param q_value_select:
         :return:
         """
         return QPlearner(policy=GreedyPolicy(field=field, agent=agent,
