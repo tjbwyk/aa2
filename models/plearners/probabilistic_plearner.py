@@ -1,5 +1,5 @@
 from models.policies.probabilistic_policy import ProbabilisticPolicy
-from models.plearning.plearner import Plearner
+from models.plearners.plearner import Plearner
 __author__ = 'xtroce'
 
 

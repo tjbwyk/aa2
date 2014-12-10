@@ -1,8 +1,8 @@
 from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
-from models.plearning.probabilistic_plearner import ProbabilisticPlearner
-from models.plearning.q_plearner import QPlearner
+from models.plearners.probabilistic_plearner import ProbabilisticPlearner
+from models.plearners.q_plearner import QPlearner
 from graphics.gui import GameFrame
 import time
 

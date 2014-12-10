@@ -1,5 +1,5 @@
 import numpy as np
-from models.plearning.plearner import Plearner
+from models.plearners.plearner import Plearner
 from models.policies.greedy_policy import GreedyPolicy
 from models.policies.softmax_policy import SoftmaxPolicy
 
