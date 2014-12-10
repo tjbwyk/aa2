@@ -7,8 +7,6 @@ import pkg_resources
 from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
-from models.policies.random_predator_policy import RandomPredatorPolicy
-from models.policies.random_prey_policy import RandomPreyPolicy
 
 
 class GameFrame(tk.Frame):
