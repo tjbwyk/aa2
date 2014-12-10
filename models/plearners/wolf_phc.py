@@ -32,9 +32,9 @@ class Wolf_phc(QPlearner):
     def pick_next_action(self, state):
         return self.policy.pick_next_action(state)
 
-    def update(self, old_state, new_state, action, reward):
+    def update(self, old_state, new_state, actions, rewards):
         # compute Q value for old state-action pair
-        self.policy.value[old_state, action] = self.compute_q_value(old_state, new_state, action, reward)
+        self.policy.value[old_state, actions.get(self.agent)] = self.compute_q_value(old_state, new_state, actions.get(self.agent), rewards.get(self.agent))
         # increase visit count for new state
         self.state_visit_counts[new_state] += 1
 
