@@ -83,7 +83,7 @@ class GameFrame(tk.Frame):
             #                         fill="blue")
             pass
         for player in self.field.get_players():
-            player_dx =
+            player_dx = 0
         # predator_dx = predator_location_new[0] - predator_location_old[0]
         # predator_dy = predator_location_new[1] - predator_location_old[1]
         # prey_dx = prey_location_new[0] - prey_location_old[0]
