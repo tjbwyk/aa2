@@ -6,11 +6,10 @@ from models.policies.softmax_policy import SoftmaxPolicy
 
 class QPlearner(Plearner):
 
-    def __init__(self, policy, agent, learning_rate, discount_factor):
-        super(QPlearner, self).__init__(policy)
+    def __init__(self, policy, field, agent, learning_rate, discount_factor):
+        super(QPlearner, self).__init__(policy, field, agent)
         self.learning_rate = learning_rate
         self.discount_factor = discount_factor
-        self.agent = agent
 
     @classmethod
     def create_greedy_plearner(cls, field, agent, value_init=15, epsilon=0.1, gamma=0.0, learning_rate=0.1, discount_factor=0.7, q_value_select=True):
@@ -25,9 +24,9 @@ class QPlearner(Plearner):
         :return:
         """
         return QPlearner(policy=GreedyPolicy(field=field, agent=agent,
-                                      value_init=value_init, epsilon=epsilon,
-                                      gamma=gamma, q_value_select=q_value_select),
-                         agent=agent, learning_rate=learning_rate, discount_factor=discount_factor)
+                                             value_init=value_init, epsilon=epsilon,
+                                             gamma=gamma, q_value_select=q_value_select), field=None, agent=agent,
+                         learning_rate=learning_rate, discount_factor=discount_factor)
 
     @classmethod
     def create_softmax_plearner(cls, field, agent, value_init=15, tau=0.1, learning_rate=0.1, discount_factor=0.7):
@@ -42,8 +41,8 @@ class QPlearner(Plearner):
         :return:
         """
         return QPlearner(policy=SoftmaxPolicy(field=field, agent=agent,
-                                      value_init=value_init, tau=tau),
-                         agent=agent, learning_rate=learning_rate, discount_factor=discount_factor)
+                                              value_init=value_init, tau=tau), field=None, agent=agent,
+                         learning_rate=learning_rate, discount_factor=discount_factor)
 
     def update(self, old_state, new_state, action, reward):
         self.policy.value[old_state, action] = self.compute_q_value(old_state, new_state, action, reward)
