@@ -6,11 +6,10 @@ from models.policies.policy import Policy
 
 
 class Mixed_policy(Policy):
-    def __init__(self, field, agent, epsilon=.0, gamma=.0):
+    def __init__(self, field, agent, epsilon=.0):
         value_init = 1.0 / len(agent.actions)
         super(Mixed_policy, self).__init__(field=field, agent=agent, value_init=value_init)
         self.epsilon = epsilon
-        self.gamma = gamma
 
     def pick_next_action(self, state):
         """
