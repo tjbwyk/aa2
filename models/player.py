@@ -39,14 +39,18 @@ class Player(object):
             action = self.plearner.pick_next_action(state)
             return action
 
-    def update(self, old_state, new_state, action, reward):
+    def update(self, old_state, new_state, actions, rewards):
         """
         This function gets the new state and a reward from the field after picking an action.
         Then it uses these values to update the player's policy.
         :param old_state:
         :param new_state:
-        :param action:
-        :param reward:
+        :param actions:
+        :param rewards:
         :return:
         """
-        self.plearner.update(old_state, new_state, action, reward)
+        self.plearner.update(old_state, new_state, actions, rewards)
+
+    def get_index(self):
+        # TODO: Check if working correctly
+        return self.field.players.index(self)

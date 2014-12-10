@@ -12,7 +12,7 @@ class Plearner(object):
         policy.agent = agent
         policy.field = field
 
-    def update(self, old_state, new_state, action, reward):
+    def update(self, old_state, new_state, actions, rewards):
         pass
 
     def pick_next_action(self, state):

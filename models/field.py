@@ -26,6 +26,8 @@ class Field(object):
         After adding all the players to the field, this function will call the init_player function on all the players.
         :return:
         """
+        self.players.sort(key=lambda player: player.id)
+
         for player in self.players:
             player.init_player()
 
@@ -47,19 +49,25 @@ class Field(object):
 
         old_state = self.state
         actions = dict()
+        rewards = dict()
         # for every player:
         for player in self.players:
             # call act() function on player and get desired action in return
             actions[player] = player.act(self.state)
+            # Get the reward for this player
+            rewards[player] = self.get_reward(player)
+
         # compute next state based on actions chosen by players
         for player in self.players:
             player.location = self.transition(player, actions.get(player))
+
         # update field state
         self.state = State.state_from_field(self)
+
         # tell each player their new location and reward
         for player in self.players:
-            reward = self.get_reward(player)
-            player.update(old_state=old_state, new_state=self.state, action=actions.get(player), reward=reward)
+            player.update(old_state=old_state, new_state=self.state, actions=actions, rewards=rewards)
+
         self.steps += 1
         return
 
