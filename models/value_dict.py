@@ -11,7 +11,7 @@ class Value_dict:
 
     def __getitem__(self, item):
         """
-        call like this: value = vd[(s,a)]
+        call like this: value = vd[s,a]
         :param item: (state, action) tuple
         :return: value
         """
@@ -22,7 +22,7 @@ class Value_dict:
 
     def __setitem__(self, key, value):
         """
-        call like this: vd[(s,a)] = value
+        call like this: vd[s,a] = value
         :param key: (state, action) tuple
         :param value: value
         """
