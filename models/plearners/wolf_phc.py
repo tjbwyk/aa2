@@ -2,11 +2,11 @@ __author__ = 'fbuettner'
 import numpy as np
 import copy
 from collections import defaultdict
-from models.plearners.q_plearner import QPlearner
+from models.plearners.plearner import Plearner
 from models.policies.mixed_policy import Mixed_policy
 
 
-class Wolf_phc(QPlearner):
+class Wolf_phc(Plearner):
     def __init__(self, policy, field, agent, alpha=0.1, gamma=0, delta_l=0.9, delta_w=0.3):
         """
         Win-or-Learn-Fast Policy Hill Climbing
