@@ -25,7 +25,7 @@ class QPlearner(Plearner):
         """
         return QPlearner(policy=GreedyPolicy(field=field, agent=agent,
                                              value_init=value_init, epsilon=epsilon,
-                                             gamma=gamma, q_value_select=q_value_select), field=None, agent=agent,
+                                             gamma=gamma, q_value_select=q_value_select), field=field, agent=agent,
                          learning_rate=learning_rate, discount_factor=discount_factor)
 
     @classmethod
@@ -41,7 +41,7 @@ class QPlearner(Plearner):
         :return:
         """
         return QPlearner(policy=SoftmaxPolicy(field=field, agent=agent,
-                                              value_init=value_init, tau=tau), field=None, agent=agent,
+                                              value_init=value_init, tau=tau), field=field, agent=agent,
                          learning_rate=learning_rate, discount_factor=discount_factor)
 
     def update(self, old_state, new_state, action, reward):
