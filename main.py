@@ -25,9 +25,9 @@ def run(gui=False):
     predator2 = Predator(pred2loc)
     # predator3 = Predator(pred3loc)
 
-    predator1.plearner = ProbabilisticPlearner.create_plearner(field=field, agent=predator1)
-    predator2.plearner = ProbabilisticPlearner.create_plearner(field=field, agent=predator2)
-    # predator3.plearner = ProbabilisticPlearner.create_plearner(field=field, agent=predator3)
+    predator1.plearner = ProbabilisticPlearner(field=field, agent=predator1)
+    predator2.plearner = ProbabilisticPlearner(field=field, agent=predator2)
+    # predator3.plearner = ProbabilisticPlearner(field=field, agent=predator3)
 
     # predator1.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator1)
     # predator2.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator2)
