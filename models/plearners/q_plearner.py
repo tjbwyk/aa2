@@ -45,7 +45,7 @@ class QPlearner(Plearner):
                          learning_rate=learning_rate, discount_factor=discount_factor)
 
     def update(self, old_state, new_state, actions, rewards):
-        self.policy.value[old_state, actions.get(self.agent)] = self.compute_q_value(old_state, new_state, actions.get(self.agent), rewards.get(self.agent))
+        self.policy.set_value(old_state, actions.get(self.agent), self.compute_q_value(old_state, new_state, actions.get(self.agent), rewards.get(self.agent)))
 
     def compute_q_value(self, old_state, new_state, action, reward):
         result = self.policy.get_value(old_state, action) + \
