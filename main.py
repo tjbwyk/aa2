@@ -50,9 +50,6 @@ def run(gui=False):
 
     field.add_player(chip)
 
-    #this has to be called manually in the beginning until todo has been fixed
-    field.update_state()
-
     # set GUI
     if gui:
         GUI = GameFrame(field=field)

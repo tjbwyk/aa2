@@ -94,14 +94,19 @@ class Field(object):
         x2, y2 = self.get_new_coordinates(location2, move)
         return (x2 - x1), (y2 - y1)
 
+    def has_prey(self):
+        return len(self.get_players_of_class(Prey)) == 1
+
     def add_player(self, player):
         """
-        adds a player to the field
+        adds a player to the field, the first player should be a prey
         :param player: the player to add
         """
         self.players.append(player)
-        #TODO this breaks when adding the first predator before the first prey since state_from_field calls get_prey
-        #self.state = State.state_from_field(self)
+
+        # We need a prey to update our state
+        if self.has_prey():
+            self.state = State.state_from_field(self)
 
     def update_state(self):
         """
