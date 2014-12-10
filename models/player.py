@@ -21,7 +21,7 @@ class Player(object):
         :param kwargs: depends on the plearner type
         :return:
         """
-        self.plearner.init_plearner(kwargs)
+        self.plearner.init_plearner(**kwargs)
 
     def __hash__(self):
         return hash(self.id)

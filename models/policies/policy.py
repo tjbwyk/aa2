@@ -1,6 +1,7 @@
 import random
 import collections
 import numpy as np
+from models.value_dict import Value_dict
 
 
 class Policy(object):
@@ -10,7 +11,7 @@ class Policy(object):
     def __init__(self, field, agent, value_init):
         self.agent = agent
         self.field = field
-        self.value = collections.defaultdict(lambda: value_init)
+        self.value = Value_dict(default_value=value_init)
 
     def pick_next_action(self, state):
         """
@@ -36,7 +37,7 @@ class Policy(object):
         return random.choice(self.agent.get_actions())
 
     def set_value(self, state, action, value):
-        self.value[state.rep(), action] = value
+        self.value[(state, action)] = value
 
     def get_value(self, state, action):
-        return self.value[state.rep(), action]
+        return self.value[(state, action)]
