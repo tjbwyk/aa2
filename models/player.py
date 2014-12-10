@@ -6,13 +6,13 @@ class Player(object):
     implements common properties like position
     """
 
-    def __init__(self, location=(0, 0), actions=[(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)],
-                 plearner=None, id="", tripping_prob = 0.0):
+    def __init__(self, id, location=(0, 0), actions=[(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)],
+                 plearner=None, tripping_prob = 0.0):
         self.location = location
         self.actions = actions
         self.plearner = plearner
         self.tripping_prob = tripping_prob
-        self.id = str(id) if id != "" else str(randint(30, 99))
+        self.id = str(id)
 
     def init_player(self, **kwargs):
         """
@@ -24,10 +24,10 @@ class Player(object):
         self.plearner.init_plearner(kwargs)
 
     def __hash__(self):
-        return hash((self.id, self.location))
+        return hash(self.id)
 
     def __eq__(self, other):
-        return (self.id, self.location) == (other.id, other.location)
+        return self.id == other.id and self.location == other.location
 
     def get_actions(self):
         """

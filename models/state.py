@@ -19,6 +19,9 @@ class State(object):
     def __hash__(self):
         return hash(tuple(self.relative_distances))
 
+    def rep(self):
+        return tuple(self.relative_distances)
+
     def __eq__(self, other):
         return self.relative_distances == other.relative_distances
     

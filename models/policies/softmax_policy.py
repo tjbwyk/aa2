@@ -13,9 +13,9 @@ class SoftmaxPolicy(Policy):
         self.tau = tau
 
     def pick_next_action(self, state):
-            sum_of_action_values = sum([np.exp(self.value[state, next_action] / self.tau)
+            sum_of_action_values = sum([np.exp(self.get_value(state, next_action) / self.tau)
                                         for next_action in self.agent.get_actions()])
-            action_probabilities = [(np.exp(self.value[state, next_action] / self.tau) / sum_of_action_values, next_action)
+            action_probabilities = [(np.exp(self.get_value(state, next_action) / self.tau) / sum_of_action_values, next_action)
                                     for next_action in self.agent.get_actions()]
             # probabilistic style for these probabilities
             move = random.random()

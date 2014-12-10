@@ -14,20 +14,18 @@ class QPlearner(Plearner):
     @classmethod
     def create_greedy_plearner(cls, field, agent, value_init=15, epsilon=0.1, gamma=0.0, learning_rate=0.1, discount_factor=0.7, q_value_select=True):
         """
-
+        generator method to easily create a greedy learner
         :param field:
         :param agent:
         :param value_init:
-        :param epsilon:
-        :param gamma:
+        :param tau:
         :param learning_rate:
         :param discount_factor:
-        :param q_value_select:
         :return:
         """
         return QPlearner(policy=GreedyPolicy(field=field, agent=agent,
                                              value_init=value_init, epsilon=epsilon,
-                                             gamma=gamma, q_value_select=q_value_select), field=field, agent=agent,
+                                             gamma=gamma, q_value_select=q_value_select), field=None, agent=agent,
                          learning_rate=learning_rate, discount_factor=discount_factor)
 
     @classmethod
@@ -50,18 +48,18 @@ class QPlearner(Plearner):
         self.policy.value[old_state, actions.get(self.agent)] = self.compute_q_value(old_state, new_state, actions.get(self.agent), rewards.get(self.agent))
 
     def compute_q_value(self, old_state, new_state, action, reward):
-        result = self.policy.value[old_state, action] + \
+        result = self.policy.get_value(old_state, action) + \
                  self.learning_rate * (
                      reward +
                      self.discount_factor * self.max_action_value_for_q(new_state) -
-                     self.policy.value[old_state, action]
+                     self.policy.get_value(old_state, action)
                  )
         return result
 
     def max_action_value_for_q(self, state):
         max = -np.inf
         for action in self.agent.get_actions():
-            tmp = self.policy.value[state, action]
+            tmp = self.policy.get_value(state, action)
             if tmp > max:
                 max = tmp
         return max

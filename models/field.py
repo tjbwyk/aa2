@@ -59,8 +59,7 @@ class Field(object):
 
         # compute next state based on actions chosen by players
         for player in self.players:
-            player.location = self.transition(player, actions.get(player))
-
+            player.location = self.transition(player, actions[player])
         # update field state
         self.state = State.state_from_field(self)
 

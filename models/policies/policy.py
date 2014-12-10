@@ -34,3 +34,9 @@ class Policy(object):
 
     def pick_random_action(self):
         return random.choice(self.agent.get_actions())
+
+    def set_value(self, state, action, value):
+        self.value[state.rep(), action] = value
+
+    def get_value(self, state, action):
+        return self.value[state.rep(), action]

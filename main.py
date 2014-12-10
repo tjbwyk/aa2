@@ -21,8 +21,8 @@ def run(gui=False):
     preyloc = (5, 5)
 
     #initialize the predators
-    predator1 = Predator(pred1loc)
-    predator2 = Predator(pred2loc)
+    predator1 = Predator(id="Plato", location=pred1loc)
+    predator2 = Predator(id="Pythagoras", location=pred2loc)
     # predator3 = Predator(pred3loc)
 
     predator1.plearner = ProbabilisticPlearner(field=field, agent=predator1)
@@ -42,7 +42,7 @@ def run(gui=False):
     field.add_player(predator2)
     # field.add_player(predator3)
     #initialize the prey
-    chip = Prey(preyloc)
+    chip = Prey(id="Kant", location=preyloc)
 
     # chip.plearner = ProbabilisticPlearner.create_plearner(field=field, agent=chip)
     chip.plearner = QPlearner.create_greedy_plearner(field=field, agent=chip)
