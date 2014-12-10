@@ -27,7 +27,7 @@ class Mixed_policy(Policy):
             move = random.random()
             # select the action that belongs to random move value
             probability = 0.0
-            prob_map = [self.value[(state, action)] for action in self.agent.actions]
+            prob_map = [(self.value[state, action], action) for action in self.agent.actions]
             while move > probability and len(prob_map) > 0:
                 prob, action = prob_map.pop()
                 probability += prob
