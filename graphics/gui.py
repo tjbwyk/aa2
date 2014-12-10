@@ -67,7 +67,7 @@ class GameFrame(tk.Frame):
 
     def update(self, trace=False):
         predator_location_old, prey_location_old = self.state
-        predator_location_new, prey_location_new = state
+        # predator_location_new, prey_location_new = state
         if trace:
             # # predator trace
             # start = self.get_field_center(predator_location_old[0], predator_location_old[1])
@@ -84,21 +84,21 @@ class GameFrame(tk.Frame):
             pass
         for player in self.field.get_players():
             player_dx =
-        predator_dx = predator_location_new[0] - predator_location_old[0]
-        predator_dy = predator_location_new[1] - predator_location_old[1]
-        prey_dx = prey_location_new[0] - prey_location_old[0]
-        prey_dy = prey_location_new[1] - prey_location_old[1]
-        # if both players are in the same cell, bake red background color and redraw images so they are on top
-        if predator_location_new == prey_location_new:
-            x1 = self.xoffset + predator_location_new[0] * self.cellheight
-            x2 = x1 + self.cellheight
-            y1 = self.yoffset + predator_location_new[1] * self.cellwidth
-            y2 = y1 + self.cellwidth
-            self.canvas.create_rectangle(x1, y1, x2, y2, fill="#F0AFBB")
-            self.canvas.create_image(x1, y1, anchor="nw", image=self.prey_dead_icon)
-        self.canvas.move(self.c_predator, predator_dx * self.cellwidth, predator_dy * self.cellheight)
-        self.canvas.move(self.c_prey, prey_dx * self.cellwidth, prey_dy * self.cellheight)
-        self.state = state
+        # predator_dx = predator_location_new[0] - predator_location_old[0]
+        # predator_dy = predator_location_new[1] - predator_location_old[1]
+        # prey_dx = prey_location_new[0] - prey_location_old[0]
+        # prey_dy = prey_location_new[1] - prey_location_old[1]
+        # # if both players are in the same cell, bake red background color and redraw images so they are on top
+        # if predator_location_new == prey_location_new:
+        #     x1 = self.xoffset + predator_location_new[0] * self.cellheight
+        #     x2 = x1 + self.cellheight
+        #     y1 = self.yoffset + predator_location_new[1] * self.cellwidth
+        #     y2 = y1 + self.cellwidth
+        #     self.canvas.create_rectangle(x1, y1, x2, y2, fill="#F0AFBB")
+        #     self.canvas.create_image(x1, y1, anchor="nw", image=self.prey_dead_icon)
+        # self.canvas.move(self.c_predator, predator_dx * self.cellwidth, predator_dy * self.cellheight)
+        # self.canvas.move(self.c_prey, prey_dx * self.cellwidth, prey_dy * self.cellheight)
+        # self.state = state
         self.root.update()
         return None
 

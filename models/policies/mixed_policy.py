@@ -16,7 +16,8 @@ class Mixed_policy(Policy):
         Picks the next action in a state according to a mixed strategy:
         with probability epsilon, a random action is selected.
         else, the action is selected according to the probability mapping in that state.
-        In learning, the probability mapping is changed towards the highest valued action with a specified learning rate
+        In learning, the probability mapping is changed towards the highest valued action with a specified learning rate.
+        Note that here, the plearner keeps the Q-values.
         :param state: the current state
         :return: action tuple
         """
