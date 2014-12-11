@@ -90,9 +90,6 @@ def run(gui=False):
         #print State.state_from_field(field)
         num_steps.append(field.steps)
         print State.state_from_field(field), field.steps, field.state.prey_is_caught()
-        for action in chip.get_actions():
-            # print 'p', action, chip.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
-            print '2', action, predator2.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
         # for action in chip.get_actions():
         #     print '1', action, predator1.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
         #     print '2', action, predator2.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
