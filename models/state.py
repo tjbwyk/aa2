@@ -14,7 +14,7 @@ class State(object):
         self.relative_distances = relative_distances
 
     def __str__(self):
-        return "State(" + self.relative_distances.__str__() + ")"
+        return "State" + self.relative_distances.__str__() + ""
 
     def __hash__(self):
         return hash(tuple(self.relative_distances))
@@ -39,6 +39,7 @@ class State(object):
         for predator in predators:
             distance = field.get_relative_position(predator.location, prey.location)
             state.relative_distances.append(distance)
+        state.relative_distances = tuple(state.relative_distances)
         return state
 
     def is_terminal(self):

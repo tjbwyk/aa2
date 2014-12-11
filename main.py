@@ -3,6 +3,7 @@ from models.predator import Predator
 from models.prey import Prey
 from models.plearners.probabilistic_plearner import ProbabilisticPlearner
 from models.plearners.q_plearner import QPlearner
+from models.plearners.wolf_phc import Wolf_phc
 from graphics.gui import GameFrame
 import time
 
@@ -29,9 +30,9 @@ def run(gui=False):
     predator2.plearner = ProbabilisticPlearner(field=field, agent=predator2)
     # predator3.plearner = ProbabilisticPlearner(field=field, agent=predator3)
 
-    # predator1.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator1)
-    # predator2.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator2)
-    # predator3.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator3)
+    predator1.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator1)
+    predator2.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator2)
+    # predator3.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator3)
 
     # predator1.plearner = QPlearner.create_softmax_plearner(field=field, agent=predator1)
     # predator2.plearner = QPlearner.create_softmax_plearner(field=field, agent=predator2)
@@ -58,7 +59,7 @@ def run(gui=False):
 
     from models.state import State
 
-    for i in range(0, 10000):
+    for i in range(0, 10):
         predator1.location = pred1loc
         predator2.location = pred2loc
         #predator3.location = pred3loc

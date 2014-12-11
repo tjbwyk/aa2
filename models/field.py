@@ -183,15 +183,15 @@ class Field(object):
         # predator rewards
         if isinstance(player, Predator):
             if self.state.predators_have_collided():
-                return -10
+                return -10.0
             elif self.state.prey_is_caught():
-                return 10
+                return 10.0
         # prey rewards
         elif isinstance(player, Prey):
             if self.state.predators_have_collided():
-                return 10
+                return 10.0
             elif self.state.prey_is_caught():
-                return -10
+                return -10.0
         # default reward
         return 0
 
