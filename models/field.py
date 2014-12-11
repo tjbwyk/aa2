@@ -54,8 +54,6 @@ class Field(object):
         for player in self.players:
             # call act() function on player and get desired action in return
             actions[player] = player.act(self.state)
-            # Get the reward for this player
-            rewards[player] = self.get_reward(player)
 
         # compute next state based on actions chosen by players
         for player in self.players:
@@ -65,6 +63,8 @@ class Field(object):
 
         # tell each player their new location and reward
         for player in self.players:
+            # Get the reward for this player
+            rewards[player] = self.get_reward(player)
             player.update(old_state=old_state, new_state=self.state, actions=actions, rewards=rewards)
 
         self.steps += 1
