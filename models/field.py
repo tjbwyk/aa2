@@ -11,6 +11,9 @@ class Field(object):
     Responsibilities:
     - Maintaining a list of agents
     - coordination of the steps in an episode
+      - triggering the agents to pick their next action
+      - calculate next state and rewards based on actions
+      - return 
     """
 
     def __init__(self, width, height):
@@ -59,18 +62,19 @@ class Field(object):
         for player in self.players:
             player.location = self.transition(player, actions[player])
 
-        # update field state
-        self.state = State.state_from_field(self)
+        # get new field state after every player moved
+        new_state = State.state_from_field(self)
 
         # compute all rewards
         for player in self.players:
-            rewards[player] = self.get_reward(player)
+            rewards[player] = self.get_reward(new_state, player)
 
         # tell each player their new location and reward
         for player in self.players:
-            player.update(old_state=old_state, new_state=self.state, actions=actions, rewards=rewards)
+            player.update(old_state=old_state, new_state=new_state, actions=actions, rewards=rewards)
 
         self.steps += 1
+        self.update_state()
         return
 
     def transition(self, player, action):
@@ -94,8 +98,8 @@ class Field(object):
         """
         Returns the new location given the current location and a movement delta (= action)
         :param current_location: the current location on the field
-        :param delta: the movement delta
-        :return:the new location on the field
+        :param delta: the movement delta (action)
+        :return: the new location on the field
         """
         (x, y) = current_location
         (delta_x, delta_y) = delta
@@ -123,9 +127,11 @@ class Field(object):
 
     def add_player(self, player):
         """
-        adds a player to the field, the first player should be a prey
+        adds a player to the field, only one prey allowed per field.
         :param player: the player to add
         """
+        if self.has_prey() and isinstance(player, Prey):
+            raise ValueError("Field has already one prey.")
         self.players.append(player)
 
     def update_state(self):
@@ -179,7 +185,7 @@ class Field(object):
         """
         return self.state.is_terminal()
 
-    def get_reward(self, player):
+    def get_reward(self, state, player):
         """
         returns a reward for a specific player in the current state of the field.
         If two or more predators run into each other, they get a reward of -10 and the prey escaped and gets a
@@ -189,15 +195,15 @@ class Field(object):
         """
         # predator rewards
         if isinstance(player, Predator):
-            if self.state.predators_have_collided():
+            if state.predators_have_collided():
                 return -10.0
-            elif self.state.prey_is_caught():
+            elif state.prey_is_caught():
                 return 10.0
         # prey rewards
         elif isinstance(player, Prey):
-            if self.state.predators_have_collided():
+            if state.predators_have_collided():
                 return 10.0
-            elif self.state.prey_is_caught():
+            elif state.prey_is_caught():
                 return -10.0
         # default reward
         return 0
