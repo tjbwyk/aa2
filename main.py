@@ -10,7 +10,7 @@ from models.state import State
 import matplotlib.pyplot as plt
 import time
 
-def run(gui=False):
+def run(n_episodes=1000, gui=False):
     """
     runs a simulation with 3 predators, one prey and random policies for all agents
     :return:
@@ -19,8 +19,8 @@ def run(gui=False):
     #initialize the environment
     field = Field(11, 11)
 
-    pred1loc = (5, 6)
-    pred2loc = (5, 4)
+    pred1loc = (0, 0)
+    pred2loc = (0, 10)
     pred3loc = (0, 10)
     preyloc = (5, 5)
 
@@ -72,29 +72,31 @@ def run(gui=False):
 
     num_steps = []
 
-    for i in range(0, 1000):
+    for i in range(0, n_episodes):
         predator1.location = pred1loc
         predator2.location = pred2loc
         #predator3.location = pred3loc
         chip.location = preyloc
         field.update_state()
         field.steps = 0
-        print field.get_current_state()
+        # print field.get_current_state()
         #run the simulation
         while not field.is_ended():
             field.run_step()
-            if gui:
+            if gui and i == n_episodes-1:
                 GUI.update()
-                time.sleep(0.02)
+                time.sleep(0.2)
+                print [player.location for player in field.players]
 
         #print State.state_from_field(field)
         num_steps.append(field.steps)
-        print State.state_from_field(field), field.steps, field.state.prey_is_caught()
+        print i, field.steps
+        # print State.state_from_field(field), field.steps, field.state.prey_is_caught()
         # for action in chip.get_actions():
         #     print '1', action, predator1.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
         #     print '2', action, predator2.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
 
-    plot_steps(num_steps)
+    #plot_steps(num_steps)
 
 
 def plot_steps(num_steps):
@@ -103,4 +105,4 @@ def plot_steps(num_steps):
     plt.savefig("num_steps.png")
 
 if __name__ == '__main__':
-    run()
+    run(n_episodes=10000, gui=True)
