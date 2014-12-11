@@ -55,7 +55,7 @@ class GreedyPolicy(Policy):
         :return: the new temporary value
         """
         tmp_prob = self.get_probability(state, next_state, next_action)
-        tmp_rew = self.field.get_reward(next_state) + self.gamma * self.get_value(next_state, None)
+        tmp_rew = self.field.get_reward(next_state, self.agent) + self.gamma * self.get_value(next_state, None)
         tmp_val += tmp_prob * tmp_rew
         return tmp_val
 
