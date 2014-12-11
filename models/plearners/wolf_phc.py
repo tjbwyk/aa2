@@ -117,8 +117,8 @@ class Wolf_phc(Plearner):
 
 
     @classmethod
-    def create_greedy_plearner(cls, field, agent, epsilon=0.1, learning_rate=0.1,
-                               discount_factor=0.7):
+    def create_greedy_plearner(cls, field, agent, epsilon=0.01, learning_rate=1,
+                               discount_factor=0.9):
         """
         Wrapper method for creating WoLF-PHC plearner from parameters
         :param field:
