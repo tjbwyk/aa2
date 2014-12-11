@@ -26,16 +26,24 @@ def run(gui=False):
     predator2 = Predator(id="Pythagoras", location=pred2loc)
     # predator3 = Predator(pred3loc)
 
+    #probabilistic
     # predator1.plearner = ProbabilisticPlearner(field=field, agent=predator1)
     # predator2.plearner = ProbabilisticPlearner(field=field, agent=predator2)
     # predator3.plearner = ProbabilisticPlearner(field=field, agent=predator3)
 
+    #greedy Q
+    predator1.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator1, value_init=0)
+    predator2.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator2, value_init=0)
+    # predator3.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator3)
+    
+    # wolf
     # predator1.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator1)
     # predator2.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator2)
     # predator3.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator3)
 
-    predator1.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator1)
-    predator2.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator2)
+    #softmax Q
+    #predator1.plearner = QPlearner.create_softmax_plearner(field=field, agent=predator1)
+    #predator2.plearner = QPlearner.create_softmax_plearner(field=field, agent=predator2)
     # predator3.plearner = QPlearner.create_softmax_plearner(field=field, agent=predator3)
 
 
@@ -46,7 +54,7 @@ def run(gui=False):
     chip = Prey(id="Kant", location=preyloc)
 
     chip.plearner = ProbabilisticPlearner(field=field, agent=chip)
-    # chip.plearner = QPlearner.create_greedy_plearner(field=field, agent=chip,value_init=0,epsilon=0.2)
+    # chip.plearner = QPlearner.create_greedy_plearner(field=field, agent=chip, value_init=0)
     #chip.plearner = QPlearner.create_softmax_plearner(field=field, agent=chip)
 
     field.add_player(chip)

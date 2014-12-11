@@ -1,5 +1,6 @@
 from random import randint
 
+
 class Player(object):
     """
     superclass for predator and prey
