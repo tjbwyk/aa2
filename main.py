@@ -11,6 +11,7 @@ from models.state import State
 import matplotlib.pyplot as plt
 import itertools
 import time
+import timeit
 
 def run(n_episodes=1000, gui=False):
     """
@@ -19,13 +20,13 @@ def run(n_episodes=1000, gui=False):
     """
 
     #initialize the environment
-    field = Field(5, 5)
+    field = Field(7, 7)
     num_episodes = n_episodes
 
     pred1loc = (0, 0)
-    pred2loc = (5, 4)
+    pred2loc = (6, 6)
     pred3loc = (0, 10)
-    preyloc = (2, 2)
+    preyloc = (3, 3)
 
     #initialize the predators
     predator1 = Predator(id="Plato", location=pred1loc)
@@ -45,8 +46,8 @@ def run(n_episodes=1000, gui=False):
     # predator3.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator3)
     
     # wolf
-    # predator1.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator1)
-    # predator2.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator2)
+    predator1.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator1)
+    predator2.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator2)
     # predator3.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator3)
 
     #softmax Q
@@ -55,18 +56,18 @@ def run(n_episodes=1000, gui=False):
     # predator3.plearner = QPlearner.create_softmax_plearner(field=field, agent=predator3)
 
     #minimax q
-    predator1.plearner = MiniMaxQPlearner(field=field,agent=predator1,end_alpha=0.01,num_episodes=num_episodes)
+    # predator1.plearner = MiniMaxQPlearner(field=field,agent=predator1,end_alpha=0.01,num_episodes=num_episodes)
 
     field.add_player(predator1)
-    # field.add_player(predator2)
+    field.add_player(predator2)
     # field.add_player(predator3)
     #initialize the prey
     chip = Prey(id="Kant", location=preyloc)
 
     # chip.plearner = ProbabilisticPlearner(field=field, agent=chip)
-    #chip.plearner =  Wolf_phc.create_greedy_plearner(field=field, agent=chip, epsilon=0.01)
+    chip.plearner =  Wolf_phc.create_greedy_plearner(field=field, agent=chip, epsilon=0.01)
     #chip.plearner = QPlearner.create_softmax_plearner(field=field, agent=chip)
-    chip.plearner = MiniMaxQPlearner(field=field,agent=chip,end_alpha=0.01,num_episodes=num_episodes)
+    # chip.plearner = MiniMaxQPlearner(field=field,agent=chip,end_alpha=0.01,num_episodes=num_episodes)
 
     field.add_player(chip)
 
@@ -85,7 +86,6 @@ def run(n_episodes=1000, gui=False):
         chip.location = preyloc
         field.update_state()
         field.steps = 0
-        # print field.get_current_state()
         #run the simulation
         while not field.is_ended():
             field.run_step()
@@ -93,9 +93,7 @@ def run(n_episodes=1000, gui=False):
                 GUI.update()
                 time.sleep(0.2)
 
-        #print State.state_from_field(field)
         num_steps.append(field.steps)
-        # print i, field.steps
         # breakpoint
         #if i > 900:
         #    pass
@@ -105,7 +103,7 @@ def run(n_episodes=1000, gui=False):
         if i % 1000 == 0:
             print i
         # print State.state_from_field(field), field.steps, field.state.prey_is_caught()
-        print State.state_from_field(field), field.steps, field.state.prey_is_caught()
+        # print State.state_from_field(field), field.steps, field.state.prey_is_caught()
         # print [str(state) + ": " + str([predator1.plearner.policy.value[State([state]),action] for action in predator1.get_actions() ])for state in itertools.product([-1,0,1],repeat=2)]
         # for action in chip.get_actions():
         #     print '1', action, predator1.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
@@ -125,4 +123,6 @@ def plot_steps(num_steps, title=""):
     plt.savefig("num_steps.png")
 
 if __name__ == '__main__':
+    start = timeit.default_timer()
     run(n_episodes=3000, gui=True)
+    print "finished after", round(timeit.default_timer()-start, 3), "seconds."
