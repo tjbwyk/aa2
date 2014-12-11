@@ -17,12 +17,13 @@ def run(n_episodes=1000, gui=False):
     """
 
     #initialize the environment
-    field = Field(11, 11)
+    field = Field(5, 5)
 
     pred1loc = (0, 0)
     pred2loc = (0, 10)
+    pred2loc = (4, 4)
     pred3loc = (0, 10)
-    preyloc = (5, 5)
+    preyloc = (2, 2)
 
     #initialize the predators
     predator1 = Predator(id="Plato", location=pred1loc)
@@ -58,8 +59,8 @@ def run(n_episodes=1000, gui=False):
     #initialize the prey
     chip = Prey(id="Kant", location=preyloc)
 
-    # chip.plearner = ProbabilisticPlearner(field=field, agent=chip)
-    chip.plearner = SarsaPlearner.create_greedy_plearner(field=field, agent=chip, value_init=0,epsilon=0.01)
+    chip.plearner = ProbabilisticPlearner(field=field, agent=chip)
+    #chip.plearner =  Wolf_phc.create_greedy_plearner(field=field, agent=chip, epsilon=0.01)
     #chip.plearner = QPlearner.create_softmax_plearner(field=field, agent=chip)
 
     field.add_player(chip)
@@ -73,6 +74,7 @@ def run(n_episodes=1000, gui=False):
     num_steps = []
 
     for i in range(0, n_episodes):
+    for i in range(0, 10000):
         predator1.location = pred1loc
         predator2.location = pred2loc
         #predator3.location = pred3loc
@@ -86,22 +88,40 @@ def run(n_episodes=1000, gui=False):
             if gui and i == n_episodes-1:
                 GUI.update()
                 time.sleep(0.2)
-                print [player.location for player in field.players]
 
         #print State.state_from_field(field)
         num_steps.append(field.steps)
         print i, field.steps
+        # breakpoint
+        #if i > 900:
+        #    pass
+        #run the simulation
+        while not field.is_ended():
+            field.run_step()
+            # if gui:
+            #     GUI.update()
+            #     time.sleep(0.02)
+
+        #print State.state_from_field(field)
+        num_steps.append(field.steps)
+        if i % 1000 == 0:
+            print i
         # print State.state_from_field(field), field.steps, field.state.prey_is_caught()
         # for action in chip.get_actions():
         #     print '1', action, predator1.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
         #     print '2', action, predator2.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
 
     #plot_steps(num_steps)
+    step = 50
+    plot_list = [sum(num_steps[i-step:i])/step for i in xrange(step, len(num_steps), step)]
+    # print plot_list
+    plot_steps(plot_list, title="moving average over "+str(step)+" episodes")
 
 
-def plot_steps(num_steps):
+def plot_steps(num_steps, title=""):
     plt.figure()
     plt.plot(num_steps)
+    plt.title(title)
     plt.savefig("num_steps.png")
 
 if __name__ == '__main__':
