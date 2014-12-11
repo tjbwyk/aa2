@@ -20,7 +20,7 @@ def run(n_episodes=1000, gui=False):
 
     #initialize the environment
     field = Field(5, 5)
-    num_episodes = 10**3
+    num_episodes = n_episodes
 
     pred1loc = (0, 0)
     pred2loc = (5, 4)
@@ -45,8 +45,8 @@ def run(n_episodes=1000, gui=False):
     # predator3.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator3)
     
     # wolf
-    predator1.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator1)
-    predator2.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator2)
+    # predator1.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator1)
+    # predator2.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator2)
     # predator3.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator3)
 
     #softmax Q
@@ -63,7 +63,7 @@ def run(n_episodes=1000, gui=False):
     #initialize the prey
     chip = Prey(id="Kant", location=preyloc)
 
-    chip.plearner = ProbabilisticPlearner(field=field, agent=chip)
+    # chip.plearner = ProbabilisticPlearner(field=field, agent=chip)
     #chip.plearner =  Wolf_phc.create_greedy_plearner(field=field, agent=chip, epsilon=0.01)
     #chip.plearner = QPlearner.create_softmax_plearner(field=field, agent=chip)
     chip.plearner = MiniMaxQPlearner(field=field,agent=chip,end_alpha=0.01,num_episodes=num_episodes)

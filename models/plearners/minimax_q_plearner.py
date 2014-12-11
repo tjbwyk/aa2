@@ -29,8 +29,7 @@ class MiniMaxQPlearner(Plearner):
         self.q_value[old_state.rep(),action,op_act] = \
             (1-alpha) * (self.q_value[old_state.rep(),action,op_act]) \
             + alpha * (reward + gamma*self.value[new_state])
-        if reward != 0:
-            print 'reward:', reward, 'new q:', self.q_value[old_state.rep(),action,op_act],'alpha',alpha
+
         # Use linear programming to find pi(s,.) such that:
         # pi[s,.] = argmax{pi'[s,.], min{o',sum{a', pi[s,a'] * Q[s,a',o']}}}}
         state_policy, new_value = self.solve_minmax(opponent, old_state, new_state)
