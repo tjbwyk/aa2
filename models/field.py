@@ -134,6 +134,10 @@ class Field(object):
         """
         self.state = State.state_from_field(self)
 
+    def get_opponent(self,of):
+        assert(len(self.players) == 2)
+        return self.get_players(exception_player=of)[0]
+
     def get_players(self, exception_player=None):
         """
         returns all players except for the exception player

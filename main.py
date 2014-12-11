@@ -16,8 +16,8 @@ def run(gui=False):
     #initialize the environment
     field = Field(11, 11)
 
-    pred1loc = (10, 10)
-    pred2loc = (10, 0)
+    pred1loc = (5, 6)
+    pred2loc = (5, 4)
     pred3loc = (0, 10)
     preyloc = (5, 5)
 
@@ -26,16 +26,16 @@ def run(gui=False):
     predator2 = Predator(id="Pythagoras", location=pred2loc)
     # predator3 = Predator(pred3loc)
 
-    predator1.plearner = ProbabilisticPlearner(field=field, agent=predator1)
-    predator2.plearner = ProbabilisticPlearner(field=field, agent=predator2)
+    # predator1.plearner = ProbabilisticPlearner(field=field, agent=predator1)
+    # predator2.plearner = ProbabilisticPlearner(field=field, agent=predator2)
     # predator3.plearner = ProbabilisticPlearner(field=field, agent=predator3)
 
-    predator1.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator1)
-    predator2.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator2)
+    # predator1.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator1)
+    # predator2.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator2)
     # predator3.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator3)
 
-    # predator1.plearner = QPlearner.create_softmax_plearner(field=field, agent=predator1)
-    # predator2.plearner = QPlearner.create_softmax_plearner(field=field, agent=predator2)
+    predator1.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator1)
+    predator2.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator2)
     # predator3.plearner = QPlearner.create_softmax_plearner(field=field, agent=predator3)
 
 
@@ -45,8 +45,8 @@ def run(gui=False):
     #initialize the prey
     chip = Prey(id="Kant", location=preyloc)
 
-    # chip.plearner = ProbabilisticPlearner.create_plearner(field=field, agent=chip)
-    chip.plearner = QPlearner.create_greedy_plearner(field=field, agent=chip)
+    chip.plearner = ProbabilisticPlearner(field=field, agent=chip)
+    # chip.plearner = QPlearner.create_greedy_plearner(field=field, agent=chip,value_init=0,epsilon=0.2)
     #chip.plearner = QPlearner.create_softmax_plearner(field=field, agent=chip)
 
     field.add_player(chip)
@@ -59,7 +59,7 @@ def run(gui=False):
 
     from models.state import State
 
-    for i in range(0, 10):
+    for i in range(0, 10000):
         predator1.location = pred1loc
         predator2.location = pred2loc
         #predator3.location = pred3loc
@@ -76,7 +76,9 @@ def run(gui=False):
 
         #print State.state_from_field(field)
 
-        print State.state_from_field(field), field.steps
-
+        print State.state_from_field(field), field.steps, field.state.prey_is_caught()
+        for action in chip.get_actions():
+            print '1', action, predator1.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
+            print '2', action, predator2.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
 if __name__ == '__main__':
     run()
