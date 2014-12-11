@@ -7,6 +7,7 @@ import pkg_resources
 from models.field import Field
 from models.predator import Predator
 from models.prey import Prey
+from models.state import State
 
 
 class GameFrame(tk.Frame):
@@ -63,11 +64,17 @@ class GameFrame(tk.Frame):
                 self.players[player] = self.canvas.create_image(self.xoffset, self.yoffset, anchor="nw", image=self.prey_icon)
         self.prey_dead_icon = tk.PhotoImage(
             file=pkg_resources.resource_filename('graphics.gui', 'images/prey_dead.gif'))
+        self.state = {player: player.location for player in self.field.get_players()}
+        self.update(trace=False)
         return None
 
-    def update(self, trace=False):
-        predator_location_old, prey_location_old = self.state
-        # predator_location_new, prey_location_new = state
+    def update(self, trace=False, keep_open=False):
+        """
+        Updates the positions of th player icons according to the field state.
+        :param trace: draw a trace of the past movements of each player
+        :param keep_open: keep the window open after the episode has ended
+        :return: None
+        """
         if trace:
             # # predator trace
             # start = self.get_field_center(predator_location_old[0], predator_location_old[1])
@@ -83,22 +90,21 @@ class GameFrame(tk.Frame):
             #                         fill="blue")
             pass
         for player in self.field.get_players():
-            player_dx = 0
-        # predator_dx = predator_location_new[0] - predator_location_old[0]
-        # predator_dy = predator_location_new[1] - predator_location_old[1]
-        # prey_dx = prey_location_new[0] - prey_location_old[0]
-        # prey_dy = prey_location_new[1] - prey_location_old[1]
-        # # if both players are in the same cell, bake red background color and redraw images so they are on top
-        # if predator_location_new == prey_location_new:
-        #     x1 = self.xoffset + predator_location_new[0] * self.cellheight
-        #     x2 = x1 + self.cellheight
-        #     y1 = self.yoffset + predator_location_new[1] * self.cellwidth
-        #     y2 = y1 + self.cellwidth
-        #     self.canvas.create_rectangle(x1, y1, x2, y2, fill="#F0AFBB")
-        #     self.canvas.create_image(x1, y1, anchor="nw", image=self.prey_dead_icon)
-        # self.canvas.move(self.c_predator, predator_dx * self.cellwidth, predator_dy * self.cellheight)
-        # self.canvas.move(self.c_prey, prey_dx * self.cellwidth, prey_dy * self.cellheight)
-        # self.state = state
+            player_dx = player.location[0] - self.state[player][0]
+            player_dy = player.location[1] - self.state[player][1]
+            self.canvas.move(self.players[player], player_dx * self.cellwidth, player_dy * self.cellheight)
+            self.state[player] = player.location
+        if self.field.is_ended():
+            # draw all the fields red where multiple players stand
+            pass
+            #     x1 = self.xoffset + predator_location_new[0] * self.cellheight
+            #     x2 = x1 + self.cellheight
+            #     y1 = self.yoffset + predator_location_new[1] * self.cellwidth
+            #     y2 = y1 + self.cellwidth
+            #     self.canvas.create_rectangle(x1, y1, x2, y2, fill="#F0AFBB")
+            #     self.canvas.create_image(x1, y1, anchor="nw", image=self.prey_dead_icon)
+            if keep_open:
+                self.mainloop()
         self.root.update()
         return None
 
@@ -116,20 +122,20 @@ class GameFrame(tk.Frame):
 
 if __name__ == "__main__":
     environment = Field(11, 11)
-    fatcat = Predator((0, 0))
-    fatcat.policy = RandomPredatorPolicy(fatcat, environment)
-    chip = Prey((5, 5))
-    chip.policy = RandomPreyPolicy(chip, environment)
-    environment.add_player(fatcat)
-    environment.add_player(chip)
-    gui = GameFrame(field=environment)
-    gui.draw_state(environment.get_current_state_complete())
-    i = 0
-    while not environment.is_ended():
-        fatcat.act()
-        chip.act()
-        # print environment
-        gui.update()
-        i += 1
-        time.sleep(0.1)
-    gui.mainloop()
+    # fatcat = Predator((0, 0))
+    # fatcat.policy = RandomPredatorPolicy(fatcat, environment)
+    # chip = Prey((5, 5))
+    # chip.policy = RandomPreyPolicy(chip, environment)
+    # environment.add_player(fatcat)
+    # environment.add_player(chip)
+    # gui = GameFrame(field=environment)
+    # gui.draw_state(environment.get_current_state_complete())
+    # i = 0
+    # while not environment.is_ended():
+    #     fatcat.act()
+    #     chip.act()
+    #     # print environment
+    #     gui.update()
+    #     i += 1
+    #     time.sleep(0.1)
+    # gui.mainloop()
