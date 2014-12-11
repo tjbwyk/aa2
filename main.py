@@ -95,16 +95,10 @@ def run(n_episodes=1000, gui=False):
 
         #print State.state_from_field(field)
         num_steps.append(field.steps)
-        print i, field.steps
+        # print i, field.steps
         # breakpoint
         #if i > 900:
         #    pass
-        #run the simulation
-        while not field.is_ended():
-            field.run_step()
-            # if gui:
-            #     GUI.update()
-            #     time.sleep(0.02)
 
         #print State.state_from_field(field)
         num_steps.append(field.steps)
@@ -131,4 +125,4 @@ def plot_steps(num_steps, title=""):
     plt.savefig("num_steps.png")
 
 if __name__ == '__main__':
-    run(n_episodes=10000, gui=True)
+    run(n_episodes=3000, gui=True)
