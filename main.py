@@ -4,10 +4,12 @@ from models.prey import Prey
 from models.plearners.probabilistic_plearner import ProbabilisticPlearner
 from models.plearners.q_plearner import QPlearner
 from models.plearners.sarsa_plearner import SarsaPlearner
+from models.plearners.minimax_q_plearner import MiniMaxQPlearner
 from models.plearners.wolf_phc import Wolf_phc
 from graphics.gui import GameFrame
 from models.state import State
 import matplotlib.pyplot as plt
+import itertools
 import time
 
 def run(n_episodes=1000, gui=False):
@@ -18,10 +20,10 @@ def run(n_episodes=1000, gui=False):
 
     #initialize the environment
     field = Field(5, 5)
+    num_episodes = 10**3
 
     pred1loc = (0, 0)
-    pred2loc = (0, 10)
-    pred2loc = (4, 4)
+    pred2loc = (5, 4)
     pred3loc = (0, 10)
     preyloc = (2, 2)
 
@@ -52,9 +54,11 @@ def run(n_episodes=1000, gui=False):
     #predator2.plearner = QPlearner.create_softmax_plearner(field=field, agent=predator2)
     # predator3.plearner = QPlearner.create_softmax_plearner(field=field, agent=predator3)
 
+    #minimax q
+    predator1.plearner = MiniMaxQPlearner(field=field,agent=predator1,end_alpha=0.01,num_episodes=num_episodes)
 
     field.add_player(predator1)
-    field.add_player(predator2)
+    # field.add_player(predator2)
     # field.add_player(predator3)
     #initialize the prey
     chip = Prey(id="Kant", location=preyloc)
@@ -62,6 +66,7 @@ def run(n_episodes=1000, gui=False):
     chip.plearner = ProbabilisticPlearner(field=field, agent=chip)
     #chip.plearner =  Wolf_phc.create_greedy_plearner(field=field, agent=chip, epsilon=0.01)
     #chip.plearner = QPlearner.create_softmax_plearner(field=field, agent=chip)
+    chip.plearner = MiniMaxQPlearner(field=field,agent=chip,end_alpha=0.01,num_episodes=num_episodes)
 
     field.add_player(chip)
 
@@ -106,6 +111,8 @@ def run(n_episodes=1000, gui=False):
         if i % 1000 == 0:
             print i
         # print State.state_from_field(field), field.steps, field.state.prey_is_caught()
+        print State.state_from_field(field), field.steps, field.state.prey_is_caught()
+        # print [str(state) + ": " + str([predator1.plearner.policy.value[State([state]),action] for action in predator1.get_actions() ])for state in itertools.product([-1,0,1],repeat=2)]
         # for action in chip.get_actions():
         #     print '1', action, predator1.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
         #     print '2', action, predator2.plearner.policy.get_value(State([(0,-1),(0,1)]),action)

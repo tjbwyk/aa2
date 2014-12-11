@@ -86,13 +86,13 @@ class Field(object):
         :return: the new state of the agent
         """
         # tripping?
-        if random.random() < player.tripping_prob:
+        if random.random() <= player.tripping_prob:
             # player trips, stays on same location
-            new_state = player.location
+            new_location = player.location
         else:
             # player moves to new location according to action
-            new_state = self.get_new_coordinates(player.location, action)
-        return new_state
+            new_location = self.get_new_coordinates(player.location, action)
+        return new_location
 
     def get_new_coordinates(self, current_location, delta):
         """
