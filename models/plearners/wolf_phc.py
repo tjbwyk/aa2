@@ -47,25 +47,26 @@ class Wolf_phc(Plearner):
         :param rewards:
         :return:
         """
+        action = actions.get(self.agent)
+        reward = rewards.get(self.agent)
         # compute Q value for old state-action pair
-        self.q_values[old_state, actions.get(self.agent)] = self.compute_q_value(old_state, new_state,
-                                                                                 actions.get(self.agent),
-                                                                                 rewards.get(self.agent))
+        self.q_values[old_state, action] = self.compute_q_value(old_state, new_state, action, reward)
 
         # increase visit count for old state
         self.state_visit_counts[old_state] += 1
 
-        # update estimate of average policy for all actions and old_state
-        for action in self.agent.actions:
-            self.average_policy.value[old_state, action] += (1.0 / self.state_visit_counts[old_state]) * (
-                self.policy.value[old_state, action] - self.average_policy.value[old_state, action])
+        # update estimate of average policy for all actions b and old_state
+        for b in self.agent.actions:
+            self.average_policy.value[old_state, b] += (1.0 / self.state_visit_counts[old_state]) * (
+                self.policy.value[old_state, b] - self.average_policy.value[old_state, b])
 
         # update policy(s, a) and constrain it to legal probability distribution
-        if actions.get(self.agent) == self.max_action_value_for_q(old_state, return_arg=True):
+        if action == self.max_action_value_for_q(old_state, return_arg=True):
+            # was the taken action the winning action?
             update_delta = self.choose_delta(old_state)
         else:
             update_delta = -(self.choose_delta(old_state) / (len(self.agent.actions) - 1.0))
-        self.policy.value[old_state, actions.get(self.agent)] += update_delta
+        self.policy.value[old_state, action] += update_delta
 
     def compute_q_value(self, old_state, new_state, action, reward):
         """
@@ -87,13 +88,13 @@ class Wolf_phc(Plearner):
         """
         max = -np.inf
         argmax = []
-        for action in self.agent.get_actions():
-            tmp = self.q_values[state, action]
+        for a in self.agent.get_actions():
+            tmp = self.q_values[state, a]
             if tmp > max:
                 max = tmp
-                argmax = [action]
+                argmax = [a]
             elif tmp == max:
-                argmax.append(action)
+                argmax.append(a)
         if return_arg:
             return random.choice(argmax)
         else:
@@ -106,11 +107,9 @@ class Wolf_phc(Plearner):
         :return: step size delta
         """
         policy_sum = sum(
-            [self.policy.value[state, action] * self.q_values[state, action] for action in
-             self.agent.actions])
+            [self.policy.value[state, a] * self.q_values[state, a] for a in self.agent.actions])
         average_policy_sum = sum(
-            [self.average_policy.value[state, action] * self.q_values[state, action] for action in
-             self.agent.actions])
+            [self.average_policy.value[state, a] * self.q_values[state, a] for a in self.agent.actions])
         if policy_sum > average_policy_sum:
             return self.dw
         else:
