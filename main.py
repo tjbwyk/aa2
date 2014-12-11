@@ -6,6 +6,8 @@ from models.plearners.q_plearner import QPlearner
 from models.plearners.sarsa_plearner import SarsaPlearner
 from models.plearners.wolf_phc import Wolf_phc
 from graphics.gui import GameFrame
+from models.state import State
+import matplotlib.pyplot as plt
 import time
 
 def run(gui=False):
@@ -33,13 +35,15 @@ def run(gui=False):
     # predator3.plearner = ProbabilisticPlearner(field=field, agent=predator3)
 
     #greedy Q
-    predator1.plearner = SarsaPlearner.create_greedy_plearner(field=field, agent=predator1, value_init=0,epsilon=0.01)
-    predator2.plearner = SarsaPlearner.create_greedy_plearner(field=field, agent=predator2, value_init=0,epsilon=0.01)
+    #predator1.plearner = SarsaPlearner.create_greedy_plearner(field=field, agent=predator1, value_init=0,epsilon=0.01)
+    # predator2.plearner = SarsaPlearner.create_greedy_plearner(field=field, agent=predator2, value_init=0,epsilon=0.01)
+    # predator1.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator1, value_init=0)
+    # predator2.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator2, value_init=0)
     # predator3.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator3)
     
     # wolf
-    # predator1.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator1)
-    # predator2.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator2)
+    predator1.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator1)
+    predator2.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator2)
     # predator3.plearner = Wolf_phc.create_greedy_plearner(field=field, agent=predator3)
 
     #softmax Q
@@ -66,9 +70,9 @@ def run(gui=False):
     if gui:
         GUI = GameFrame(field=field)
 
-    from models.state import State
+    num_steps = []
 
-    for i in range(0, 10000):
+    for i in range(0, 1000):
         predator1.location = pred1loc
         predator2.location = pred2loc
         #predator3.location = pred3loc
@@ -84,10 +88,22 @@ def run(gui=False):
                 time.sleep(0.02)
 
         #print State.state_from_field(field)
-
+        num_steps.append(field.steps)
         print State.state_from_field(field), field.steps, field.state.prey_is_caught()
         for action in chip.get_actions():
             # print 'p', action, chip.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
             print '2', action, predator2.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
+        # for action in chip.get_actions():
+        #     print '1', action, predator1.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
+        #     print '2', action, predator2.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
+
+    plot_steps(num_steps)
+
+
+def plot_steps(num_steps):
+    plt.figure()
+    plt.plot(num_steps)
+    plt.savefig("num_steps.png")
+
 if __name__ == '__main__':
     run()

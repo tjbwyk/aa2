@@ -7,3 +7,4 @@ venv
 assignment01.pdf
 *.synctex.gz
 *.lod
+num_steps.png
