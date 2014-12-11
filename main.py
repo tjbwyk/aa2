@@ -74,7 +74,6 @@ def run(n_episodes=1000, gui=False):
     num_steps = []
 
     for i in range(0, n_episodes):
-    for i in range(0, 10000):
         predator1.location = pred1loc
         predator2.location = pred2loc
         #predator3.location = pred3loc
