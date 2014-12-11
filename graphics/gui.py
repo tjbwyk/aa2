@@ -64,7 +64,7 @@ class GameFrame(tk.Frame):
                 self.players[player] = self.canvas.create_image(self.xoffset, self.yoffset, anchor="nw", image=self.prey_icon)
         self.prey_dead_icon = tk.PhotoImage(
             file=pkg_resources.resource_filename('graphics.gui', 'images/prey_dead.gif'))
-        self.state = {player: player.location for player in self.field.get_players()}
+        self.state = {player: (0,0) for player in self.field.get_players()}
         self.update(trace=False)
         return None
 
