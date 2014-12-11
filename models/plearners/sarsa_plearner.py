@@ -4,12 +4,13 @@ from models.policies.greedy_policy import GreedyPolicy
 from models.policies.softmax_policy import SoftmaxPolicy
 
 
-class QPlearner(Plearner):
+class SarsaPlearner(Plearner):
 
     def __init__(self, policy, field, agent, learning_rate, discount_factor):
-        super(QPlearner, self).__init__(policy, field, agent)
+        super(SarsaPlearner, self).__init__(policy, field, agent)
         self.learning_rate = learning_rate
         self.discount_factor = discount_factor
+        self.next_action = None
 
     @classmethod
     def create_greedy_plearner(cls, field, agent, value_init=15, epsilon=0.1, gamma=0.0, learning_rate=0.1, discount_factor=0.9, q_value_select=True):
@@ -23,7 +24,7 @@ class QPlearner(Plearner):
         :param discount_factor:
         :return:
         """
-        return QPlearner(policy=GreedyPolicy(field=field, agent=agent,
+        return SarsaPlearner(policy=GreedyPolicy(field=field, agent=agent,
                                              value_init=value_init, epsilon=epsilon,
                                              gamma=gamma, q_value_select=q_value_select), field=field, agent=agent,
                          learning_rate=learning_rate, discount_factor=discount_factor)
@@ -40,19 +41,20 @@ class QPlearner(Plearner):
         :param discount_factor:
         :return:
         """
-        return QPlearner(policy=SoftmaxPolicy(field=field, agent=agent,
+        return SarsaPlearner(policy=SoftmaxPolicy(field=field, agent=agent,
                                               value_init=value_init, tau=tau), field=field, agent=agent,
                          learning_rate=learning_rate, discount_factor=discount_factor)
 
     def update(self, old_state, new_state, actions, rewards):
+        self.next_action = self.policy.pick_next_action(new_state)
         self.policy.set_value(old_state, actions.get(self.agent), self.compute_q_value(old_state, new_state, actions.get(self.agent), rewards.get(self.agent)))
 
-    def compute_q_value(self, old_state, new_state, action, reward):
-        result = self.policy.get_value(old_state, action) + \
+    def compute_q_value(self, old_state, new_state, old_action, reward):
+        result = self.policy.get_value(old_state, old_action) + \
                  self.learning_rate * (
-                     reward +
-                     self.discount_factor * self.max_action_value_for_q(new_state) -
-                     self.policy.get_value(old_state, action)
+                     reward
+                     + self.discount_factor * self.policy.get_value(new_state,self.next_action)
+                     - self.policy.get_value(old_state, old_action)
                  )
         return result
 
@@ -63,3 +65,8 @@ class QPlearner(Plearner):
             if tmp > max:
                 max = tmp
         return max
+
+    def pick_next_action(self, state):
+        if self.next_action is None:
+            self.next_action = self.policy.pick_next_action(state)
+        return self.next_action

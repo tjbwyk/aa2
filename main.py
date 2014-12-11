@@ -3,6 +3,7 @@ from models.predator import Predator
 from models.prey import Prey
 from models.plearners.probabilistic_plearner import ProbabilisticPlearner
 from models.plearners.q_plearner import QPlearner
+from models.plearners.sarsa_plearner import SarsaPlearner
 from models.plearners.wolf_phc import Wolf_phc
 from graphics.gui import GameFrame
 import time
@@ -32,8 +33,8 @@ def run(gui=False):
     # predator3.plearner = ProbabilisticPlearner(field=field, agent=predator3)
 
     #greedy Q
-    predator1.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator1, value_init=0)
-    predator2.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator2, value_init=0)
+    predator1.plearner = SarsaPlearner.create_greedy_plearner(field=field, agent=predator1, value_init=0,epsilon=0.01)
+    predator2.plearner = SarsaPlearner.create_greedy_plearner(field=field, agent=predator2, value_init=0,epsilon=0.01)
     # predator3.plearner = QPlearner.create_greedy_plearner(field=field, agent=predator3)
     
     # wolf
@@ -53,8 +54,8 @@ def run(gui=False):
     #initialize the prey
     chip = Prey(id="Kant", location=preyloc)
 
-    chip.plearner = ProbabilisticPlearner(field=field, agent=chip)
-    # chip.plearner = QPlearner.create_greedy_plearner(field=field, agent=chip, value_init=0)
+    # chip.plearner = ProbabilisticPlearner(field=field, agent=chip)
+    chip.plearner = SarsaPlearner.create_greedy_plearner(field=field, agent=chip, value_init=0,epsilon=0.01)
     #chip.plearner = QPlearner.create_softmax_plearner(field=field, agent=chip)
 
     field.add_player(chip)
@@ -74,7 +75,7 @@ def run(gui=False):
         chip.location = preyloc
         field.update_state()
         field.steps = 0
-
+        print field.get_current_state()
         #run the simulation
         while not field.is_ended():
             field.run_step()
@@ -86,7 +87,7 @@ def run(gui=False):
 
         print State.state_from_field(field), field.steps, field.state.prey_is_caught()
         for action in chip.get_actions():
-            print '1', action, predator1.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
+            # print 'p', action, chip.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
             print '2', action, predator2.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
 if __name__ == '__main__':
     run()
