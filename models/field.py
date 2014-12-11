@@ -61,10 +61,12 @@ class Field(object):
         # update field state
         self.state = State.state_from_field(self)
 
+        # compute all rewards
+        for player in self.players:
+            rewards[player] = self.get_reward(player)
+
         # tell each player their new location and reward
         for player in self.players:
-            # Get the reward for this player
-            rewards[player] = self.get_reward(player)
             player.update(old_state=old_state, new_state=self.state, actions=actions, rewards=rewards)
 
         self.steps += 1
