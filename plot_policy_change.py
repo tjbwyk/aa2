@@ -196,6 +196,6 @@ def run_minimax(n_episodes=1000):
 if __name__ == "__main__":
     start = timeit.default_timer()
     # run_wolf(n_episodes=10000)
-    run_minimax(n_episodes=15)
+    run_minimax(n_episodes=1000)
     print "finished after", round(timeit.default_timer() - start, 3), "seconds."
 
