@@ -8,7 +8,7 @@ class GreedyPolicy(Policy):
     The greedy policy
     """
 
-    def __init__(self, field, agent, value_init=None, epsilon=.0, gamma=.0, q_value_select=False):
+    def __init__(self, field=None, agent=None, value_init=None, epsilon=.0, gamma=.0, q_value_select=False):
         super(GreedyPolicy, self).__init__(field=field, agent=agent, value_init=value_init)
         self.epsilon = epsilon
         self.gamma = gamma
