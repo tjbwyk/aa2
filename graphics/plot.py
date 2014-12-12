@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import pkg_resources
 
 def get_output_path():
-    return pkg_resources.resource_filename("reports", "plot")
+    return pkg_resources.resource_filename("reports", "plot/")
 
 
 def value_heatmap(values, colorbar=True, path=None):
