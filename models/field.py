@@ -59,12 +59,11 @@ class Field(object):
             actions[player] = player.act(self.state)
 
         # compute next state based on actions chosen by players
-        for player in self.get_predators():
-            player.location = self.transition(player, actions[player])
+        for pred in self.get_predators():
+            pred.location = self.transition(pred, actions[pred])
         # if the prey has been caught, it cannot move anymore
         if not State.state_from_field(self).prey_is_caught():
             self.get_prey().location = self.transition(self.get_prey(), actions[self.get_prey()])
-
 
         # get new field state after every player moved
         new_state = State.state_from_field(self)
