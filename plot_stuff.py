@@ -77,7 +77,7 @@ def run_configuration(experiment_name, prey_plearner, prey_plearner_params, pred
     for i in range(0, n_episodes):
         reset_player_locations()
         run_episode()
-        # print State.state_from_field(field), field.steps, ("Prey caught" if field.state.prey_is_caught() else "Pred collided")
+        # print State.state_from_field(field), field.steps, ("Prey caught" if field.state.prey_is_caught() else "collided")
         num_steps.append(field.steps)
         prey_caught.append(1 if field.state.prey_is_caught() else 0)
         if isinstance(field.get_predators()[0].plearner.policy, Mixed_policy):
@@ -106,15 +106,15 @@ if __name__ == '__main__':
         #     n_episodes = [10000],
         #     field = [Field(11, 11)],
         # ),
-        # dict(
-        #     experiment_name = ["1 vs 1 with minimax-q for predator"],
-        #     prey_plearner = [MiniMaxQPlearner],
-        #     prey_plearner_params = [dict(end_alpha=0.5,num_episodes=500,epsilon=0.1,gamma=0.7)],
-        #     pred_plearners = [[MiniMaxQPlearner]],
-        #     pred_plearner_params = [[dict(end_alpha=0.5,num_episodes=500,epsilon=0.1,gamma=0.7)]],
-        #     n_episodes = [500],
-        #     field = [Field(5, 5)]
-        # ),
+        dict(
+            experiment_name = ["1 vs 1 with minimax-q for predator 5by5"],
+            prey_plearner = [MiniMaxQPlearner],
+            prey_plearner_params = [dict(end_alpha=0.5,num_episodes=500,epsilon=0.1,gamma=0.7)],
+            pred_plearners = [[MiniMaxQPlearner]],
+            pred_plearner_params = [[dict(end_alpha=0.5,num_episodes=500,epsilon=0.1,gamma=0.7)]],
+            n_episodes = [1000],
+            field = [Field(5, 5)]
+        ),
         # dict(
         #     experiment_name = ["1 vs 2 Independent Q-learning Greedy"],
         #     prey_plearner = [QPlearner],
@@ -129,17 +129,18 @@ if __name__ == '__main__':
         #     n_episodes = [10000],
         #     field = [Field(11, 11)],
         # ),
+        #
+        # dict(
+        #     experiment_name = ["1 vs 2 WoLF Greedy"],
+        #     prey_plearner = [ProbabilisticPlearner],
+        #     prey_plearner_params = [dict()],
+        #     pred_plearners = [[Wolf_phc,Wolf_phc]],
+        #     pred_plearner_params = [[dict(policy=Mixed_policy(epsilon=0.01)),
+        #                              dict(policy=Mixed_policy(epsilon=0.01))]],
+        #     n_episodes = [10000],
+        #     field = [Field(11, 11)],
+        # ),
 
-        dict(
-            experiment_name = ["1 vs 2 WoLF Greedy"],
-            prey_plearner = [ProbabilisticPlearner],
-            prey_plearner_params = [dict()],
-            pred_plearners = [[Wolf_phc,Wolf_phc]],
-            pred_plearner_params = [[dict(policy=Mixed_policy(epsilon=0.01)),
-                                     dict(policy=Mixed_policy(epsilon=0.01))]],
-            n_episodes = [10000],
-            field = [Field(11, 11)],
-        ),
     ]
 
     # Call the experiment for all the combinations of parameters and log the results
@@ -158,21 +159,21 @@ if __name__ == '__main__':
             # Compute plot lines
             avg_steps = moving_average(num_steps,average_window)
             stdev_steps = moving_stdev(num_steps,average_window)
-            prey_caught = moving_average(prey_caught,average_window)
+            prey_caught = moving_average(prey_caught,average_window) * 30
+
 
             # Plot them
             next_color = color_iter.next()[1]
             plt.plot(avg_steps,alpha=0.5,label="Steps per episode")
             plt.fill_between(range(0,len(stdev_steps)),avg_steps+0.2*stdev_steps,avg_steps-0.2*stdev_steps,alpha=0.1,facecolor=next_color,interpolate=True)
             color_iter.next()
-            plt.plot(prey_caught,alpha=0.5,label="Times prey caught")
+            plt.plot(prey_caught,alpha=0.5,label="Times prey caught (30=100%)")
 
         # Close log file
         # log_file.close()
 
         # Finish up plot
         # arg_list = arg_list[0:7]
-        str_arg_list = "test" # tuple(str(a) for a in arg_list)
         plt.ylabel("Plot y")
         plt.xlabel("episode # (moving average and 0.2*stdev(area plot) window of %d)" % (average_window))
         plt.legend(fontsize=9, loc=4)

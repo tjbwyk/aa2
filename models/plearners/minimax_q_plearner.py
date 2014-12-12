@@ -6,7 +6,6 @@ from pulp import *
 import numpy as np
 class MiniMaxQPlearner(Plearner):
     def __init__(self, field, agent,gamma=0.9,epsilon=0.,end_alpha=0.01,num_episodes=10**5):
-        # TODO: Figure out if policy means anything for minimax q-learning
         self.policy = Mixed_policy(field,agent,epsilon=epsilon)
         super(MiniMaxQPlearner, self).__init__(self.policy, field, agent)
         self.q_value = defaultdict(lambda: 1)
@@ -16,7 +15,6 @@ class MiniMaxQPlearner(Plearner):
         # Set the decay parameter such that at the end of num_steps episodes it will be end_alpha
         self.decay = decay=10**((np.log(end_alpha)/(num_episodes)))
 
-        # TODO: Representation of the joint action vector for the Qvalue
     def update(self, old_state, new_state, actions, rewards):
         opponent = self.field.get_opponent(self.agent)
         alpha = self.alpha
@@ -59,9 +57,8 @@ class MiniMaxQPlearner(Plearner):
             condition = val_sum >= V
             lp_prob += condition, label
 
-        cond = pulp.lpSum([p[i] for i in range(n_actions)]) == 1 # TODO: check if this is the right syntax
+        cond = pulp.lpSum([p[i] for i in range(n_actions)]) == 1
         lp_prob += cond, "probs_sum_up_to_1"
-        # TODO: make sure probs are not smaller than 0?
 
         # lp_prob.writeLP("MinmaxProblem.lp")  # optional
         lp_prob.solve()
