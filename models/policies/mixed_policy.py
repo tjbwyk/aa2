@@ -15,6 +15,9 @@ class Mixed_policy(Policy):
         prob_map = [(self.value[state, action], action) for action in self.agent.actions]
         return prob_map
 
+    def get_probability_mapping_dict(self, state):
+        return {action: self.value[state, action] for action in self.agent.actions}
+
     def pick_next_action(self, state):
         """
         Picks the next action in a state according to a mixed strategy:
