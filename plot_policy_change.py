@@ -104,7 +104,7 @@ def run_wolf(n_episodes=1000):
     plt.title("action probabilities for prey")
 
     plt.suptitle(str(n_episodes) + " episodes")
-    plt.savefig(get_output_path() + "policychange_wolf_" + str(n_episodes) + ".pdf")
+    plt.savefig(get_output_path() + "policychange-wolf-" + str(n_episodes) + ".pdf")
 
 
 def run_minimax(n_episodes=1000):
@@ -186,7 +186,7 @@ def run_minimax(n_episodes=1000):
     plt.title("action probabilities for prey")
 
     plt.suptitle(str(n_episodes) + " episodes")
-    plt.savefig(get_output_path() + "policychange_minimax_" + str(n_episodes) + ".pdf")
+    plt.savefig(get_output_path() + "policychange-minimax-" + str(n_episodes) + ".pdf")
 
 
 if __name__ == "__main__":
