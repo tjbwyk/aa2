@@ -156,7 +156,7 @@ def run_minimax(n_episodes=1000):
 
         # print progress every 10%
         if n_episodes >= 10 and i % (n_episodes / 10) == 0:
-            print int(1.0 * i / n_episodes * 100), "%:", field.steps , "steps"
+            print int(1.0 * i / n_episodes * 100), "%:", field.steps, "steps"
 
     # some list wrangling to get a list of 5 action lists with values for each predator
     vp1 = [[val[0] for val in sublist] for sublist in zip(*value_of_pred1)]
@@ -195,7 +195,7 @@ def run_minimax(n_episodes=1000):
 
 if __name__ == "__main__":
     start = timeit.default_timer()
-    #run_wolf(n_episodes=50000)
-    run_minimax(n_episodes=50)
+    # run_wolf(n_episodes=10000)
+    run_minimax(n_episodes=15)
     print "finished after", round(timeit.default_timer() - start, 3), "seconds."
 
