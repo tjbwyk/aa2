@@ -106,19 +106,19 @@ def run_wolf(n_episodes=1000):
     plt.suptitle(str(n_episodes) + " episodes")
     plt.savefig(get_output_path() + "policychange-wolf-" + str(n_episodes) + ".pdf")
 
-
+########################################################################################################################
 def run_minimax(n_episodes=1000):
     # initialize the environment
-    field = Field(3, 3)
+    field = Field(5, 5)
 
     """
     initial state:
     | | | |
-    |X|O|X|
+    |X|O| |
     | | | |
     """
-    pred1loc = (0, 1)
-    preyloc = (1, 1)
+    pred1loc = (0, 0)
+    preyloc = (2, 2)
 
     predator1 = Predator(id="Plato", location=pred1loc)
 
@@ -126,7 +126,7 @@ def run_minimax(n_episodes=1000):
     predator1.plearner = MiniMaxQPlearner(field=field, agent=predator1, end_alpha=0.1, num_episodes=n_episodes)
     field.add_player(predator1)
 
-    chip = Prey(id="Kant", location=preyloc)
+    chip = Prey(id="Kant", location=preyloc, tripping_prob=1)
     chip.plearner = MiniMaxQPlearner(field=field, agent=chip, end_alpha=0.1, num_episodes=n_episodes)
     field.add_player(chip)
     field.init_players()
@@ -150,6 +150,7 @@ def run_minimax(n_episodes=1000):
         num_steps.append(field.steps)
         pred_win.append(field.state.prey_is_caught())
         value_of_pred1.append(predator1.plearner.policy.get_probability_mapping(plot_state))
+        print predator1.plearner.policy.get_probability_mapping(plot_state)
         value_of_prey.append(chip.plearner.policy.get_probability_mapping(plot_state))
 
         # print progress every 10%
@@ -173,14 +174,15 @@ def run_minimax(n_episodes=1000):
     plt.figure(figsize=(15, 15))
 
     s = plt.subplot(2, 1, 1)
-    s.set_yscale("log")
+    # s.set_yscale("log")
+    plt.ylim([-0.1, 1.1])
     for index, action in enumerate(predator1.actions):
         plt.plot(vp1[index], c=colors[index], label=actions[action])
     plt.title("action probabilities for predator 1")
     plt.legend(loc="upper right")
 
     s = plt.subplot(2, 1, 2)
-    s.set_yscale("log")
+    #s.set_yscale("log")
     for index, action in enumerate(chip.actions):
         plt.plot(vpc[index], c=colors[index], label=actions[action])
     plt.title("action probabilities for prey")
@@ -192,6 +194,6 @@ def run_minimax(n_episodes=1000):
 if __name__ == "__main__":
     start = timeit.default_timer()
     #run_wolf(n_episodes=50000)
-    run_minimax(n_episodes=1000)
+    run_minimax(n_episodes=10)
     print "finished after", round(timeit.default_timer() - start, 3), "seconds."
 
