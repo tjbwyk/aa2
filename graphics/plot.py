@@ -1,5 +1,9 @@
 __author__ = 'fbuettner'
 from matplotlib import pyplot as plt
+import pkg_resources
+
+def get_output_path():
+    return pkg_resources.resource_filename("reports", "plot")
 
 
 def value_heatmap(values, colorbar=True, path=None):
@@ -18,3 +22,11 @@ def value_heatmap(values, colorbar=True, path=None):
     if path is not None:
         plt.savefig(path)
     return heatmap
+
+
+def plot_steps(num_steps, pred_win, window_size=50, title=""):
+    plt.figure()
+    plt.plot([sum(num_steps[i-window_size:i])/window_size for i in xrange(window_size, len(num_steps), window_size)], color="blue")
+    plt.plot([sum(pred_win[i-window_size:i])/window_size for i in xrange(window_size, len(pred_win), window_size)], color="red")
+    plt.title(title)
+    plt.savefig(get_output_path() + "num_steps.png")

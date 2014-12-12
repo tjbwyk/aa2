@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import itertools
 import time
 import timeit
+from graphics.plot import plot_steps
 
 def run(n_episodes=1000, gui=False):
     """
@@ -20,13 +21,13 @@ def run(n_episodes=1000, gui=False):
     """
 
     #initialize the environment
-    field = Field(7, 7)
+    field = Field(11, 11)
     num_episodes = n_episodes
 
     pred1loc = (0, 0)
-    pred2loc = (6, 6)
+    pred2loc = (10, 10)
     pred3loc = (0, 10)
-    preyloc = (3, 3)
+    preyloc = (5, 5)
 
     #initialize the predators
     predator1 = Predator(id="Plato", location=pred1loc)
@@ -78,6 +79,7 @@ def run(n_episodes=1000, gui=False):
         GUI = GameFrame(field=field)
 
     num_steps = []
+    pred_win = []
 
     for i in range(0, n_episodes):
         predator1.location = pred1loc
@@ -94,13 +96,14 @@ def run(n_episodes=1000, gui=False):
                 time.sleep(0.2)
 
         num_steps.append(field.steps)
+        pred_win.append(field.state.prey_is_caught())
         # breakpoint
         #if i > 900:
         #    pass
 
         #print State.state_from_field(field)
         num_steps.append(field.steps)
-        if i % 1000 == 0:
+        if i % 100 == 0:
             print i
         # print State.state_from_field(field), field.steps, field.state.prey_is_caught()
         # print State.state_from_field(field), field.steps, field.state.prey_is_caught()
@@ -109,20 +112,13 @@ def run(n_episodes=1000, gui=False):
         #     print '1', action, predator1.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
         #     print '2', action, predator2.plearner.policy.get_value(State([(0,-1),(0,1)]),action)
 
-    #plot_steps(num_steps)
     step = 50
-    plot_list = [sum(num_steps[i-step:i])/step for i in xrange(step, len(num_steps), step)]
-    # print plot_list
-    plot_steps(plot_list, title="moving average over "+str(step)+" episodes")
+    plot_steps(num_steps, pred_win, window_size=step, title="moving average over "+str(step)+" episodes")
 
 
-def plot_steps(num_steps, title=""):
-    plt.figure()
-    plt.plot(num_steps)
-    plt.title(title)
-    plt.savefig("num_steps.png")
+
 
 if __name__ == '__main__':
     start = timeit.default_timer()
-    run(n_episodes=3000, gui=True)
+    run(n_episodes=1000, gui=True)
     print "finished after", round(timeit.default_timer()-start, 3), "seconds."
